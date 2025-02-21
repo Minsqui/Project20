@@ -6,8 +6,50 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
-    internal class ConsoleCharacterManager
+    internal class ConsoleManager
     {
+        internal Menu activeMenu;
+
+        public ConsoleManager()
+        {
+            Menu mainMenu = new MainMenu(this);
+            this.activeMenu = mainMenu;
+        }
+
+        public void Run()
+        {
+            string input;
+
+            while (true)
+            {
+                Console.WriteLine("To choose from given options write index of option.");
+
+                if (activeMenu == null)
+                {
+                    throw new Exception("Active menu does not exist (activeMenu == null)");
+                }
+
+                activeMenu.Show();
+
+                input = Console.ReadLine();
+
+                if (input == null)
+                {
+                    continue;
+                }
+
+                activeMenu.React(input);
+
+                Console.Clear();
+            }
+        }
+
+        internal void Exit()
+        {
+            Environment.Exit(0);
+        }
+
+        /*
         List<Character> characters { get; set; }
         Action<ConsoleCharacterManager>[] mainMenu = [ShowCharacterMenu,Exit];
 
@@ -76,5 +118,6 @@ namespace Project20
             }
             
         }
+        */
     }
 }

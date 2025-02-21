@@ -1,4 +1,4 @@
 ﻿using Project20;
 
-ConsoleCharacterManager ccm = new ConsoleCharacterManager();
-ccm.Run();
+ConsoleManager cm = new ConsoleManager();
+cm.Run();
