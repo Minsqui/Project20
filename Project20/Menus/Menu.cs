@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Project20
         protected Menu[] childMenus;
         protected ConsoleManager cm;
 
-        int optionsLength
+        protected virtual int optionsLength
         {
             get
             {
@@ -35,14 +36,14 @@ namespace Project20
             }
         }
 
-        public Menu(ConsoleManager cm, string name = "Unnamed menu", bool isMainMenu = false)
+        public Menu(ConsoleManager cm, Menu parent = null, string name = "Unnamed menu", bool isMainMenu = false)
         {
             this.name = name;
             this.cm = cm;
             this.isMainMenu = isMainMenu;
         }
 
-        public virtual void Show()
+        internal virtual void Show()
         {
             int i = 0;
 
@@ -62,39 +63,35 @@ namespace Project20
             Console.WriteLine(i + ": Exit");           
         }
 
-        public virtual bool React(string input)
+        internal virtual bool React(string input)
         {
             int index;
 
-            if (int.TryParse(input, out index))
-            {
-                if (index >= 0 && index < optionsLength)
-                {
-                    if (index == optionsLength - 1)
-                    {
-                        cm.Exit();
-                    }
-                    else if (index == optionsLength - 2 && isMainMenu == false)
-                    {
-                        cm.activeMenu = parentMenu;
-                    }
-                    else
-                    {
-                        cm.activeMenu = childMenus[index];
-                    }                    
-
-                    Console.Clear();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
+            if (int.TryParse(input, out index) == false)
             {
                 return false;
             }
+
+            if (index < 0 || index >= optionsLength)
+            {
+                return false;
+            }
+
+            if (index == optionsLength - 1)
+            {
+                cm.Exit();
+            }
+            else if (index == optionsLength - 2 && isMainMenu == false)
+            {
+                cm.activeMenu = parentMenu;
+            }
+            else
+            {
+                cm.activeMenu = childMenus[index];
+            }                    
+
+            Console.Clear();
+            return true;
         }
     }
 }

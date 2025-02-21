@@ -13,7 +13,7 @@ namespace Project20
             this.name = "Main menu";
             this.cm = cm;
             this.isMainMenu = true;
-            this.childMenus = [];
+            this.childMenus = [new ChooseCharacterMenu(this.cm,this)];
         }
     }
 }
