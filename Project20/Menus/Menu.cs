@@ -12,9 +12,8 @@ namespace Project20
     internal class Menu
     {
         internal string name;
-        protected bool isMainMenu;
-        protected Menu parentMenu;
-        protected Menu[] childMenus;
+        protected Menu? parentMenu;
+        protected Menu[]? childMenus;
         protected ConsoleManager cm;
 
         protected virtual int optionsLength
@@ -28,7 +27,7 @@ namespace Project20
                     sum += childMenus.Length;
                 }
 
-                if (isMainMenu == false)
+                if (parentMenu != null)
                 {
                     sum += 1; //+1 for go back option
                 }
@@ -36,11 +35,10 @@ namespace Project20
             }
         }
 
-        public Menu(ConsoleManager cm, Menu parent = null, string name = "Unnamed menu", bool isMainMenu = false)
+        internal Menu(ConsoleManager cm, Menu? parent = null, string name = "Unnamed menu")
         {
             this.name = name;
             this.cm = cm;
-            this.isMainMenu = isMainMenu;
         }
 
         internal virtual void Show()
@@ -55,7 +53,7 @@ namespace Project20
                 }
             }
 
-            if (isMainMenu == false)
+            if (parentMenu != null)
             {
                 Console.WriteLine((i) + ": Go back");
                 ++i;
@@ -81,16 +79,19 @@ namespace Project20
             {
                 cm.Exit();
             }
-            else if (index == optionsLength - 2 && isMainMenu == false)
+            else if (index == optionsLength - 2 && parentMenu != null)
             {
                 cm.activeMenu = parentMenu;
             }
             else
             {
+                if (childMenus == null)
+                {
+                    return false;
+                }
+
                 cm.activeMenu = childMenus[index];
             }                    
-
-            Console.Clear();
             return true;
         }
     }

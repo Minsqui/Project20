@@ -8,11 +8,10 @@ namespace Project20
 {
     internal class MainMenu : Menu
     {
-        public MainMenu(ConsoleManager cm) :base(cm)
+        internal MainMenu(ConsoleManager cm) :base(cm)
         {
             this.name = "Main menu";
             this.cm = cm;
-            this.isMainMenu = true;
             this.childMenus = [new ChooseCharacterMenu(this.cm,this)];
         }
     }

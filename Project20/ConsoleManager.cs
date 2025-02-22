@@ -15,11 +15,12 @@ namespace Project20
         {
             Menu mainMenu = new MainMenu(this);
             this.activeMenu = mainMenu;
+            this.characters = new List<Character>();
         }
 
         public void Run()
         {
-            string input;
+            string? input;
 
             while (true)
             {
@@ -48,6 +49,13 @@ namespace Project20
         internal void Exit()
         {
             Environment.Exit(0);
+        }
+
+        internal void AddCharacter(Character character)
+        {
+            characters.Add(character);
+
+            //TODO - Save characters
         }
     }
 }
