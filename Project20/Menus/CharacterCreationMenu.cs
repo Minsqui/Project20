@@ -24,10 +24,10 @@ namespace Project20.Menus
         internal override void Show()
         {
             Console.Write(
-                "All inputs starting with #, are taken as non-valid.\n" +
-                "To exit application (progress will not be saved) write '#exit' or '#e'\n" +
-                "To return back in creation write '#back' or '#b'\n" +
-                "To save unfinished work and exit creation write '#done' or '#d'\n\n"
+                "All inputs starting with /, are taken as non-valid.\n" +
+                "To exit application (progress will not be saved) write '/exit' or '/e'\n" +
+                "To return back in creation write '/back' or '/b'\n" +
+                "To save unfinished work and exit creation write '/done' or '/d'\n\n"
                 );
 
             switch (phase)
@@ -60,24 +60,24 @@ namespace Project20.Menus
             input = input.Trim();
 
             //Checking for control inputs
-            if (input.Length >= 1 && input[0] == '#')
+            if (input.Length >= 1 && input[0] == '/')
             switch (input)
             {
-                case "#exit":
-                case "#e":
+                case "/exit":
+                case "/e":
                     cm.Exit();
                     return true;
 
-                case "#back":
-                case "#b":
+                case "/back":
+                case "/b":
                     if(phase >= 1)
                     {
                         --phase;
                     }   
                     return true;
 
-                case "#done":
-                case "#d":
+                case "/done":
+                case "/d":
                     return End();
 
                 default:

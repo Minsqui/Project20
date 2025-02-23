@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Project20
@@ -10,6 +11,7 @@ namespace Project20
     {
         internal Menu activeMenu;
         internal List<Character> characters;
+        private string charactersPath = ".\\data\\characters";
 
         public ConsoleManager()
         {
@@ -18,9 +20,37 @@ namespace Project20
             this.characters = new List<Character>();
         }
 
+        private void OnStart()
+        {
+            LoadCharacters();
+        }
+
+        private void LoadCharacters()
+        {
+            string[] filePaths = Directory.GetFiles(charactersPath);
+            
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string json = r.ReadToEnd();
+                        characters.Add(JsonSerializer.Deserialize<Character>(json));
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
         public void Run()
         {
             string? input;
+
+            OnStart();
 
             while (true)
             {
@@ -55,7 +85,38 @@ namespace Project20
         {
             characters.Add(character);
 
-            //TODO - Save characters
+            SaveCharacter(character);
+        }
+
+        internal void SaveCharacter(Character character)
+        {
+            string fileName;
+
+            if (character == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!Directory.Exists(charactersPath))
+            {
+                Directory.CreateDirectory(charactersPath);
+            }
+
+            string jsonString = JsonSerializer.Serialize(character);
+
+            //Checking if character has name
+            if (character.GetName() == Character.nameBaseValue)
+            {
+                //Generating file name
+                fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
+            }
+            else
+            {
+                fileName = character.GetName();
+            }
+
+            string filePath = Path.Combine(charactersPath, fileName+".json");
+            File.WriteAllText(filePath, jsonString);
         }
     }
 }

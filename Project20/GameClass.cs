@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
-    internal class GameClass
+    public class GameClass
     {
         record Feature { string text;  int level; }
 

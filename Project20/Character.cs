@@ -7,35 +7,37 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
-    internal class Character
+    public class Character
     {
-        internal record LevelInClass { public GameClass gameClass; public int level; }
+        public record LevelInClass { public GameClass gameClass; public int level; }
 
-        internal string name { get; set; }
-        internal int[] baseAbiltyScore { get; set; }
-
-        bool race { get; set; }
-        List<LevelInClass> classes { get; set; }
-        int level
+        public string name { get; set; }
+        static public string nameBaseValue = "Unnamed character";
+        public int[] baseAbiltyScore { get; set; } = [10, 10, 10, 10, 10, 10];
+        public GameRace race { get; set; }
+        public List<LevelInClass> classes { get; set; } = new List<LevelInClass>();
+        public int level
         {
-            get { return classes.Sum(gameClass => gameClass.level); }
+            get
+            {
+                if (classes == null)
+                {
+                    return 0;
+                }
+
+                return classes.Sum(gameClass => gameClass.level);
+            }
         }
 
-        int maxHP { get; set; }
-        int currentHP { get; set; }
+        public int maxHP { get; set; } = 0;
+        public int currentHP { get; set; } = 0;
 
         public static ImmutableArray<String> abilityNames { get; } = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
-
-        public Character()
-        {
-            baseAbiltyScore = new int[6];
-        }
-
         public string GetName()
         {
             if (name == null || name.Trim().Length == 0)
             {
-                return "Unnamed character";
+                return nameBaseValue;
             }
             return name;
         }
@@ -56,9 +58,24 @@ namespace Project20
             return (int)Math.Floor(((float)value - 10) / 2);
         }
 
-        internal int GetModifier(int index)
+        public static int GetAbilityIndex(string abilityName)
         {
-            return CountModifier(baseAbiltyScore[index]);
+            return abilityNames.IndexOf(abilityName.ToUpper());
+        }
+
+        public int GetAbilityModifier(int index)
+        {
+            int value = baseAbiltyScore[index];
+            if (race != null && race.abilityScore != null)
+            {
+                value += race.abilityScore[index];
+            }
+            return CountModifier(value);
+        }
+
+        public int AbilityCheck(int index)
+        {
+            return Die.Roll("1d20") + GetAbilityModifier(index);
         }
     }
 }
