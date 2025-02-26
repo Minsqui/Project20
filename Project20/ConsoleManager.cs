@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Enumeration;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -45,7 +46,9 @@ namespace Project20
                     using (StreamReader r = new StreamReader(filePath))
                     {
                         string json = r.ReadToEnd();
-                        characters.Add(JsonSerializer.Deserialize<Character>(json));
+                        Character newCharacter = JsonSerializer.Deserialize<Character>(json);
+                        characters.Add(newCharacter);
+                        newCharacter.filename = Path.GetFileName(filePath);
                     }
                 }
                 catch
@@ -72,7 +75,7 @@ namespace Project20
                     throw new NullReferenceException("Active menu does not exist (activeMenu == null)");
                 }
 
-                Console.WriteLine(activeMenu.name + "\n");
+                Console.WriteLine(activeMenu.GetName() + "\n");
 
                 activeMenu.Show();
 
@@ -108,6 +111,18 @@ namespace Project20
             SaveCharacter(character);
         }
 
+        internal void DeleteCharacter(Character character)
+        {
+            characters.Remove(character);
+
+            if (!Directory.Exists(charactersPath))
+            {
+                return;
+            }
+            string filePath = Path.Combine(charactersPath, character.filename);
+            File.Delete(filePath);
+        }
+
         /// <summary>
         /// Saves character to JSON to charactersPath
         /// </summary>
@@ -140,7 +155,8 @@ namespace Project20
                 fileName = character.GetName();
             }
 
-            string filePath = Path.Combine(charactersPath, fileName+".json");
+            character.filename = fileName+".json";
+            string filePath = Path.Combine(charactersPath, character.filename);
             File.WriteAllText(filePath, jsonString);
         }
     }

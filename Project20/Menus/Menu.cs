@@ -99,5 +99,10 @@ namespace Project20
             }                    
             return;
         }
+
+        virtual internal string GetName()
+        {
+            return name;
+        }
     }
 }

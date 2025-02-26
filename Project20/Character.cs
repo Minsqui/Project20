@@ -9,6 +9,7 @@ namespace Project20
 {
     public class Character
     {
+        internal string filename;
         public record LevelInClass { public GameClass gameClass; public int level; }
 
         public string name { get; set; }
@@ -73,6 +74,11 @@ namespace Project20
             }
 
             return EditBaseAbilityScore(index, value);
+        }
+
+        internal void EditName(string newName)
+        {
+            name = newName.Trim();
         }
 
         public int GetAbilityModifier(int index)

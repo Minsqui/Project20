@@ -96,7 +96,7 @@ namespace Project20.Menus
             switch (phase)
             {
                 case 0:
-                    newCharacter.name = input;
+                    newCharacter.EditName(input);
                     ++phase;
                     return;
 

@@ -20,7 +20,7 @@ namespace Project20.Menus
         internal CharacterMenu(ConsoleManager cm, Menu? parent, Character character) : base(cm, parent)
         {
             this.character = character;
-            this.name = "Character: " + character.GetName();
+            this.name = "Character";
             this.cm = cm;
             this.parentMenu = parent;
         }
@@ -45,14 +45,15 @@ namespace Project20.Menus
             
             if(showMessage)
             {
-                Console.Write(message);
+                Console.WriteLine(message);
+                Console.WriteLine();
                 showMessage = false;
             }
         }
 
         internal override void React(string input)
         {
-            input = input.Trim().ToLower();
+            input = input.Trim();
 
             if (input.Length >= 1 && input[0] == '/')
             {
@@ -67,57 +68,42 @@ namespace Project20.Menus
         {
             string[] splitInput = input.Split();
 
-            if (splitInput[0] == "/check")
-            {
-                Check(splitInput);
-                return;
-            }
-
-            if (splitInput[0] == "/edit")
-            {
-                //Not enough arguments
-                if (splitInput.Length < 2)
-                {
-                    return;
-                }
-
-                //Edit ability option
-                if (splitInput[1] == "ability")
-                {
-                    EditAbility(splitInput);
-                    return;
-                }
-            }
-
-            if (splitInput[0] == "/show")
-            {
-                ShowCommand(splitInput);
-                return;
-            }
-
-            switch (input)
+            switch (splitInput[0].ToLower())
             {
                 case "/back":
                 case "/b":
-                if (parentMenu == null)
-                {
-                    throw new NullReferenceException();
-                }
-                cm.activeMenu = parentMenu;
-                return;
+                    BackCommand();
+                    return;
+
+                case "/check":
+                    CheckCommand(splitInput);
+                    return;
+
+                case "/delete":
+                    DeleteCommand();
+                    return;
+
+                case "/edit":
+                    EditCommand(splitInput);
+                    return;
 
                 case "/exit":
                 case "/e":
-                cm.Exit();
-                return;
+                    cm.Exit();
+                    return;
 
                 case "/help":
                 case "/h":
-                showHelp = true;
-                return;
+                    showHelp = true;
+                    return;
+
+                case "/show":
+                    ShowCommand(splitInput);
+                    return;
 
                 default:
-                return;
+                    WriteInvalidCommand();
+                    return;
             }
         }
 
@@ -127,30 +113,53 @@ namespace Project20.Menus
                 "   /check <ability name>\n" +
                 "   /check save <ability name>\n" + //TODO
                 "   /check <skill name>\n" + //TODO
+                "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
+                "   /edit name <name>\n" +
                 "   /edit skill <skill name> <proficiency multiplier>\n"+ //TODO
                 "'/exit' or '/e' - To exit application.\n" +
+                "'/show' - changes the main shown panel.\n" +
+                "   /show <panelType>\n" +
+                "       <panelType> = 'ability', 'skill'\n" +
                 "'/help' or '/h' - shows all commands and what they do.";
 
-        private void Check(string[] input)
+        private void BackCommand()
+        {
+            if (parentMenu == null)
+            {
+                throw new NullReferenceException();
+            }
+            cm.activeMenu = parentMenu;
+        }
+
+        private void CheckCommand(string[] input)
         {
             int abilityIndex;
 
             //Not enough arguments
             if (input.Length < 2)
             {
+                WriteInvalidCommand();
                 return;
             }
 
             //Checking if ability exist
             if (character.AbilityCheck(input[1]) != null)
             {
-                WriteOutput("Ability check: " + character.AbilityCheck(input[1]) + " | " + character.AbilityCheck(input[1]) + "\n");
+                WriteOutput("Ability check: " + character.AbilityCheck(input[1]) + " | " + character.AbilityCheck(input[1]));
                 return;
             }
 
+            WriteInvalidCommand();
             return;
+        }
+
+        private void DeleteCommand()
+        {
+            cm.DeleteCharacter(character);
+            character = null;
+            BackCommand();
         }
 
         private void EditAbility(string[] input)
@@ -161,20 +170,68 @@ namespace Project20.Menus
             //Not enough arguments
             if (input.Length < 4)
             {
+                WriteInvalidCommand();
                 return;
             }
 
             //Checking if input the fourth argument is number + converting the argument to number
             if (!int.TryParse(input[3], out value))
             {
+                WriteInvalidCommand();
                 return;
             }
 
             if (character.EditBaseAbilityScore(input[2], value))
             {
-                cm.SaveCharacter(character);
+                return;
             }
+
+            WriteInvalidCommand();
             return;
+        }
+
+        private void EditName(string[] input)
+        {
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            character.EditName(input[2]);
+            return;
+        }
+
+        private void EditCommand(string[] input)
+        {
+            //Not enough arguments
+            if (input.Length < 2)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            switch (input[1].ToLower())
+            {
+                case "ability":
+                EditAbility(input);
+                break;
+
+                case "name":
+                EditName(input);
+                break;
+
+                default:
+                WriteInvalidCommand();
+                return;
+            }
+            cm.SaveCharacter(character);
+        }
+
+        internal override string GetName()
+        {
+            return $"{name}: {character.name}";
         }
 
         private void PanelDraw()
@@ -217,10 +274,11 @@ namespace Project20.Menus
             //Not enough arguments
             if (input.Length < 2)
             {
+                WriteInvalidCommand();
                 return;
             }
 
-            switch (input[1])
+            switch (input[1].ToLower())
             {
                 case "ability":
                 case "abilities":
@@ -233,8 +291,14 @@ namespace Project20.Menus
                 return;
 
                 default:
+                WriteInvalidCommand();
                 return;
             }
+        }
+
+        private void WriteInvalidCommand()
+        {
+            WriteOutput("Invalid command.");
         }
 
         private void WriteOutput(string output)
