@@ -110,12 +110,12 @@ namespace Project20
             return Die.Roll("1d20") + GetAbilityModifier(index);
         }
 
-        public int AbilityCheck(string abilityName)
+        public int? AbilityCheck(string abilityName)
         {
             int index = GetAbilityIndex(abilityName);
             if (index < 0)
             {
-                return 0;
+                return null;
             }
             return AbilityCheck(index);
         }

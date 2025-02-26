@@ -55,37 +55,47 @@ namespace Project20
                 );
         }
 
-        internal override bool React(string input)
+        internal override void React(string input)
         {
             int index;
 
+            //Checking if input is number + converting input to number
             if (int.TryParse(input, out index) == false)
             {
-                return false;
+                return;
             }
 
+            //Checking if given index is one of menu options
             if (index < 0 || index >= optionsLength)
             {
-                return false;
+                return;
             }
 
+            //Last option - Exit app
             if (index == optionsLength - 1)
             {
                 cm.Exit();
             }
+            //Pre-last option - Go back
             else if (index == optionsLength - 2)
             {
+                if (parentMenu == null)
+                {
+                    throw new NullReferenceException();
+                }
                 cm.activeMenu = parentMenu;
             }
+            //Pre-pre-last option - Create new character
             else if (index == optionsLength - 3)
             {
                 cm.activeMenu = new CharacterCreationMenu(cm, this);
             }
+            //Choose character option
             else
             {
                 cm.activeMenu = new CharacterMenu(cm, this, cm.characters[index]);
             }
-            return true;
+            return;
 
         }
     }

@@ -45,63 +45,68 @@ namespace Project20.Menus
             }
         }
 
-        internal override bool React(string input)
+        internal override void React(string input)
         {
             input = input.Trim().ToLower();
 
             if (input.Length >= 1 && input[0] == '/')
             {
-                return ReactToCommand(input);
+                ReactToCommand(input);
+                return;
             }
 
-            return true;
+            return;
         }
 
-        bool ReactToCommand(string input)
+        void ReactToCommand(string input)
         {
             string[] splitInput = input.Split();
 
-            if (splitInput[0] == "/edit")
-            {
-                if (splitInput.Length < 2)
-                {
-                    return true;
-                }
-
-                if (splitInput[1] == "ability")
-                {
-                    return EditAbility(splitInput);
-                }
-            }
-
             if (splitInput[0] == "/check")
             {
-                return Check(splitInput);
+                Check(splitInput);
+                return;
+            }
+
+            if (splitInput[0] == "/edit")
+            {
+                //Not enough arguments
+                if (splitInput.Length < 2)
+                {
+                    return;
+                }
+
+                //Edit ability option
+                if (splitInput[1] == "ability")
+                {
+                    EditAbility(splitInput);
+                    return;
+                }
             }
 
             switch (input)
             {
-                case "/exit":
-                case "/e":
-                cm.Exit();
-                return true;
-
-                case "/help":
-                case "/h":
-                showHelp = true;
-                return true;
-
                 case "/back":
                 case "/b":
                 if (parentMenu == null)
                 {
-                    return false;
+                    throw new NullReferenceException();
                 }
                 cm.activeMenu = parentMenu;
-                return true;
+                return;
+
+                case "/exit":
+                case "/e":
+                cm.Exit();
+                return;
+
+                case "/help":
+                case "/h":
+                showHelp = true;
+                return;
 
                 default:
-                return true;
+                return;
             }
         }
 
@@ -117,41 +122,45 @@ namespace Project20.Menus
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/help' or '/h' - shows all commands and what they do.\n";
 
-        private bool Check(string[] input)
+        private void Check(string[] input)
         {
             int abilityIndex;
 
+            //Not enough arguments
             if (input.Length < 2)
             {
-                return true;
+                return;
             }
 
-            if (character.AbilityCheck(input[1]) != 0)
+            //Checking if ability exist
+            if (character.AbilityCheck(input[1]) != null)
             {
                 WriteOutput("Ability check: " + character.AbilityCheck(input[1]) + " | " + character.AbilityCheck(input[1]) + "\n");
-                return true;
+                return;
             }
 
-            return true;
+            return;
         }
 
-        private bool EditAbility(string[] input)
+        private void EditAbility(string[] input)
         {
             int index;
             int value;
 
+            //Not enough arguments
             if (input.Length < 4)
             {
-                return true;
+                return;
             }
 
+            //Checking if input the fourth argument is number + converting the argument to number
             if (!int.TryParse(input[3], out value))
             {
-                return true;
+                return;
             }
 
             character.EditBaseAbilityScore(input[2], value);
-            return true;
+            return;
         }
 
         private void ShowAbilities(string[] input)

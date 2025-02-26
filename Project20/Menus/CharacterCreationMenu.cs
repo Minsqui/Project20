@@ -63,7 +63,7 @@ namespace Project20.Menus
             }
         }
 
-        internal override bool React(string input)
+        internal override void React(string input)
         {
             input = input.Trim();
 
@@ -74,7 +74,7 @@ namespace Project20.Menus
                 case "/exit":
                 case "/e":
                     cm.Exit();
-                    return true;
+                    return;
 
                 case "/back":
                 case "/b":
@@ -82,14 +82,15 @@ namespace Project20.Menus
                     {
                         --phase;
                     }   
-                    return true;
+                    return;
 
                 case "/done":
                 case "/d":
-                    return End();
+                    End();
+                    return;
 
                 default:
-                    return true;
+                    return;
             }
 
             switch (phase)
@@ -97,7 +98,7 @@ namespace Project20.Menus
                 case 0:
                     newCharacter.name = input;
                     ++phase;
-                    return true;
+                    return;
 
                 case 1:
                 case 2:
@@ -106,26 +107,27 @@ namespace Project20.Menus
                 case 5:
                 case 6:
                 EditBaseAbilityScore(phase - 1, input);
-                    return true;
+                    return;
 
                 default:
-                    return End();
+                    End();
+                    return;
             }
         }
 
-        private bool End()
+        private void End()
         {
             cm.AddCharacter(newCharacter);
 
             if (parentMenu == null)
             {
-                return false;
+                throw new NullReferenceException();
             }
             cm.activeMenu = parentMenu;
 
             //TODO - clear memory
 
-            return true;
+            return;
         }
 
         private bool EditBaseAbilityScore(int index, string input)

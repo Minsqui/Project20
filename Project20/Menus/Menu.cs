@@ -61,38 +61,43 @@ namespace Project20
             Console.WriteLine(i + ": Exit");           
         }
 
-        internal virtual bool React(string input)
+        internal virtual void React(string input)
         {
             int index;
 
+            //Checking if input is number + converting input to number
             if (int.TryParse(input, out index) == false)
             {
-                return false;
+                return;
             }
 
+            //Checking if given index is one of menu options
             if (index < 0 || index >= optionsLength)
             {
-                return false;
+                return;
             }
 
+            //Last option - Exit app
             if (index == optionsLength - 1)
             {
                 cm.Exit();
             }
+            //Pre-last option - Go back
             else if (index == optionsLength - 2 && parentMenu != null)
             {
                 cm.activeMenu = parentMenu;
             }
+            //Go to sub menu option
             else
             {
                 if (childMenus == null)
                 {
-                    return false;
+                    throw new NullReferenceException();
                 }
 
                 cm.activeMenu = childMenus[index];
             }                    
-            return true;
+            return;
         }
     }
 }
