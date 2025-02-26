@@ -13,7 +13,9 @@ namespace Project20.Menus
         bool showHelp = false;
         bool showMessage = false;
         string message;
-        string panelText;
+        panelTextOptions panelText = panelTextOptions.abilityPanel;
+
+        private enum panelTextOptions { abilityPanel, skillPanel };
 
         internal CharacterMenu(ConsoleManager cm, Menu? parent, Character character) : base(cm, parent)
         {
@@ -21,22 +23,25 @@ namespace Project20.Menus
             this.name = "Character: " + character.GetName();
             this.cm = cm;
             this.parentMenu = parent;
-            ShowSkills([]);
         }
 
         internal override void Show()
         {
-            Console.WriteLine(panelText);
+            PanelDraw();
+
+            Console.WriteLine();
 
             if (showHelp)
             {
-                Console.Write(help);
+                Console.WriteLine(help);
                 showHelp = false;
             }
             else
             {
-                Console.WriteLine("\nFor help write '/help' or '/h'.\n");
+                Console.WriteLine("For help write '/help' or '/h'.");
             }
+
+            Console.WriteLine();
             
             if(showMessage)
             {
@@ -84,6 +89,12 @@ namespace Project20.Menus
                 }
             }
 
+            if (splitInput[0] == "/show")
+            {
+                ShowCommand(splitInput);
+                return;
+            }
+
             switch (input)
             {
                 case "/back":
@@ -110,7 +121,7 @@ namespace Project20.Menus
             }
         }
 
-        string help = "\n" +
+        string help =
                 "'/back' or '/b' - Go back to Choose character menu.\n" +
                 "'/check' - Makes a roll and adds modifiers.\n" +
                 "   /check <ability name>\n" +
@@ -120,7 +131,7 @@ namespace Project20.Menus
                 "   /edit ability <ability name> <value>\n" +
                 "   /edit skill <skill name> <proficiency multiplier>\n"+ //TODO
                 "'/exit' or '/e' - To exit application.\n" +
-                "'/help' or '/h' - shows all commands and what they do.\n";
+                "'/help' or '/h' - shows all commands and what they do.";
 
         private void Check(string[] input)
         {
@@ -159,27 +170,70 @@ namespace Project20.Menus
                 return;
             }
 
-            character.EditBaseAbilityScore(input[2], value);
+            if (character.EditBaseAbilityScore(input[2], value))
+            {
+                cm.SaveCharacter(character);
+            }
             return;
         }
 
-        private void ShowAbilities(string[] input)
+        private void PanelDraw()
         {
-            panelText = "";
-
-            for (int i = 0; i < 6; ++i)
+            switch (panelText)
             {
-                panelText += $"{Character.abilityNames[i]}: {character.baseAbiltyScore[i]} ({character.GetAbilityModifier(i)})";
+                case panelTextOptions.abilityPanel:
+                    DrawAbilities();
+                    return;
+
+                case panelTextOptions.skillPanel:
+                    DrawSkills();
+                    return;
+
+                default:
+                    Console.WriteLine("No panel was selected");
+                    return;
             }
         }
 
-        private void ShowSkills(string[] input)
+        private void DrawAbilities()
         {
-            panelText = "";
+            for (int i = 0; i < 6; ++i)
+            {
+                Console.WriteLine($"{Character.abilityNames[i]}: {character.baseAbiltyScore[i]} ({character.GetAbilityModifier(i)})");
+            }
+        }
 
+        private void DrawSkills()
+        {
             for(int i = 0; i < Character.skillNames.Length; ++i)
             {
-                panelText += $"{Character.skillNames[i]}: {character.GetSkillModifier(i)}\n";
+                Console.WriteLine($"{Character.skillNames[i]}: {character.GetSkillModifier(i)}");
+            }
+            return;
+        }
+
+        private void ShowCommand(string[] input)
+        {
+            //Not enough arguments
+            if (input.Length < 2)
+            {
+                return;
+            }
+
+            switch (input[1])
+            {
+                case "ability":
+                case "abilities":
+                panelText = panelTextOptions.abilityPanel;
+                return;
+
+                case "skill":
+                case "skills":
+                panelText = panelTextOptions.skillPanel;
+                return;
+
+                default:
+                return;
             }
         }
 
