@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Class with function of a die.
+    /// </summary>
     internal class Die
     {
         /// <summary>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Class that represents race from DnD 5e 2014 ruleset.
+    /// </summary>
     public class GameRace
     {
         public record Trait(string name, string description);

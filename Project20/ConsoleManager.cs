@@ -101,9 +101,9 @@ namespace Project20
         }
 
         /// <summary>
-        /// Adds a character to ConsoleManager database, also saves it as JSON.
+        /// Adds given character to ConsoleManager database, also saves it as JSON.
         /// </summary>
-        /// <param name="character">Character that is added to ConsoleManager database.</param>
+        /// <param name="character">Character that is to be added to the ConsoleManager database.</param>
         internal void AddCharacter(Character character)
         {
             characters.Add(character);
@@ -111,6 +111,10 @@ namespace Project20
             SaveCharacter(character);
         }
 
+        /// <summary>
+        /// Removes given character from cm database and also deletes it's JSON.
+        /// </summary>
+        /// <param name="character">Character that is to be removed.</param>
         internal void DeleteCharacter(Character character)
         {
             characters.Remove(character);

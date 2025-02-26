@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Class that represents character from DnD 5e 2014 ruleset. 
+    /// </summary>
     public class Character
     {
         internal string filename;
@@ -45,6 +48,10 @@ namespace Project20
             1,4,3,0,5,3,4,5,3,4,3,4,5,5,3,1,1,4
             ];
 
+        /// <summary>
+        /// Method that returns character's name.
+        /// </summary>
+        /// <returns>Character's name.</returns>
         public string GetName()
         {
             if (name == null || name.Trim().Length == 0)
@@ -54,18 +61,30 @@ namespace Project20
             return name;
         }
 
-        internal bool EditBaseAbilityScore(int index, int value)
+        /// <summary>
+        /// Method that edits base ability score.
+        /// </summary>
+        /// <param name="index">Index of edited ability.</param>
+        /// <param name="score">New score of the ability.</param>
+        /// <returns>If the ability edit was successful.</returns>
+        internal bool EditBaseAbilityScore(int index, int score)
         {
-            if (value < 0)
+            if (score < 0)
             {
                 return false;
             }
 
-            baseAbiltyScore[index] = value;
+            baseAbiltyScore[index] = score;
             return true;
         }
 
-        internal bool EditBaseAbilityScore(string abilityName, int value)
+        /// <summary>
+        /// Method that edits base ability score.
+        /// </summary>
+        /// <param name="abilityName">Name of the edited ability.</param>
+        /// <param name="score">New score of the ability.</param>
+        /// <returns>If the ability edit was successful.</returns>
+        internal bool EditBaseAbilityScore(string abilityName, int score)
         {
             int index = GetAbilityIndex(abilityName);
             if (index < 0)
@@ -73,14 +92,23 @@ namespace Project20
                 return false;
             }
 
-            return EditBaseAbilityScore(index, value);
+            return EditBaseAbilityScore(index, score);
         }
 
+        /// <summary>
+        /// Edits name.
+        /// </summary>
+        /// <param name="newName"></param>
         internal void EditName(string newName)
         {
             name = newName.Trim();
         }
 
+        /// <summary>
+        /// Method that returns character's given ability modifier.
+        /// </summary>
+        /// <param name="index">Index od the ability.</param>
+        /// <returns>Given ability modifier.</returns>
         public int GetAbilityModifier(int index)
         {
             int value = baseAbiltyScore[index];
@@ -91,11 +119,21 @@ namespace Project20
             return CountModifier(value);
         }
 
+        /// <summary>
+        /// Method that returns character's given skill modifier.
+        /// </summary>
+        /// <param name="index">Index od the skill.</param>
+        /// <returns>Given skill modifier.</returns>
         public int GetSkillModifier(int index)
         {
             return GetAbilityModifier(skillAbility[index]) + GetProficiency() * proficiencies[index];
         }
 
+        /// <summary>
+        /// Method that returns character's given skill modifier.
+        /// </summary>
+        /// <param name="skillName">Name of the skill.</param>
+        /// <returns>Given skill modifier.</returns>
         public int GetSkillModifier(string skillName)
         {
             int index = GetSkillIndex(skillName);
@@ -106,16 +144,30 @@ namespace Project20
             return GetSkillModifier(GetSkillIndex(skillName));
         }
 
+        /// <summary>
+        /// Method that calculates proficiency bonus from character's level.
+        /// </summary>
+        /// <returns>Proficiency bonus of the character.</returns>
         public int GetProficiency()
         {
             return (int)(Math.Ceiling((Convert.ToSingle(level)) / 4)) + 1;
         }
 
+        /// <summary>
+        /// Makes an ability check, rolls 1d20 and adds modifier.
+        /// </summary>
+        /// <param name="index">Index of the ability.</param>
+        /// <returns>Value of the check.</returns>
         public int AbilityCheck(int index)
         {
             return Die.Roll("1d20") + GetAbilityModifier(index);
         }
 
+        /// <summary>
+        /// Makes an ability check, rolls 1d20 and adds modifier.
+        /// </summary>
+        /// <param name="abilityName">Name of the ability.</param>
+        /// <returns>Value of the check. Null if given ability name does not exist.</returns>
         public int? AbilityCheck(string abilityName)
         {
             int index = GetAbilityIndex(abilityName);
@@ -126,16 +178,31 @@ namespace Project20
             return AbilityCheck(index);
         }
         
+        /// <summary>
+        /// Counts modifier from given value.
+        /// </summary>
+        /// <param name="value">Value from which the modifier is counted.</param>
+        /// <returns></returns>
         static int CountModifier(int value)
         {
             return (int)Math.Floor(((float)value - 10) / 2);
         }
 
+        /// <summary>
+        /// From given ability name returns the ability index in the ability array.
+        /// </summary>
+        /// <param name="abilityName">Name of the ability.</param>
+        /// <returns>Index in ability array. -1 if given ability name does not exist.</returns>
         public static int GetAbilityIndex(string abilityName)
         {
             return abilityNames.IndexOf(abilityName.ToUpper());
         }
 
+        /// <summary>
+        /// From given skill name returns the skill index in the skill array.
+        /// </summary>
+        /// <param name="skillName">Name of the skill.</param>
+        /// <returns>Index in skill array. -1 if given skill name does not exist.</returns>
         public static int GetSkillIndex(string skillName)
         {
             return skillNames.IndexOf(skillName.ToLower());
