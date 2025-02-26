@@ -9,6 +9,7 @@ namespace Project20.Menus
     internal class CharacterCreationMenu:Menu
     {
         int phase;
+        bool showInvalidInput;
 
         Character newCharacter;
 
@@ -19,6 +20,7 @@ namespace Project20.Menus
             this.parentMenu = parent;
             this.phase = 0;
             this.newCharacter = new Character();
+            this.showInvalidInput = false;
         }
 
         internal override void Show()
@@ -29,6 +31,12 @@ namespace Project20.Menus
                 "To return back in creation write '/back' or '/b'\n" +
                 "To save unfinished work and exit creation write '/done' or '/d'\n\n"
                 );
+
+            if (showInvalidInput)
+            {
+                Console.WriteLine("Invalid input.\n");
+                showInvalidInput = false;
+            }
 
             switch (phase)
             {
@@ -88,7 +96,8 @@ namespace Project20.Menus
             {
                 case 0:
                     newCharacter.name = input;
-                    break;
+                    ++phase;
+                    return true;
 
                 case 1:
                 case 2:
@@ -97,13 +106,11 @@ namespace Project20.Menus
                 case 5:
                 case 6:
                 EditBaseAbilityScore(phase - 1, input);
-                    break;
+                    return true;
 
                 default:
                     return End();
             }
-            ++phase;
-            return true;
         }
 
         private bool End()
@@ -127,9 +134,11 @@ namespace Project20.Menus
 
             if(!int.TryParse(input, out value))
             {
-                return false;
+                showInvalidInput = true;
+                return true;
             }
 
+            ++phase;
             return newCharacter.EditBaseAbilityScore(index, value);
         }
     }

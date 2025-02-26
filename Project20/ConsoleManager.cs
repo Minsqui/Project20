@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Class that ensures communication between user and character class/database.
+    /// </summary>
     internal class ConsoleManager
     {
         internal Menu activeMenu;
@@ -20,11 +23,17 @@ namespace Project20
             this.characters = new List<Character>();
         }
 
+        /// <summary>
+        /// Method that contains all tasks needed to be done on start of ConsoleManager.Run()
+        /// </summary>
         private void OnStart()
         {
             LoadCharacters();
         }
 
+        /// <summary>
+        /// Loads all character JSONs from charactersPath.
+        /// </summary>
         private void LoadCharacters()
         {
             string[] filePaths = Directory.GetFiles(charactersPath);
@@ -46,6 +55,10 @@ namespace Project20
             }
         }
 
+        /// <summary>
+        /// Method that runs ConsoleManager
+        /// </summary>
+        /// <exception cref="NullReferenceException"></exception>
         public void Run()
         {
             string? input;
@@ -56,7 +69,7 @@ namespace Project20
             {
                 if (activeMenu == null)
                 {
-                    throw new Exception("Active menu does not exist (activeMenu == null)");
+                    throw new NullReferenceException("Active menu does not exist (activeMenu == null)");
                 }
 
                 Console.WriteLine(activeMenu.name + "\n");
@@ -76,11 +89,18 @@ namespace Project20
             }
         }
 
+        /// <summary>
+        /// Method of exiting console.
+        /// </summary>
         internal void Exit()
         {
             Environment.Exit(0);
         }
 
+        /// <summary>
+        /// Adds a character to ConsoleManager database, also saves it as JSON.
+        /// </summary>
+        /// <param name="character">Character that is added to ConsoleManager database.</param>
         internal void AddCharacter(Character character)
         {
             characters.Add(character);
@@ -88,6 +108,11 @@ namespace Project20
             SaveCharacter(character);
         }
 
+        /// <summary>
+        /// Saves character to JSON to charactersPath
+        /// </summary>
+        /// <param name="character">Character that is to be saved.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         internal void SaveCharacter(Character character)
         {
             string fileName;

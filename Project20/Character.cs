@@ -14,6 +14,7 @@ namespace Project20
         public string name { get; set; }
         static public string nameBaseValue = "Unnamed character";
         public int[] baseAbiltyScore { get; set; } = [10, 10, 10, 10, 10, 10];
+        public int[] proficiencies { get; set; } = new int[18];
         public GameRace race { get; set; }
         public List<LevelInClass> classes { get; set; } = new List<LevelInClass>();
         public int level
@@ -32,7 +33,17 @@ namespace Project20
         public int maxHP { get; set; } = 0;
         public int currentHP { get; set; } = 0;
 
-        public static ImmutableArray<String> abilityNames { get; } = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
+        public static ImmutableArray<string> abilityNames { get; } = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
+        public static ImmutableArray<string> skillNames { get; } = [
+            "acrobatics", "animal handling", "arcana", "athletics","deception",
+            "history", "insight", "intimidation", "investigation", "medicine",
+            "nature", "perception", "preformance", "persuasion", "religion",
+            "sleight of hand", "stealth", "survival"
+            ];
+        public static ImmutableArray<int> skillAbility { get; } = [
+            1,4,3,0,5,3,4,5,3,4,3,4,5,5,3,1,1,4
+            ];
+
         public string GetName()
         {
             if (name == null || name.Trim().Length == 0)
@@ -53,14 +64,15 @@ namespace Project20
             return true;
         }
 
-        static int CountModifier(int value)
+        internal bool EditBaseAbilityScore(string abilityName, int value)
         {
-            return (int)Math.Floor(((float)value - 10) / 2);
-        }
+            int index = GetAbilityIndex(abilityName);
+            if (index < 0)
+            {
+                return false;
+            }
 
-        public static int GetAbilityIndex(string abilityName)
-        {
-            return abilityNames.IndexOf(abilityName.ToUpper());
+            return EditBaseAbilityScore(index, value);
         }
 
         public int GetAbilityModifier(int index)
@@ -73,9 +85,55 @@ namespace Project20
             return CountModifier(value);
         }
 
+        public int GetSkillModifier(int index)
+        {
+            return GetAbilityModifier(skillAbility[index]) + GetProficiency() * proficiencies[index];
+        }
+
+        public int GetSkillModifier(string skillName)
+        {
+            int index = GetSkillIndex(skillName);
+            if (index < 0)
+            {
+                return 0;
+            }
+            return GetSkillModifier(GetSkillIndex(skillName));
+        }
+
+        public int GetProficiency()
+        {
+            return (int)(Math.Ceiling((Convert.ToSingle(level)) / 4)) + 1;
+        }
+
         public int AbilityCheck(int index)
         {
             return Die.Roll("1d20") + GetAbilityModifier(index);
         }
+
+        public int AbilityCheck(string abilityName)
+        {
+            int index = GetAbilityIndex(abilityName);
+            if (index < 0)
+            {
+                return 0;
+            }
+            return AbilityCheck(index);
+        }
+        
+        static int CountModifier(int value)
+        {
+            return (int)Math.Floor(((float)value - 10) / 2);
+        }
+
+        public static int GetAbilityIndex(string abilityName)
+        {
+            return abilityNames.IndexOf(abilityName.ToUpper());
+        }
+
+        public static int GetSkillIndex(string skillName)
+        {
+            return skillNames.IndexOf(skillName.ToLower());
+        }
+
     }
 }

@@ -10,5 +10,6 @@ namespace Project20
     {
         record Feature { string text;  int level; }
 
+        Feature[] features;
     }
 }

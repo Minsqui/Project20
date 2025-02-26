@@ -10,9 +10,10 @@ namespace Project20.Menus
     internal class CharacterMenu:Menu
     {
         private Character character;
-        bool showHelp;
-        bool showOutput;
-        string output;
+        bool showHelp = false;
+        bool showMessage = false;
+        string message;
+        string panelText;
 
         internal CharacterMenu(ConsoleManager cm, Menu? parent, Character character) : base(cm, parent)
         {
@@ -20,16 +21,12 @@ namespace Project20.Menus
             this.name = "Character: " + character.GetName();
             this.cm = cm;
             this.parentMenu = parent;
-            this.showHelp = false;
-            this.showOutput = false;
+            ShowSkills([]);
         }
 
         internal override void Show()
         {
-            for (int i = 0; i < 6; ++i)
-            {
-                Console.WriteLine(Character.abilityNames[i] + ": " + character.baseAbiltyScore[i] + " (" + character.GetAbilityModifier(i) + ")");
-            }
+            Console.WriteLine(panelText);
 
             if (showHelp)
             {
@@ -41,10 +38,10 @@ namespace Project20.Menus
                 Console.WriteLine("\nFor help write '/help' or '/h'.\n");
             }
             
-            if(showOutput)
+            if(showMessage)
             {
-                Console.Write(output);
-                showOutput = false;
+                Console.Write(message);
+                showMessage = false;
             }
         }
 
@@ -112,12 +109,31 @@ namespace Project20.Menus
                 "'/back' or '/b' - Go back to Choose character menu.\n" +
                 "'/check' - Makes a roll and adds modifiers.\n" +
                 "   /check <ability name>\n" +
-                "   /check save <ability name>\n" +
-                "   /check <skill name>\n" +
+                "   /check save <ability name>\n" + //TODO
+                "   /check <skill name>\n" + //TODO
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
+                "   /edit skill <skill name> <proficiency multiplier>\n"+ //TODO
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/help' or '/h' - shows all commands and what they do.\n";
+
+        private bool Check(string[] input)
+        {
+            int abilityIndex;
+
+            if (input.Length < 2)
+            {
+                return true;
+            }
+
+            if (character.AbilityCheck(input[1]) != 0)
+            {
+                WriteOutput("Ability check: " + character.AbilityCheck(input[1]) + " | " + character.AbilityCheck(input[1]) + "\n");
+                return true;
+            }
+
+            return true;
+        }
 
         private bool EditAbility(string[] input)
         {
@@ -129,46 +145,39 @@ namespace Project20.Menus
                 return true;
             }
 
-            index = Character.GetAbilityIndex(input[2]);
-
-            if (index < 0)
-            {
-                return true;
-            }
-
             if (!int.TryParse(input[3], out value))
             {
                 return true;
             }
 
-            character.baseAbiltyScore[index] = value;
-            cm.SaveCharacter(character);
+            character.EditBaseAbilityScore(input[2], value);
             return true;
         }
 
-        private bool Check(string[] input)
+        private void ShowAbilities(string[] input)
         {
-            int abilityIndex;
+            panelText = "";
 
-            if (input.Length < 2)
+            for (int i = 0; i < 6; ++i)
             {
-                return true;
+                panelText += $"{Character.abilityNames[i]}: {character.baseAbiltyScore[i]} ({character.GetAbilityModifier(i)})";
             }
+        }
 
-            abilityIndex = Character.GetAbilityIndex(input[1]);
-            if (abilityIndex >= 0)
+        private void ShowSkills(string[] input)
+        {
+            panelText = "";
+
+            for(int i = 0; i < Character.skillNames.Length; ++i)
             {
-                WriteOutput("Ability check: " + character.AbilityCheck(abilityIndex) + " | " + character.AbilityCheck(abilityIndex) + "\n");
-                return true;
+                panelText += $"{Character.skillNames[i]}: {character.GetSkillModifier(i)}\n";
             }
-
-            return true;
         }
 
         private void WriteOutput(string output)
         {
-            this.output = output;
-            showOutput = true;
+            this.message = output;
+            showMessage = true;
         }
     }
 }
