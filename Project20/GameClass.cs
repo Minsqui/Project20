@@ -11,8 +11,13 @@ namespace Project20
     /// </summary>
     public class GameClass
     {
-        record Feature { string text;  int level; }
+        public required string id;
+        public required string name;
+
+        public int[] saveThrows = [6];
 
         Feature[] features;
+
+        record Feature { int level; string text; }
     }
 }

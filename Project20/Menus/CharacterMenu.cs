@@ -15,7 +15,7 @@ namespace Project20.Menus
         string message;
         panelTextOptions panelText = panelTextOptions.abilityPanel;
 
-        private enum panelTextOptions { abilityPanel, skillPanel };
+        private enum panelTextOptions { abilityPanel, skillPanel, basicBioPanel };
 
         internal CharacterMenu(ConsoleManager cm, Menu? parent, Character character) : base(cm, parent)
         {
@@ -116,12 +116,14 @@ namespace Project20.Menus
                 "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
+                "   /edit level <value>\n" + //TODO
                 "   /edit name <name>\n" +
-                "   /edit skill <skill name> <proficiency multiplier>\n"+ //TODO
+                "   /edit skill <skill name> <proficiency multiplier>\n" +
+                "   /edit save <ability name> <proficiency multiplier>\n" + //TODO 
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/show' - changes the main shown panel.\n" +
                 "   /show <panelType>\n" +
-                "       <panelType> = 'ability', 'skill'\n" +
+                "       <panelType> = 'ability', 'skill', 'basicbio'\n" +
                 "'/help' or '/h' - shows all commands and what they do.";
 
         private void BackCommand()
@@ -181,7 +183,7 @@ namespace Project20.Menus
                 return;
             }
 
-            if (character.EditBaseAbilityScore(input[2], value))
+            if (character.EditAbilityScore(input[2], value))
             {
                 return;
             }
@@ -203,6 +205,33 @@ namespace Project20.Menus
             return;
         }
 
+        private void EditSkill(string[] input)
+        {
+            int value;
+
+            //Not enough arguments
+            if (input.Length < 4)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if input the fourth argument is number + converting the argument to number
+            if (!int.TryParse(input[3], out value))
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            if (character.EditSkillProficiency(input[2], value))
+            {
+                return;
+            }
+
+            WriteInvalidCommand();
+            return;
+        }
+
         private void EditCommand(string[] input)
         {
             //Not enough arguments
@@ -215,16 +244,20 @@ namespace Project20.Menus
             switch (input[1].ToLower())
             {
                 case "ability":
-                EditAbility(input);
-                break;
+                    EditAbility(input);
+                    break;
 
                 case "name":
-                EditName(input);
-                break;
+                    EditName(input);
+                    break;
+
+                case "skill":
+                    EditSkill(input);
+                    break;
 
                 default:
-                WriteInvalidCommand();
-                return;
+                    WriteInvalidCommand();
+                    return;
             }
             cm.SaveCharacter(character);
         }
@@ -242,6 +275,10 @@ namespace Project20.Menus
                     DrawAbilities();
                     return;
 
+                case panelTextOptions.basicBioPanel:
+                    DrawBasicBio();
+                    return;
+
                 case panelTextOptions.skillPanel:
                     DrawSkills();
                     return;
@@ -256,8 +293,22 @@ namespace Project20.Menus
         {
             for (int i = 0; i < 6; ++i)
             {
-                Console.WriteLine($"{Character.abilityNames[i]}: {character.baseAbiltyScore[i]} ({character.GetAbilityModifier(i)})");
+                Console.WriteLine($"{Character.abilityNames[i]}: {character.abilityScore[i]} ({character.GetAbilityModifier(i)})");
             }
+        }
+
+        private void DrawBasicBio()
+        {
+            string raceName;
+            string className;
+
+
+            raceName = cm.GetGameRace(character.raceID)?.name ?? "raceNotFound";
+            className = cm.GetGameClass(character.classID)?.name ?? "classNotFound";
+
+            Console.WriteLine($"Race: {raceName}");
+            Console.WriteLine($"Class: {className}");
+            Console.WriteLine($"Level: {character.level}");
         }
 
         private void DrawSkills()
@@ -282,17 +333,21 @@ namespace Project20.Menus
             {
                 case "ability":
                 case "abilities":
-                panelText = panelTextOptions.abilityPanel;
-                return;
+                    panelText = panelTextOptions.abilityPanel;
+                    return;
 
                 case "skill":
                 case "skills":
-                panelText = panelTextOptions.skillPanel;
-                return;
+                    panelText = panelTextOptions.skillPanel;
+                    return;
+
+                case "basicbio":
+                    panelText = panelTextOptions.basicBioPanel;
+                    return;
 
                 default:
-                WriteInvalidCommand();
-                return;
+                    WriteInvalidCommand();
+                    return;
             }
         }
 

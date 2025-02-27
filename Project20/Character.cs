@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Project20
 {
@@ -13,30 +16,21 @@ namespace Project20
     public class Character
     {
         internal string filename;
-        public record LevelInClass { public GameClass gameClass; public int level; }
-
         public string name { get; set; }
-        static public string nameBaseValue = "Unnamed character";
-        public int[] baseAbiltyScore { get; set; } = [10, 10, 10, 10, 10, 10];
-        public int[] proficiencies { get; set; } = new int[18];
-        public GameRace race { get; set; }
-        public List<LevelInClass> classes { get; set; } = new List<LevelInClass>();
-        public int level
-        {
-            get
-            {
-                if (classes == null)
-                {
-                    return 0;
-                }
 
-                return classes.Sum(gameClass => gameClass.level);
-            }
-        }
+        public int[] abilityScore { get; set; } = [10, 10, 10, 10, 10, 10];
+        public int[] proficiencies { get; set; } = new int[numberOfSkills];
+        public int[] saveThrows { get; set; } = new int[numberOfAbilities];
+        public string raceID { get; set; }
+        public string classID { get; set; }
+        public int level { get; set; } = 1;
 
         public int maxHP { get; set; } = 0;
         public int currentHP { get; set; } = 0;
 
+        static public string nameBaseValue = "Unnamed character";
+        private static int numberOfAbilities = 6;
+        private static int numberOfSkills = 18;
         public static ImmutableArray<string> abilityNames { get; } = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
         public static ImmutableArray<string> skillNames { get; } = [
             "acrobatics", "animal handling", "arcana", "athletics","deception",
@@ -47,6 +41,30 @@ namespace Project20
         public static ImmutableArray<int> skillAbility { get; } = [
             1,4,3,0,5,3,4,5,3,4,3,4,5,5,3,1,1,4
             ];
+
+        public Character()
+        {
+            filename = GetFilename();
+            name = string.Empty;
+        }
+
+        public string GetFilename()
+        {
+            string fileName;
+
+            //Checking if character has name
+            if (GetName() == Character.nameBaseValue)
+            {
+                //Generating file name
+                fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
+            }
+            else
+            {
+                fileName = GetName();
+            }
+
+            return fileName + ".json";
+        }
 
         /// <summary>
         /// Method that returns character's name.
@@ -62,37 +80,48 @@ namespace Project20
         }
 
         /// <summary>
-        /// Method that edits base ability score.
+        /// Adds given bonuses to ability score.
+        /// </summary>
+        /// <param name="abilityBonus">Array with bonuses to ability</param>
+        internal void AddAbilityScore(int[] abilityBonus)
+        {
+            if (abilityBonus == null || abilityBonus.Length != numberOfAbilities) return;
+
+            for (int i = 0; i < numberOfAbilities; ++i)
+            {
+                abilityScore[i] += abilityBonus[i];
+            }
+        }
+
+        /// <summary>
+        /// Method that edits ability score.
         /// </summary>
         /// <param name="index">Index of edited ability.</param>
         /// <param name="score">New score of the ability.</param>
         /// <returns>If the ability edit was successful.</returns>
-        internal bool EditBaseAbilityScore(int index, int score)
+        internal bool EditAbilityScore(int index, int score)
         {
-            if (score < 0)
-            {
-                return false;
-            }
+            if (index < 0 || index >= numberOfAbilities)
 
-            baseAbiltyScore[index] = score;
+            if (score < 0) return false;
+
+            abilityScore[index] = score;
             return true;
         }
 
         /// <summary>
-        /// Method that edits base ability score.
+        /// Method that edits ability score.
         /// </summary>
         /// <param name="abilityName">Name of the edited ability.</param>
         /// <param name="score">New score of the ability.</param>
         /// <returns>If the ability edit was successful.</returns>
-        internal bool EditBaseAbilityScore(string abilityName, int score)
+        internal bool EditAbilityScore(string abilityName, int score)
         {
             int index = GetAbilityIndex(abilityName);
-            if (index < 0)
-            {
-                return false;
-            }
 
-            return EditBaseAbilityScore(index, score);
+            if (index < 0) return false;
+
+            return EditAbilityScore(index, score);
         }
 
         /// <summary>
@@ -105,18 +134,56 @@ namespace Project20
         }
 
         /// <summary>
+        /// Changes saveThrows proficiencies array to given array
+        /// </summary>
+        /// <param name="saveThrows">New saveThrow proficiencies array</param>
+        internal void EditSaveThrow(int[] saveThrows)
+        {
+            if (saveThrows == null || saveThrows.Length != numberOfAbilities) return;
+
+            this.saveThrows = saveThrows;
+        }
+
+
+        /// <summary>
+        /// Method that edits skill score.
+        /// </summary>
+        /// <param name="index">Index of edited skill.</param>
+        /// <param name="score">New score of the skill.</param>
+        /// <returns>If the skill edit was successful.</returns>
+        internal bool EditSkillProficiency(int index, int score)
+        {
+            if (index < 0 || index >= numberOfSkills) return false;
+
+            if (score < 0) return false;
+
+            proficiencies[index] = score;
+            return true;
+        }
+
+        /// <summary>
+        /// Method that edits skill score.
+        /// </summary>
+        /// <param name="skillName">Name of the edited skill.</param>
+        /// <param name="score">New score of the skill.</param>
+        /// <returns>If the skill edit was successful.</returns>
+        internal bool EditSkillProficiency(string skillName, int score)
+        {
+            int index = GetSkillIndex(skillName);
+
+            if (index < 0) return false;
+
+            return EditSkillProficiency(index, score);
+        }
+
+        /// <summary>
         /// Method that returns character's given ability modifier.
         /// </summary>
         /// <param name="index">Index od the ability.</param>
         /// <returns>Given ability modifier.</returns>
         public int GetAbilityModifier(int index)
         {
-            int value = baseAbiltyScore[index];
-            if (race != null && race.abilityScore != null)
-            {
-                value += race.abilityScore[index];
-            }
-            return CountModifier(value);
+            return CountModifier(abilityScore[index]);
         }
 
         /// <summary>

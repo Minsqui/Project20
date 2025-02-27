@@ -11,12 +11,14 @@ namespace Project20
     /// </summary>
     public class GameRace
     {
-        public record Trait(string name, string description);
+        public required string id { get; init; }
+        public required string name { get; init; }
 
-        public int[] abilityScore { get; set; }
-        public int speed { get; set; }
-        public GameRace[] subraces { get; set; }
-        public Trait[] traits { get; set; }
+        public int[] abilityScore { get; init; }
+        public int speed { get; init; }
+        public Trait[] traits { get; init; }
+
+        public record Trait(string name, string description);
     }
 
     

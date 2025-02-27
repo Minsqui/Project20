@@ -55,6 +55,14 @@ namespace Project20.Menus
                     Console.WriteLine("Write character's " + Character.abilityNames[phase - 1]);
                     return;
 
+                case 7:
+                    ShowRaces();
+                    return;
+
+                case 8:
+                    ShowClasses();
+                    return;
+
                 //End case
                 default:
                     Console.WriteLine("Character creation is finished!");
@@ -106,7 +114,15 @@ namespace Project20.Menus
                 case 4:
                 case 5:
                 case 6:
-                EditBaseAbilityScore(phase - 1, input);
+                    EditBaseAbilityScore(phase - 1, input);
+                    return;
+
+                case 7:
+                    ChooseRace(input);
+                    return;
+
+                case 8:
+                    ChooseClass(input);
                     return;
 
                 default:
@@ -125,8 +141,6 @@ namespace Project20.Menus
             }
             cm.activeMenu = parentMenu;
 
-            //TODO - clear memory
-
             return;
         }
 
@@ -141,7 +155,97 @@ namespace Project20.Menus
             }
 
             ++phase;
-            return newCharacter.EditBaseAbilityScore(index, value);
+            return newCharacter.EditAbilityScore(index, value);
+        }
+
+        private void ChooseRace(string input)
+        {
+            GameRace? chosenRace;
+
+            if (cm.races.Count <= 0)
+            {
+                ++phase;
+                return;
+            }
+
+            chosenRace = cm.GetGameRace(input);
+            if (chosenRace == null)
+            {
+                showInvalidInput = true;
+                return;
+            }
+
+            newCharacter.raceID = chosenRace.id;
+            newCharacter.AddAbilityScore(chosenRace.abilityScore);
+            return;
+        }
+
+        private void ChooseClass(string input)
+        {
+            GameClass? chosenClass;
+
+            if (cm.classes.Count <= 0)
+            {
+                ++phase;
+                return;
+            }
+
+            chosenClass = cm.GetGameClass(input);
+            if (chosenClass == null)
+            {
+                showInvalidInput = true;
+                return;
+            }
+
+            newCharacter.classID = chosenClass.id;
+            newCharacter.EditSaveThrow(chosenClass.saveThrows);
+            return;
+        }
+
+        private void ShowRaces()
+        {
+            if (cm.races.Count <= 0)
+            {
+                Console.WriteLine(
+                    "No race found in database.\n" +
+                    "Give any input to continue."
+                    );
+                return;
+            }
+
+            Console.WriteLine(
+                "Choose character's race.\n" +
+                "To choose write race's id.\n" +
+                "Race name (race id)"
+                );
+
+            foreach (var gameRace in cm.races)
+            {
+                Console.WriteLine($"{gameRace.Value.name} ({gameRace.Key})");
+            }
+        }
+
+        private void ShowClasses()
+        {
+            if (cm.classes.Count <= 0)
+            {
+                Console.WriteLine(
+                    "No class found in database.\n" +
+                    "Give any input to continue."
+                    );
+                return;
+            }
+
+            Console.WriteLine(
+                "Choose character's class.\n" +
+                "To choose write class's id.\n" +
+                "Class name (class id)"
+                );
+
+            foreach (var gameClass in cm.classes)
+            {
+                Console.WriteLine($"{gameClass.Value.name} ({gameClass.Key})");
+            }
         }
     }
 }

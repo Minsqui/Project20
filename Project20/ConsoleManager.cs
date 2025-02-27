@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,11 @@ namespace Project20
     {
         internal Menu activeMenu;
         internal List<Character> characters;
+        internal Dictionary<string, GameClass> classes { get; } = new Dictionary<string, GameClass>();
+        internal Dictionary<string, GameRace> races { get; } = new Dictionary<string, GameRace>();
         private string charactersPath = ".\\data\\characters";
+        private string classesPath = ".\\data\\classes";
+        private string racesPath = ".\\data\\races";
 
         public ConsoleManager()
         {
@@ -30,6 +35,7 @@ namespace Project20
         private void OnStart()
         {
             LoadCharacters();
+            LoadClasses();
         }
 
         /// <summary>
@@ -62,6 +68,41 @@ namespace Project20
                 }
             }
         }
+
+        /// <summary>
+        /// Loads all classes JSONs from classesPath.
+        /// </summary>
+        private void LoadClasses()
+        {
+            if (!Directory.Exists(classesPath))
+            {
+                Directory.CreateDirectory(classesPath);
+            }
+
+            string[] filePaths = Directory.GetFiles(classesPath);
+
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string json = r.ReadToEnd();
+
+                        GameClass? newClass = JsonSerializer.Deserialize<GameClass>(json);
+
+                        if (newClass == null) return;
+
+                        classes.Add(newClass.id, newClass);
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Method that runs ConsoleManager
@@ -167,6 +208,40 @@ namespace Project20
             character.filename = fileName+".json";
             string filePath = Path.Combine(charactersPath, character.filename);
             File.WriteAllText(filePath, jsonString);
+        }
+
+        /// <summary>
+        /// Returns GameClass with corresponding given id.
+        /// </summary>
+        /// <param name="classID">ID of the class.</param>
+        /// <returns>GameClass with corresponding id, null if GameClass does not exist.</returns>
+        public GameClass? GetGameClass(string classID)
+        {
+            if (classID == null) return null;
+
+            if (!classes.TryGetValue(classID, out var chosenClass))
+            {
+                return null;
+            }
+
+            return chosenClass;
+        }
+
+        /// <summary>
+        /// Returns GameRace with corresponding given id.
+        /// </summary>
+        /// <param name="raceID">ID of the race.</param>
+        /// <returns>GameRace with corresponding id, null if GameRace does not exist.</returns>
+        public GameRace? GetGameRace(string raceID)
+        {
+            if (raceID == null) return null;
+
+            if (!races.TryGetValue(raceID, out var chosenRace))
+            {
+                return null;
+            }
+
+            return chosenRace;
         }
     }
 }
