@@ -37,6 +37,11 @@ namespace Project20
         /// </summary>
         private void LoadCharacters()
         {
+            if (!Directory.Exists(charactersPath))
+            {
+                Directory.CreateDirectory(charactersPath);
+            }
+
             string[] filePaths = Directory.GetFiles(charactersPath);
             
             foreach (var filePath in filePaths)

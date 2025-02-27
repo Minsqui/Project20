@@ -9,7 +9,7 @@ namespace Project20
     /// <summary>
     /// Class with function of a die.
     /// </summary>
-    internal class Die
+    internal static class Die
     {
         /// <summary>
         /// Converts a die shorthand to actual dice throw, and returns the throw value.
