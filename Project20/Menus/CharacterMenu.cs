@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -116,10 +117,10 @@ namespace Project20.Menus
                 "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
-                "   /edit level <value>\n" + //TODO
+                "   /edit level <value>\n" +
                 "   /edit name <name>\n" +
                 "   /edit skill <skill name> <proficiency multiplier>\n" +
-                "   /edit save <ability name> <proficiency multiplier>\n" + //TODO 
+                "   /edit save <ability name> <proficiency multiplier>\n" +
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/show' - changes the main shown panel.\n" +
                 "   /show <panelType>\n" +
@@ -217,6 +218,34 @@ namespace Project20.Menus
             return;
         }
 
+        private void EditLevel(string[] input)
+        {
+            int levelNumber;
+
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if input the fourth argument is number + converting the argument to number
+            if (!int.TryParse(input[2], out levelNumber))
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if level is in bound of rules
+            if (character.EditLevel(levelNumber))
+            {
+                return;
+            }
+
+            WriteInvalidCommand();
+            return;
+        }
+
         private void EditName(string[] input)
         {
             //Not enough arguments
@@ -227,6 +256,33 @@ namespace Project20.Menus
             }
 
             character.EditName(input[2]);
+            return;
+        }
+
+        private void EditSaveThrow(string[] input)
+        {
+            int value;
+
+            //Not enough arguments
+            if (input.Length < 4)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if input the fourth argument is number + converting the argument to number
+            if (!int.TryParse(input[3], out value))
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            if (character.EditSaveThrow(input[2], value))
+            {
+                return;
+            }
+
+            WriteInvalidCommand();
             return;
         }
 
@@ -272,8 +328,16 @@ namespace Project20.Menus
                     EditAbility(input);
                     break;
 
+                case "level":
+                    EditLevel(input);
+                    break;
+
                 case "name":
                     EditName(input);
+                    break;
+
+                case "save":
+                    EditSaveThrow(input);
                     break;
 
                 case "skill":
@@ -316,9 +380,15 @@ namespace Project20.Menus
 
         private void DrawAbilities()
         {
+            Console.WriteLine("Ability name (modifier) (save modifier)");
             for (int i = 0; i < 6; ++i)
             {
-                Console.WriteLine($"{Character.abilityNames[i]}: {character.abilityScore[i]} ({character.GetAbilityModifier(i)})");
+                Console.WriteLine(
+                    $"{Character.abilityNames[i]}:" +
+                    $" {character.abilityScore[i]} " +
+                    $"({character.GetAbilityModifier(i)}) " +
+                    $"({character.GetSaveModifier(i)})"
+                    );
             }
         }
 

@@ -143,12 +143,56 @@ namespace Project20
         }
 
         /// <summary>
+        /// Edits level
+        /// </summary>
+        /// <param name="newLevel">New level value, must be between 1 and 20</param>
+        /// <returns>Returns false if newLevel not in rule bounds.</returns>
+        internal bool EditLevel(int newLevel)
+        {
+            if (newLevel > 20 || newLevel < 1) return false;
+
+            level = newLevel;
+            return true;
+        }
+
+        /// <summary>
         /// Edits name.
         /// </summary>
         /// <param name="newName"></param>
         internal void EditName(string newName)
         {
             name = newName.Trim();
+        }
+
+        /// <summary>
+        /// Changes saveThrows proficiency multiplier of given ability to given multiplier.
+        /// </summary>
+        /// <param name="index">Index of the ability.</param>
+        /// <param name="multiplier">New multiplier of save throw proficiency.</param>
+        /// <returns>If the save throw edit was successful.</returns>
+        internal bool EditSaveThrow(int index, int multiplier)
+        {
+            if (index < 0 || index >= numberOfAbilities) return false;
+
+            if (multiplier < 0) return false;
+
+            this.saveThrows[index] = multiplier;
+            return true;
+        }
+
+        /// <summary>
+        /// Changes saveThrows proficiency multiplier of given ability to given multiplier.
+        /// </summary>
+        /// <param name="abilityName">Name of the ability.</param>
+        /// <param name="multiplier">New multiplier of save throw proficiency.</param>
+        /// <returns>If the save throw edit was successful.</returns>
+        internal bool EditSaveThrow(string abilityName, int multiplier)
+        {
+            int index = GetAbilityIndex(abilityName);
+
+            if (index < 0) return false;
+
+            return EditSaveThrow(index, multiplier);
         }
 
         /// <summary>
@@ -161,7 +205,6 @@ namespace Project20
 
             this.saveThrows = saveThrows;
         }
-
 
         /// <summary>
         /// Method that edits skill score.
@@ -201,7 +244,21 @@ namespace Project20
         /// <returns>Given ability modifier.</returns>
         public int GetAbilityModifier(int index)
         {
+            if (index < 0 || index >= numberOfAbilities) throw new IndexOutOfRangeException();
+
             return CountModifier(abilityScore[index]);
+        }
+
+        /// <summary>
+        /// Method that returns character's given ability save modifier.
+        /// </summary>
+        /// <param name="index">Index od the ability.</param>
+        /// <returns>Given ability modifier.</returns>
+        public int GetSaveModifier(int index)
+        {
+            if (index < 0 || index >= numberOfAbilities) throw new IndexOutOfRangeException();
+
+            return GetAbilityModifier(index) + GetProficiency() * saveThrows[index];
         }
 
         /// <summary>
@@ -211,6 +268,8 @@ namespace Project20
         /// <returns>Given skill modifier.</returns>
         public int GetSkillModifier(int index)
         {
+            if (index < 0 || index >= numberOfSkills) throw new IndexOutOfRangeException();
+
             return GetAbilityModifier(skillAbility[index]) + GetProficiency() * proficiencies[index];
         }
 

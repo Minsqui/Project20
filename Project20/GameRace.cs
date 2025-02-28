@@ -14,9 +14,9 @@ namespace Project20
         public required string id { get; init; }
         public required string name { get; init; }
 
-        public int[] abilityScore { get; init; }
+        public int[] abilityScore { get; init; } = new int[6];
         public int speed { get; init; }
-        public Trait[] traits { get; init; }
+        public Trait[] traits { get; init; } = [];
 
         public record Trait(string name, string description);
     }

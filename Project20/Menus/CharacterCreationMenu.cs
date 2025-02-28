@@ -177,6 +177,7 @@ namespace Project20.Menus
 
             newCharacter.raceID = chosenRace.id;
             newCharacter.AddAbilityScore(chosenRace.abilityScore);
+            ++phase;
             return;
         }
 
@@ -199,6 +200,7 @@ namespace Project20.Menus
 
             newCharacter.classID = chosenClass.id;
             newCharacter.EditSaveThrow(chosenClass.saveThrows);
+            ++phase;
             return;
         }
 

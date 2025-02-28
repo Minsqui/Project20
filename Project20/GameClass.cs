@@ -16,8 +16,8 @@ namespace Project20
 
         public int[] saveThrows = [6];
 
-        Feature[] features;
+        public Feature[] features = [];
 
-        record Feature { int level; string text; }
+        public record Feature(int level, string text);
     }
 }

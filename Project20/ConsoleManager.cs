@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Project20
 {
@@ -36,6 +37,7 @@ namespace Project20
         {
             LoadCharacters();
             LoadClasses();
+            LoadRaces();
         }
 
         /// <summary>
@@ -57,7 +59,11 @@ namespace Project20
                     using (StreamReader r = new StreamReader(filePath))
                     {
                         string json = r.ReadToEnd();
-                        Character newCharacter = JsonSerializer.Deserialize<Character>(json);
+
+                        Character? newCharacter = JsonSerializer.Deserialize<Character>(json);
+
+                        if (newCharacter == null) continue;
+
                         characters.Add(newCharacter);
                         newCharacter.filename = Path.GetFileName(filePath);
                     }
@@ -91,7 +97,7 @@ namespace Project20
 
                         GameClass? newClass = JsonSerializer.Deserialize<GameClass>(json);
 
-                        if (newClass == null) return;
+                        if (newClass == null) continue;
 
                         classes.Add(newClass.id, newClass);
                     }
@@ -103,6 +109,39 @@ namespace Project20
             }
         }
 
+        /// <summary>
+        /// Loads all races JSONs from racesPath.
+        /// </summary>
+        private void LoadRaces()
+        {
+            if (!Directory.Exists(racesPath))
+            {
+                Directory.CreateDirectory(racesPath);
+            }
+
+            string[] filePaths = Directory.GetFiles(racesPath);
+
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string json = r.ReadToEnd();
+
+                        GameRace? newRace = JsonSerializer.Deserialize<GameRace>(json);
+
+                        if (newRace == null) continue;
+
+                        races.Add(newRace.id, newRace);
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
 
         /// <summary>
         /// Method that runs ConsoleManager
@@ -242,6 +281,49 @@ namespace Project20
             }
 
             return chosenRace;
+        }
+
+        public static void GenerateGameRaceEmptyJSON(string path)
+        {
+            string rndName = $"{DateTime.Now.Ticks}";
+            GameRace gameRace = new GameRace() {
+                id = rndName,
+                name = rndName,
+                traits = [new GameRace.Trait("traitName", "traitDescription")]
+            };
+            
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string jsonString = JsonSerializer.Serialize(gameRace);
+
+            string filePath = Path.Combine(path, gameRace.id + ".json");
+            File.WriteAllText(filePath, jsonString);
+        }
+
+        public static void GenerateGameClassEmptyJSON(string path)
+        {
+            string rndName = $"{DateTime.Now.Ticks}";
+            GameClass gameClass = new GameClass()
+            {
+                id = rndName,
+                name = rndName,
+                features = [new GameClass.Feature(0, "featureDescription")]
+            };
+
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string jsonString = JsonSerializer.Serialize(gameClass);
+
+            string filePath = Path.Combine(path, gameClass.id + ".json");
+            File.WriteAllText(filePath, jsonString);
         }
     }
 }
