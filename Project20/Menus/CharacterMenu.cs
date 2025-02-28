@@ -111,8 +111,8 @@ namespace Project20.Menus
                 "'/back' or '/b' - Go back to Choose character menu.\n" +
                 "'/check' - Makes a roll and adds modifiers.\n" +
                 "   /check <ability name>\n" +
-                "   /check save <ability name>\n" + //TODO
-                "   /check <skill name>\n" + //TODO
+                "   /check save <ability name>\n" +
+                "   /check <skill name>\n" +
                 "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
@@ -137,8 +137,6 @@ namespace Project20.Menus
 
         private void CheckCommand(string[] input)
         {
-            int abilityIndex;
-
             //Not enough arguments
             if (input.Length < 2)
             {
@@ -146,11 +144,38 @@ namespace Project20.Menus
                 return;
             }
 
-            //Checking if ability exist
-            if (character.AbilityCheck(input[1]) != null)
+            //Ability check
+            //Checking if ability exists
+            if (character.CheckAbility(input[1]) != null)
             {
-                WriteOutput("Ability check: " + character.AbilityCheck(input[1]) + " | " + character.AbilityCheck(input[1]));
+                WriteOutput($"Ability check: {character.CheckAbility(input[1])} | {character.CheckAbility(input[1])}");
                 return;
+            }
+
+            //Skill check
+            //Checking if skill exists
+            if (character.CheckSkill(input[1]) != null)
+            {
+                WriteOutput($"Skill check: {character.CheckSkill(input[1])} | {character.CheckSkill(input[1])}");
+                return;
+            }
+
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+            
+            //Save throw check
+            if (input[1] == "save")
+            {
+                //Checking if ability exists
+                if (character.CheckSave(input[2]) != null)
+                {
+                    WriteOutput($"Save check: {character.CheckSave(input[2])} | {character.CheckSave(input[2])}");
+                    return;
+                }
             }
 
             WriteInvalidCommand();

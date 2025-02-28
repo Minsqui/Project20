@@ -18,8 +18,26 @@ namespace Project20
         internal string filename;
         public string name { get; set; }
 
+        /// <summary>
+        /// Array of base ability score.
+        /// To know index of ability, use GetAbilityIndex().  
+        /// </summary>
         public int[] abilityScore { get; set; } = [10, 10, 10, 10, 10, 10];
+
+        /// <summary>
+        /// Represents skill proficiencies.
+        /// Number in given position represents proficiency multiplier.
+        /// 0 means not profiecient, 1 means profiecient, 2 means expertise.
+        /// To know index of skill, use GetSkillIndex().  
+        /// </summary>
         public int[] proficiencies { get; set; } = new int[numberOfSkills];
+
+        /// <summary>
+        /// Represents saving throw proficiencies.
+        /// Number in given position represents proficiency multiplier.
+        /// 0 means not profiecient, 1 means profiecient, 2 means expertise.
+        /// To know index of ability, use GetAbilityIndex().  
+        /// </summary>
         public int[] saveThrows { get; set; } = new int[numberOfAbilities];
         public string raceID { get; set; }
         public string classID { get; set; }
@@ -225,8 +243,10 @@ namespace Project20
         /// </summary>
         /// <param name="index">Index of the ability.</param>
         /// <returns>Value of the check.</returns>
-        public int AbilityCheck(int index)
+        public int CheckAbility(int index)
         {
+            if (index < 0 || index >= numberOfAbilities) throw new IndexOutOfRangeException();
+
             return Die.Roll("1d20") + GetAbilityModifier(index);
         }
 
@@ -235,16 +255,58 @@ namespace Project20
         /// </summary>
         /// <param name="abilityName">Name of the ability.</param>
         /// <returns>Value of the check. Null if given ability name does not exist.</returns>
-        public int? AbilityCheck(string abilityName)
+        public int? CheckAbility(string abilityName)
         {
             int index = GetAbilityIndex(abilityName);
             if (index < 0)
             {
                 return null;
             }
-            return AbilityCheck(index);
+            return CheckAbility(index);
         }
-        
+
+        /// <summary>
+        /// Makes an save throw check, rolls 1d20 adds modifier and save throw proficiency. 
+        /// </summary>
+        /// <param name="abilityName">Name of the ability.</param>
+        /// <returns>Value of the check. Null if given ability name does not exist.</returns>
+        public int? CheckSave(string abilityName)
+        {
+            int? abilityCheck = CheckAbility(abilityName);
+
+            if (abilityCheck == null) return null;
+
+            return abilityCheck + GetProficiency() * saveThrows[GetAbilityIndex(abilityName)];
+        }
+
+        /// <summary>
+        /// Makes a skill check, rolls 1d20 and adds modifier.
+        /// </summary>
+        /// <param name="index">Index of the skill.</param>
+        /// <returns>Value of the check.</returns>
+        public int CheckSkill(int index)
+        {
+            if (index < 0 || index >= numberOfSkills) throw new IndexOutOfRangeException();
+
+            return Die.Roll("1d20") + GetSkillModifier(index);
+        }
+
+        /// <summary>
+        /// Makes a skill check, rolls 1d20 and adds modifier.
+        /// </summary>
+        /// <param name="skillName">Name of the skill.</param>
+        /// <returns>Value of the check. Null if given skill name does not exist.</returns>
+        public int? CheckSkill(string skillName)
+        {
+            int index = GetSkillIndex(skillName);
+            if (index < 0)
+            {
+                return null;
+            }
+            return CheckSkill(index);
+        }
+
+
         /// <summary>
         /// Counts modifier from given value.
         /// </summary>
