@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Project20.Menus
 {
+    /// <summary>
+    /// Menu where user creates a new character.
+    /// </summary>
     internal class CharacterCreationMenu:Menu
     {
+        /// <summary>
+        /// Phase in creation.
+        /// </summary>
         int phase;
         bool showInvalidInput;
 
@@ -23,8 +29,12 @@ namespace Project20.Menus
             this.showInvalidInput = false;
         }
 
+        /// <summary>
+        /// Draws/writes all information for user to create a character.
+        /// </summary>
         internal override void Show()
         {
+            //Basic control message
             Console.Write(
                 "All inputs starting with /, are taken as non-valid.\n" +
                 "To exit application (progress will not be saved) write '/exit' or '/e'\n" +
@@ -32,12 +42,14 @@ namespace Project20.Menus
                 "To save unfinished work and exit creation write '/done' or '/d'\n\n"
                 );
 
+            //Invalid input message
             if (showInvalidInput)
             {
                 Console.WriteLine("Invalid input.\n");
                 showInvalidInput = false;
             }
 
+            //Message based on creation phase
             switch (phase)
             {
                 //Name
@@ -55,10 +67,12 @@ namespace Project20.Menus
                     Console.WriteLine("Write character's " + Character.abilityNames[phase - 1]);
                     return;
 
+                //Choose race
                 case 7:
                     ShowRaces();
                     return;
 
+                //Choose class
                 case 8:
                     ShowClasses();
                     return;
@@ -71,6 +85,10 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Reactions to user input.
+        /// </summary>
+        /// <param name="input">Users input.</param>
         internal override void React(string input)
         {
             input = input.Trim();
@@ -101,13 +119,16 @@ namespace Project20.Menus
                     return;
             }
 
+            //Reactions based on phase
             switch (phase)
             {
+                //Choose name phase
                 case 0:
                     newCharacter.EditName(input);
                     ++phase;
                     return;
 
+                //Ability score phases
                 case 1:
                 case 2:
                 case 3:
@@ -117,20 +138,27 @@ namespace Project20.Menus
                     EditBaseAbilityScore(phase - 1, input);
                     return;
 
+                //Choose race phase
                 case 7:
                     ChooseRace(input);
                     return;
 
+                //Choose class phase
                 case 8:
                     ChooseClass(input);
                     return;
 
+                //End
                 default:
                     End();
                     return;
             }
         }
 
+        /// <summary>
+        /// Adds character to database and returns to parent menu.
+        /// </summary>
+        /// <exception cref="NullReferenceException"></exception>
         private void End()
         {
             cm.AddCharacter(newCharacter);
@@ -144,6 +172,12 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Edits abilities score, ability score phases.
+        /// </summary>
+        /// <param name="index">Index of the ability</param>
+        /// <param name="input">Users input.</param>
+        /// <returns>Returns true if the edit was successful.</returns>
         private bool EditBaseAbilityScore(int index, string input)
         {
             int value;
@@ -158,10 +192,15 @@ namespace Project20.Menus
             return newCharacter.EditAbilityScore(index, value);
         }
 
+        /// <summary>
+        /// If input is valid, sets character's race. If not, shows Invalid input message.
+        /// </summary>
+        /// <param name="input">Users input.</param>
         private void ChooseRace(string input)
         {
             GameRace? chosenRace;
 
+            //No races found in database
             if (cm.races.Count <= 0)
             {
                 ++phase;
@@ -169,6 +208,8 @@ namespace Project20.Menus
             }
 
             chosenRace = cm.GetGameRace(input);
+
+            //Checking if given input is valid.
             if (chosenRace == null)
             {
                 showInvalidInput = true;
@@ -181,10 +222,15 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// If input is valid, sets character's class. If not, shows Invalid input message.
+        /// </summary>
+        /// <param name="input">Users input.</param>
         private void ChooseClass(string input)
         {
             GameClass? chosenClass;
 
+            //No class in database
             if (cm.classes.Count <= 0)
             {
                 ++phase;
@@ -192,6 +238,8 @@ namespace Project20.Menus
             }
 
             chosenClass = cm.GetGameClass(input);
+
+            //Checking if given input is valid
             if (chosenClass == null)
             {
                 showInvalidInput = true;
@@ -204,6 +252,9 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Shows all possible races.
+        /// </summary>
         private void ShowRaces()
         {
             if (cm.races.Count <= 0)
@@ -227,6 +278,9 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Shows all possible classes.
+        /// </summary>
         private void ShowClasses()
         {
             if (cm.classes.Count <= 0)

@@ -47,7 +47,13 @@ namespace Project20
         static public string nameBaseValue = "Unnamed character";
         private static int numberOfAbilities = 6;
         private static int numberOfSkills = 18;
+        /// <summary>
+        /// Names of the abilities. Also used to get index for abilities arrays
+        /// </summary>
         public static ImmutableArray<string> abilityNames { get; } = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];
+        /// <summary>
+        /// Names of the skills. Also used to get index for skills arrays.
+        /// </summary>
         public static ImmutableArray<string> skillNames { get; } = [
             "acrobatics", "animal handling", "arcana", "athletics","deception",
             "history", "insight", "intimidation", "investigation", "medicine",
@@ -64,6 +70,11 @@ namespace Project20
             name = string.Empty;
         }
 
+        /// <summary>
+        /// Returns JSON filename for the character.
+        /// Filename bases on characters name. If character name does not have name, datetime is used instead.
+        /// </summary>
+        /// <returns>JSON filename.</returns>
         public string GetFilename()
         {
             string fileName;

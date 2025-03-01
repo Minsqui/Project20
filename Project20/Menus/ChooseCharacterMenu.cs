@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Menu where users chooses character and can choose to create new one.
+    /// </summary>
     internal class ChooseCharacterMenu:Menu
     {
         override protected int optionsLength
@@ -32,6 +35,9 @@ namespace Project20
             this.childMenus = [];
         }
 
+        /// <summary>
+        /// Show all the characters + New character, Go back and Exit options.
+        /// </summary>
         internal override void Show()
         {
             int i = 0;
@@ -55,6 +61,11 @@ namespace Project20
                 );
         }
 
+        /// <summary>
+        /// Reactions to user input.
+        /// </summary>
+        /// <param name="input">Input of the user.</param>
+        /// <exception cref="NullReferenceException"></exception>
         internal override void React(string input)
         {
             int index;

@@ -12,6 +12,7 @@ namespace Project20
 {
     /// <summary>
     /// Class that ensures communication between user and character class/database.
+    /// Works basically as finite state machine where menus are states.
     /// </summary>
     internal class ConsoleManager
     {
@@ -144,7 +145,10 @@ namespace Project20
         }
 
         /// <summary>
-        /// Method that runs ConsoleManager
+        /// Method that runs ConsoleManager.
+        /// While loop created from two stages.
+        /// Show stage is drawing all the things that menu needs to draw.
+        /// React stage is getting input from user and doing all needed tasks with it.
         /// </summary>
         /// <exception cref="NullReferenceException"></exception>
         public void Run()

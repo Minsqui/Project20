@@ -15,6 +15,9 @@ namespace Project20
         public required string name { get; init; }
         public int hitDice { get; init; }
 
+        /// <summary>
+        /// Save throw proficiencies of the class.
+        /// </summary>
         public int[] saveThrows { get; init; } = new int[6];
 
         public Feature[] features { get; init; } = [];

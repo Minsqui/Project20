@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
+    /// <summary>
+    /// Root menu. Has no parent menu.
+    /// </summary>
     internal class MainMenu : Menu
     {
         internal MainMenu(ConsoleManager cm) :base(cm)

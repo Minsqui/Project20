@@ -9,13 +9,27 @@ using System.Xml.Serialization;
 
 namespace Project20
 {
+    /// <summary>
+    /// Basic node for the ConsoleManager. Basically a state in finite state machine.
+    /// </summary>
     internal class Menu
     {
         internal string name;
+
+        /// <summary>
+        /// Menu from which this menu was created/called. Used for go back function.
+        /// </summary>
         protected Menu? parentMenu;
+
+        /// <summary>
+        /// Submenus that are shown in this menu.
+        /// </summary>
         protected Menu[]? childMenus;
         protected ConsoleManager cm;
 
+        /// <summary>
+        /// Number of options in menu.
+        /// </summary>
         protected virtual int optionsLength
         {
             get
@@ -41,6 +55,9 @@ namespace Project20
             this.cm = cm;
         }
 
+        /// <summary>
+        /// Draws/writes all the things that menu needs to show.
+        /// </summary>
         internal virtual void Show()
         {
             int i = 0;
@@ -61,6 +78,12 @@ namespace Project20
             Console.WriteLine(i + ": Exit");           
         }
 
+        /// <summary>
+        /// Menu's reactions to input.
+        /// Here choosing submenu / Go back or Exit options
+        /// </summary>
+        /// <param name="input">Input from the user.</param>
+        /// <exception cref="NullReferenceException"></exception>
         internal virtual void React(string input)
         {
             int index;
@@ -100,6 +123,10 @@ namespace Project20
             return;
         }
 
+        /// <summary>
+        /// Returns name of the menu.
+        /// </summary>
+        /// <returns>Name of the menu.</returns>
         virtual internal string GetName()
         {
             return name;

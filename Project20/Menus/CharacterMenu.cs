@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Project20.Menus
 {
+    /// <summary>
+    /// Menu where user can see all informations about the character and edit them.
+    /// </summary>
     internal class CharacterMenu:Menu
     {
         private Character character;
@@ -30,12 +33,20 @@ namespace Project20.Menus
             this.parentMenu = parent;
         }
 
+        /// <summary>
+        /// Draws/writes all information user needs.
+        /// From three parts.
+        /// 1/ Panel - stationary information, based on panelTextOptions.
+        /// 2/ Help - Help information. All help information hides after new input.
+        /// 3/ Message - information about invalid input or check results. Hides after new input.
+        /// </summary>
         internal override void Show()
         {
             PanelDraw();
 
             Console.WriteLine();
 
+            //Help
             if (showHelp)
             {
                 Console.WriteLine(help);
@@ -48,6 +59,7 @@ namespace Project20.Menus
 
             Console.WriteLine();
             
+            //Message
             if(showMessage)
             {
                 Console.WriteLine(message);
@@ -56,6 +68,10 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Menu's reactions to user's input.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         internal override void React(string input)
         {
             input = input.Trim();
@@ -69,6 +85,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Menu's reactions to command inputs.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         void ReactToCommand(string input)
         {
             string[] splitInput = input.Split();
@@ -136,6 +156,10 @@ namespace Project20.Menus
                 "           'class', 'race', 'skill', \n" +
                 "'/help' or '/h' - shows all commands and what they do.";
 
+        /// <summary>
+        /// Go back to parent menu command.
+        /// </summary>
+        /// <exception cref="NullReferenceException"></exception>
         private void BackCommand()
         {
             if (parentMenu == null)
@@ -145,6 +169,11 @@ namespace Project20.Menus
             cm.activeMenu = parentMenu;
         }
 
+        /// <summary>
+        /// All check commands.
+        /// Makes a roll and adds modifiers based on the character and type of the check.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void CheckCommand(string[] input)
         {
             //Not enough arguments
@@ -158,7 +187,7 @@ namespace Project20.Menus
             //Checking if ability exists
             if (character.CheckAbility(input[1]) != null)
             {
-                WriteOutput($"Ability check: {character.CheckAbility(input[1])} | {character.CheckAbility(input[1])}");
+                WriteMessage($"Ability check: {character.CheckAbility(input[1])} | {character.CheckAbility(input[1])}");
                 return;
             }
 
@@ -166,7 +195,7 @@ namespace Project20.Menus
             //Checking if skill exists
             if (character.CheckSkill(input[1]) != null)
             {
-                WriteOutput($"Skill check: {character.CheckSkill(input[1])} | {character.CheckSkill(input[1])}");
+                WriteMessage($"Skill check: {character.CheckSkill(input[1])} | {character.CheckSkill(input[1])}");
                 return;
             }
 
@@ -183,7 +212,7 @@ namespace Project20.Menus
                 //Checking if ability exists
                 if (character.CheckSave(input[2]) != null)
                 {
-                    WriteOutput($"Save check: {character.CheckSave(input[2])} | {character.CheckSave(input[2])}");
+                    WriteMessage($"Save check: {character.CheckSave(input[2])} | {character.CheckSave(input[2])}");
                     return;
                 }
             }
@@ -192,6 +221,9 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Deletes character and goes back to parent menu.
+        /// </summary>
         private void DeleteCommand()
         {
             cm.DeleteCharacter(character);
@@ -199,6 +231,10 @@ namespace Project20.Menus
             BackCommand();
         }
 
+        /// <summary>
+        /// Edits character's ability command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditAbility(string[] input)
         {
             int value;
@@ -226,6 +262,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Edits character's class command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditClass(string[] input)
         {
             //Not enough arguments
@@ -245,6 +285,10 @@ namespace Project20.Menus
             character.EditClass(input[2]);
         }
 
+        /// <summary>
+        /// Edits character's hitpoints command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditHP(string[] input)
         {
             int hpNumber;
@@ -266,6 +310,10 @@ namespace Project20.Menus
             character.EditHP(hpNumber);
         }
 
+        /// <summary>
+        /// Edits character's level command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditLevel(string[] input)
         {
             int levelNumber;
@@ -294,6 +342,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Edits character's name command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditName(string[] input)
         {
             //Not enough arguments
@@ -307,6 +359,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Edits character's race command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditRace(string[] input)
         {
             //Not enough arguments
@@ -326,6 +382,10 @@ namespace Project20.Menus
             character.EditRace(input[2]);
         }
 
+        /// <summary>
+        /// Edits character's saving throw proficiency multiplier command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditSaveThrow(string[] input)
         {
             int value;
@@ -353,6 +413,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Edits character's skill proficiency multiplier command.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditSkill(string[] input)
         {
             int value;
@@ -380,6 +444,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Chooses which edit command is used.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void EditCommand(string[] input)
         {
             //Not enough arguments
@@ -430,11 +498,18 @@ namespace Project20.Menus
             cm.SaveCharacter(character);
         }
 
+        /// <summary>
+        /// Returns menu name.
+        /// </summary>
+        /// <returns>Menu name.</returns>
         internal override string GetName()
         {
             return $"{name}: {character.name}";
         }
 
+        /// <summary>
+        /// Function that decides which panel to draw.
+        /// </summary>
         private void PanelDraw()
         {
             switch (panelText)
@@ -473,6 +548,9 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Draws\writes all abilities their modifiers and their saving throw modifiers.
+        /// </summary>
         private void DrawAbilities()
         {
             Console.WriteLine("Ability name (modifier) (save modifier)");
@@ -487,6 +565,9 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Draws/writes all classes in ConsoleManager's database.
+        /// </summary>
         private void DrawAllClasses()
         {
             if (cm.classes.Count <= 0)
@@ -503,6 +584,9 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Draws/writes all races in ConsoleManager's database.
+        /// </summary>
         private void DrawAllRaces()
         {
             if (cm.races.Count <= 0)
@@ -519,6 +603,9 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Draws/writes basic information about character. Meaning race, class, level and hitpoints.
+        /// </summary>
         private void DrawBasicBio()
         {
             string raceName;
@@ -550,6 +637,10 @@ namespace Project20.Menus
                 );
         }
 
+        /// <summary>
+        /// Draws/writes character's class name and all class's features.
+        /// Features above character's level are written darker.
+        /// </summary>
         private void DrawClass()
         {
             GameClass? gameClass = cm.GetGameClass(character.classID);
@@ -590,6 +681,9 @@ namespace Project20.Menus
             Console.ForegroundColor = originalColor;
         }
 
+        /// <summary>
+        /// Draws/writes character's race name and all race's traits.
+        /// </summary>
         private void DrawRace()
         {
             GameRace? gameRace = cm.GetGameRace(character.raceID);
@@ -618,6 +712,9 @@ namespace Project20.Menus
 
         }
 
+        /// <summary>
+        /// Draws/writes all skills and their modifiers.
+        /// </summary>
         private void DrawSkills()
         {
             for(int i = 0; i < Character.skillNames.Length; ++i)
@@ -627,6 +724,10 @@ namespace Project20.Menus
             return;
         }
 
+        /// <summary>
+        /// Show command. Decides which panel was chosen to be shown.
+        /// </summary>
+        /// <param name="input">User's input.</param>
         private void ShowCommand(string[] input)
         {
             //Not enough arguments
@@ -674,17 +775,28 @@ namespace Project20.Menus
             }
         }
 
+        /// <summary>
+        /// Sets message to Invalid input message.
+        /// </summary>
         private void WriteInvalidCommand()
         {
-            WriteOutput("Invalid command.");
+            WriteMessage("Invalid command.");
         }
 
-        private void WriteOutput(string output)
+        /// <summary>
+        /// Writes given message. 
+        /// </summary>
+        /// <param name="message">Message to be shown</param>
+        private void WriteMessage(string message)
         {
-            this.message = output;
+            this.message = message;
             showMessage = true;
         }
 
+        /// <summary>
+        /// Naive function that writes long text without spliting in the middle of the word.
+        /// </summary>
+        /// <param name="text"></param>
         private static void PrintText(string text)
         {
             int consoleWidth = Console.WindowWidth;
