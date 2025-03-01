@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +16,11 @@ namespace Project20.Menus
         bool showHelp = false;
         bool showMessage = false;
         string message;
-        panelTextOptions panelText = panelTextOptions.abilityPanel;
+        panelTextOptions panelText = panelTextOptions.basicBioPanel;
 
-        private enum panelTextOptions { abilityPanel, skillPanel, basicBioPanel };
+        private enum panelTextOptions {
+            abilityPanel, allclasses, allraces, characterClass, characterRace, skillPanel, basicBioPanel 
+        };
 
         internal CharacterMenu(ConsoleManager cm, Menu? parent, Character character) : base(cm, parent)
         {
@@ -117,14 +121,17 @@ namespace Project20.Menus
                 "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
+                "   /edit class <class id>\n" + //TODO 
                 "   /edit level <value>\n" +
                 "   /edit name <name>\n" +
+                "   /edit race <race id>\n" +
                 "   /edit skill <skill name> <proficiency multiplier>\n" +
                 "   /edit save <ability name> <proficiency multiplier>\n" +
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/show' - changes the main shown panel.\n" +
                 "   /show <panelType>\n" +
-                "       <panelType> = 'ability', 'skill', 'basicbio'\n" +
+                "       <panelType> = 'ability', 'allclasses', 'allraces', 'basicbio',\n" +
+                "           'class', 'race', 'skill', \n" +
                 "'/help' or '/h' - shows all commands and what they do.";
 
         private void BackCommand()
@@ -364,8 +371,24 @@ namespace Project20.Menus
                     DrawAbilities();
                     return;
 
+                case panelTextOptions.allclasses:
+                    DrawAllClasses();
+                    return;
+
+                case panelTextOptions.allraces:
+                    DrawAllRaces();
+                    return;
+
                 case panelTextOptions.basicBioPanel:
                     DrawBasicBio();
+                    return;
+
+                case panelTextOptions.characterClass:
+                    DrawClass();
+                    return;
+
+                case panelTextOptions.characterRace:
+                    DrawRace();
                     return;
 
                 case panelTextOptions.skillPanel:
@@ -392,6 +415,38 @@ namespace Project20.Menus
             }
         }
 
+        private void DrawAllClasses()
+        {
+            if (cm.classes.Count <= 0)
+            {
+                Console.WriteLine("No class found in database.\n");
+                return;
+            }
+
+            Console.WriteLine("Class name (class id)");
+
+            foreach (var gameClass in cm.classes)
+            {
+                Console.WriteLine($"{gameClass.Value.name} ({gameClass.Key})");
+            }
+        }
+
+        private void DrawAllRaces()
+        {
+            if (cm.races.Count <= 0)
+            {
+                Console.WriteLine("No race found in database.\n");
+                return;
+            }
+
+            Console.WriteLine("Race name (race id)");
+
+            foreach (var gameRace in cm.races)
+            {
+                Console.WriteLine($"{gameRace.Value.name} ({gameRace.Key})");
+            }
+        }
+
         private void DrawBasicBio()
         {
             string raceName;
@@ -401,9 +456,79 @@ namespace Project20.Menus
             raceName = cm.GetGameRace(character.raceID)?.name ?? "raceNotFound";
             className = cm.GetGameClass(character.classID)?.name ?? "classNotFound";
 
-            Console.WriteLine($"Race: {raceName}");
-            Console.WriteLine($"Class: {className}");
-            Console.WriteLine($"Level: {character.level}");
+            Console.WriteLine(
+                $"Race: {raceName}\n" +
+                $"Class: {className}\n" +
+                $"Level: {character.level}"
+                );
+        }
+
+        private void DrawClass()
+        {
+            GameClass? gameClass = cm.GetGameClass(character.classID);
+
+            if (gameClass == null)
+            {
+                Console.WriteLine("Character's class not found.");
+                return;
+            }
+
+            Console.WriteLine($"Class name: {gameClass.name}");
+
+            if (gameClass.features == null || gameClass.features.Length == 0)
+            {
+                Console.WriteLine("No class features found");
+                return;
+            }
+
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            Console.WriteLine("Features:");
+
+            foreach (var feature in gameClass.features)
+            {
+                if (feature.level <= character.level)
+                {
+                    Console.ForegroundColor = originalColor;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                }
+
+                PrintText(feature.text);
+                Console.WriteLine("\n");
+            }
+
+            Console.ForegroundColor = originalColor;
+        }
+
+        private void DrawRace()
+        {
+            GameRace? gameRace = cm.GetGameRace(character.raceID);
+
+            if (gameRace == null)
+            {
+                Console.WriteLine("Character's race not found.");
+                return;
+            }
+
+            Console.WriteLine($"Race name: {gameRace.name}");
+
+            if (gameRace.traits == null || gameRace.traits.Length == 0)
+            {
+                Console.WriteLine("No race traits found");
+                return;
+            }
+
+            Console.WriteLine("Traits:");
+
+            foreach (var trait in gameRace.traits)
+            {
+                PrintText(trait.description);
+                Console.WriteLine("\n");
+            }
+
         }
 
         private void DrawSkills()
@@ -431,14 +556,30 @@ namespace Project20.Menus
                     panelText = panelTextOptions.abilityPanel;
                     return;
 
-                case "skill":
-                case "skills":
-                    panelText = panelTextOptions.skillPanel;
+                case "allclasses":
+                    panelText = panelTextOptions.allclasses;
+                    return;
+
+                case "allraces":
+                    panelText = panelTextOptions.allraces;
                     return;
 
                 case "basicbio":
                     panelText = panelTextOptions.basicBioPanel;
                     return;
+
+                case "class":
+                    panelText = panelTextOptions.characterClass;
+                    return;
+
+                case "race":
+                    panelText = panelTextOptions.characterRace;
+                    return;
+
+                case "skill":
+                case "skills":
+                    panelText = panelTextOptions.skillPanel;
+                    return;                
 
                 default:
                     WriteInvalidCommand();
@@ -456,5 +597,20 @@ namespace Project20.Menus
             this.message = output;
             showMessage = true;
         }
+
+        private static void PrintText(string text)
+        {
+            int consoleWidth = Console.WindowWidth;
+
+            foreach (var word in text.Split())
+            {
+                if (Console.CursorLeft + word.Length >= consoleWidth)
+                {
+                    Console.WriteLine();
+                }
+                Console.Write(word + " ");
+            }
+        }
     }
+
 }
