@@ -283,6 +283,10 @@ namespace Project20
             return chosenRace;
         }
 
+        /// <summary>
+        /// Generates empty GameRace JSON in given path.
+        /// </summary>
+        /// <param name="path">Path were the JSON should be created.</param>
         public static void GenerateGameRaceEmptyJSON(string path)
         {
             string rndName = $"{DateTime.Now.Ticks}";
@@ -304,6 +308,10 @@ namespace Project20
             File.WriteAllText(filePath, jsonString);
         }
 
+        /// <summary>
+        /// Generates empty GameClass JSON in given path.
+        /// </summary>
+        /// <param name="path">Path were the JSON should be created.</param>
         public static void GenerateGameClassEmptyJSON(string path)
         {
             string rndName = $"{DateTime.Now.Ticks}";

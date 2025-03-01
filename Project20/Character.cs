@@ -39,11 +39,9 @@ namespace Project20
         /// To know index of ability, use GetAbilityIndex().  
         /// </summary>
         public int[] saveThrows { get; set; } = new int[numberOfAbilities];
-        public string raceID { get; set; }
-        public string classID { get; set; }
+        public string raceID { get; set; } = "";
+        public string classID { get; set; } = "";
         public int level { get; set; } = 1;
-
-        public int maxHP { get; set; } = 0;
         public int currentHP { get; set; } = 0;
 
         static public string nameBaseValue = "Unnamed character";
@@ -112,7 +110,7 @@ namespace Project20
         }
 
         /// <summary>
-        /// Method that edits ability score.
+        /// Edits chracter's ability score.
         /// </summary>
         /// <param name="index">Index of edited ability.</param>
         /// <param name="score">New score of the ability.</param>
@@ -128,7 +126,7 @@ namespace Project20
         }
 
         /// <summary>
-        /// Method that edits ability score.
+        /// Edits character's ability score.
         /// </summary>
         /// <param name="abilityName">Name of the edited ability.</param>
         /// <param name="score">New score of the ability.</param>
@@ -143,7 +141,25 @@ namespace Project20
         }
 
         /// <summary>
-        /// Edits level
+        /// Edits character's class.
+        /// </summary>
+        /// <param name="classID">ID of the new class.</param>
+        internal void EditClass(string classID)
+        {
+            this.classID = classID;
+        }
+
+        /// <summary>
+        /// Edits character's current hitpoints.
+        /// </summary>
+        /// <param name="hp">New hitpoints.</param>
+        internal void EditHP(int hp)
+        {
+            this.currentHP = hp;
+        }
+
+        /// <summary>
+        /// Edits character's level
         /// </summary>
         /// <param name="newLevel">New level value, must be between 1 and 20</param>
         /// <returns>Returns false if newLevel not in rule bounds.</returns>
@@ -156,12 +172,21 @@ namespace Project20
         }
 
         /// <summary>
-        /// Edits name.
+        /// Edits character's name.
         /// </summary>
         /// <param name="newName"></param>
         internal void EditName(string newName)
         {
             name = newName.Trim();
+        }
+
+        /// <summary>
+        /// Edits character's race.
+        /// </summary>
+        /// <param name="raceID">ID of the new race.</param>
+        internal void EditRace(string raceID)
+        {
+            this.raceID = raceID;
         }
 
         /// <summary>

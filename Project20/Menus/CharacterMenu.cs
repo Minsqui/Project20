@@ -15,7 +15,7 @@ namespace Project20.Menus
         private Character character;
         bool showHelp = false;
         bool showMessage = false;
-        string message;
+        string message = "";
         panelTextOptions panelText = panelTextOptions.basicBioPanel;
 
         private enum panelTextOptions {
@@ -121,7 +121,8 @@ namespace Project20.Menus
                 "'/delete' - Deletes character and goes back to Choose character menu.\n" +
                 "'/edit' - To edit values.\n" + 
                 "   /edit ability <ability name> <value>\n" +
-                "   /edit class <class id>\n" + //TODO 
+                "   /edit class <class id>\n" +
+                "   /edit hp <value>" +
                 "   /edit level <value>\n" +
                 "   /edit name <name>\n" +
                 "   /edit race <race id>\n" +
@@ -130,6 +131,7 @@ namespace Project20.Menus
                 "'/exit' or '/e' - To exit application.\n" +
                 "'/show' - changes the main shown panel.\n" +
                 "   /show <panelType>\n" +
+                "       <panelType> = 'ability', 'allclasses', 'allraces', 'basicbio',\n" +
                 "       <panelType> = 'ability', 'allclasses', 'allraces', 'basicbio',\n" +
                 "           'class', 'race', 'skill', \n" +
                 "'/help' or '/h' - shows all commands and what they do.";
@@ -199,7 +201,6 @@ namespace Project20.Menus
 
         private void EditAbility(string[] input)
         {
-            int index;
             int value;
 
             //Not enough arguments
@@ -225,6 +226,46 @@ namespace Project20.Menus
             return;
         }
 
+        private void EditClass(string[] input)
+        {
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if class exists
+            if (cm.GetGameClass(input[2]) == null)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            character.EditClass(input[2]);
+        }
+
+        private void EditHP(string[] input)
+        {
+            int hpNumber;
+
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if input the third argument is number + converting the argument to number
+            if (!int.TryParse(input[2], out hpNumber))
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            character.EditHP(hpNumber);
+        }
+
         private void EditLevel(string[] input)
         {
             int levelNumber;
@@ -236,7 +277,7 @@ namespace Project20.Menus
                 return;
             }
 
-            //Checking if input the fourth argument is number + converting the argument to number
+            //Checking if input the third argument is number + converting the argument to number
             if (!int.TryParse(input[2], out levelNumber))
             {
                 WriteInvalidCommand();
@@ -264,6 +305,25 @@ namespace Project20.Menus
 
             character.EditName(input[2]);
             return;
+        }
+
+        private void EditRace(string[] input)
+        {
+            //Not enough arguments
+            if (input.Length < 3)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            //Checking if race exists
+            if (cm.GetGameRace(input[2]) == null)
+            {
+                WriteInvalidCommand();
+                return;
+            }
+
+            character.EditRace(input[2]);
         }
 
         private void EditSaveThrow(string[] input)
@@ -335,12 +395,24 @@ namespace Project20.Menus
                     EditAbility(input);
                     break;
 
+                case "class":
+                    EditClass(input);
+                    break;
+
+                case "hp":
+                    EditHP(input);
+                    break;
+
                 case "level":
                     EditLevel(input);
                     break;
 
                 case "name":
                     EditName(input);
+                    break;
+
+                case "race":
+                    EditRace(input);
                     break;
 
                 case "save":
@@ -451,15 +523,30 @@ namespace Project20.Menus
         {
             string raceName;
             string className;
+            string hitpoints;
+            GameClass? gameClass;
 
 
             raceName = cm.GetGameRace(character.raceID)?.name ?? "raceNotFound";
-            className = cm.GetGameClass(character.classID)?.name ?? "classNotFound";
+            hitpoints = $"{character.currentHP}";
+
+            gameClass = cm.GetGameClass(character.classID);
+            if (gameClass == null)
+            {
+                className = "classNotFound";
+            }
+            else
+            {
+                className = gameClass.name;
+                hitpoints += $"/{gameClass.hitDice * character.level}";
+            }
+            
 
             Console.WriteLine(
                 $"Race: {raceName}\n" +
                 $"Class: {className}\n" +
-                $"Level: {character.level}"
+                $"Level: {character.level}\n" + 
+                $"HP: {hitpoints}"
                 );
         }
 
