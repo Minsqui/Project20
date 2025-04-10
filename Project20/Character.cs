@@ -161,20 +161,11 @@ namespace Project20
         }
 
         /// <summary>
-        /// Edits character's current hitpoints.
-        /// </summary>
-        /// <param name="hp">New hitpoints.</param>
-        internal void EditHP(int hp)
-        {
-            this.currentHP = hp;
-        }
-
-        /// <summary>
         /// Edits character's level
         /// </summary>
         /// <param name="newLevel">New level value, must be between 1 and 20</param>
         /// <returns>Returns false if newLevel not in rule bounds.</returns>
-        internal bool EditLevel(int newLevel)
+        public bool EditLevel(int newLevel)
         {
             if (newLevel > 20 || newLevel < 1) return false;
 

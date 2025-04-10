@@ -306,7 +306,7 @@ namespace Project20.Menus
                 return;
             }
 
-            character.EditHP(hpNumber);
+            character.currentHP = hpNumber;
         }
 
         /// <summary>

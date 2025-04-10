@@ -107,5 +107,18 @@
             Assert.AreEqual(value, character.abilityScore[expectedIndex]);
         }
         #endregion
+
+        #region EditLevel
+        [DataTestMethod]
+        [DataRow(-4)]
+        [DataRow(0)]
+        [DataRow(21)]
+        public void InvalidLevel_EditLevel_False(int level)
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditLevel(level));
+        }
+        #endregion
     }
 }
