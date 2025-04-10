@@ -1,4 +1,6 @@
-﻿namespace Project20Tests
+﻿using Microsoft.ApplicationInsights.Channel;
+
+namespace Project20Tests
 {
     [TestClass]
     public sealed class CharacterTest
@@ -175,12 +177,12 @@
         [TestMethod]
         public void ValidArray_EditSaveThrow_True()
         {
-            int[] saveThrows = [0,1,0,2,1,0];
+            int[] saveThrows = [0, 1, 0, 2, 1, 0];
             Project20.Character character = new();
             bool failed = false;
 
             failed = !character.EditSaveThrow(saveThrows);
-            
+
             for (int i = 0; i < 6; ++i)
             {
                 if (character.saveThrows[i] != saveThrows[i])
@@ -239,5 +241,14 @@
             Assert.AreEqual(value, character.proficiencies[expectedIndex]);
         }
         #endregion
+
+        [DataTestMethod]
+        [DataRow(11, 0)]
+        [DataRow(9, -1)]
+        [DataRow(12, 1)]
+        public void ValidInput_CountModifier(int score, int expected)
+        {
+            Assert.AreEqual(expected, Project20.Character.CountModifier(score));
+        }
     }
 }

@@ -382,7 +382,7 @@ namespace Project20
         /// </summary>
         /// <param name="value">Value from which the modifier is counted.</param>
         /// <returns></returns>
-        static int CountModifier(int value)
+        public static int CountModifier(int value)
         {
             return (int)Math.Floor(((float)value - 10) / 2);
         }
