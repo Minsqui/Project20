@@ -179,7 +179,7 @@ namespace Project20
         /// <param name="index">Index of the ability.</param>
         /// <param name="multiplier">New multiplier of save throw proficiency.</param>
         /// <returns>Returns true if the save throw edit was successful.</returns>
-        internal bool EditSaveThrow(int index, int multiplier)
+        public bool EditSaveThrow(int index, int multiplier)
         {
             if (index < 0 || index >= numberOfAbilities) return false;
 
@@ -195,7 +195,7 @@ namespace Project20
         /// <param name="abilityName">Name of the ability.</param>
         /// <param name="multiplier">New multiplier of save throw proficiency.</param>
         /// <returns>Returns true if the save throw edit was successful.</returns>
-        internal bool EditSaveThrow(string abilityName, int multiplier)
+        public bool EditSaveThrow(string abilityName, int multiplier)
         {
             int index = GetAbilityIndex(abilityName);
 
@@ -208,11 +208,13 @@ namespace Project20
         /// Changes saveThrows proficiencies array to given array
         /// </summary>
         /// <param name="saveThrows">New saveThrow proficiencies array</param>
-        internal void EditSaveThrow(int[] saveThrows)
+        public bool EditSaveThrow(int[] saveThrows)
         {
-            if (saveThrows == null || saveThrows.Length != numberOfAbilities) return;
+            if (saveThrows == null || saveThrows.Length != numberOfAbilities) return false;
 
             this.saveThrows = saveThrows;
+
+            return true;
         }
 
         /// <summary>

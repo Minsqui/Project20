@@ -120,5 +120,78 @@
             Assert.IsFalse(character.EditLevel(level));
         }
         #endregion
+
+        #region EditSaveThrow
+        [TestMethod]
+        public void InvalidName_EditSaveThrow_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSaveThrow("not", 1));
+        }
+
+        [TestMethod]
+        public void InvalidIndex_EditSaveThrow_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSaveThrow(6, 1));
+        }
+
+        [DataTestMethod]
+        [DataRow("STR", 1, 0)]
+        [DataRow("dex", 2, 1)]
+        [DataRow("Con", 1, 2)]
+        [DataRow("iNt", 1, 3)]
+        [DataRow("wiS", 1, 4)]
+        [DataRow("Cha", 1, 5)]
+        public void ValidInput_EditSaveThrow_True(string name, int value, int expectedIndex)
+        {
+            Project20.Character character = new();
+
+            character.EditSaveThrow(name, value);
+
+            Assert.AreEqual(value, character.saveThrows[expectedIndex]);
+        }
+
+        [TestMethod]
+        public void InvalidArrayLength_EditSaveThrow_False()
+        {
+            int[] saveThrows = [0, 0, 0];
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSaveThrow(saveThrows));
+        }
+
+        [TestMethod]
+        public void NullArray_EditSaveThrow_False()
+        {
+            int[] saveThrows = null;
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSaveThrow(saveThrows));
+        }
+
+        [TestMethod]
+        public void ValidArray_EditSaveThrow_True()
+        {
+            int[] saveThrows = [0,1,0,2,1,0];
+            Project20.Character character = new();
+            bool failed = false;
+
+            failed = !character.EditSaveThrow(saveThrows);
+            
+            for (int i = 0; i < 6; ++i)
+            {
+                if (character.saveThrows[i] != saveThrows[i])
+                {
+                    failed = true;
+                    break;
+                }
+            }
+
+            Assert.IsFalse(failed);
+        }
+        #endregion
     }
 }
