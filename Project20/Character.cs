@@ -223,7 +223,7 @@ namespace Project20
         /// <param name="index">Index of edited skill.</param>
         /// <param name="score">New score of the skill.</param>
         /// <returns>Returns true if the skill edit was successful.</returns>
-        internal bool EditSkillProficiency(int index, int score)
+        public bool EditSkillProficiency(int index, int score)
         {
             if (index < 0 || index >= numberOfSkills) return false;
 
@@ -239,7 +239,7 @@ namespace Project20
         /// <param name="skillName">Name of the edited skill.</param>
         /// <param name="score">New score of the skill.</param>
         /// <returns>Returns true if the skill edit was successful.</returns>
-        internal bool EditSkillProficiency(string skillName, int score)
+        public bool EditSkillProficiency(string skillName, int score)
         {
             int index = GetSkillIndex(skillName);
 

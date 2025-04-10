@@ -193,5 +193,51 @@
             Assert.IsFalse(failed);
         }
         #endregion
+
+        #region EditSkillProficiency
+        [TestMethod]
+        public void InvalidName_EditSkillProficiency_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSkillProficiency("programming", 2));
+        }
+
+        [TestMethod]
+        public void InvalidIndex_EditSkillProficiency_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditSkillProficiency(42, 1));
+        }
+
+        [DataTestMethod]
+        [DataRow("acrobatics", 1, 0)]
+        [DataRow("animal handling", 1, 1)]
+        [DataRow("ARCANA", 1, 2)]
+        [DataRow("athletics", 1, 3)]
+        [DataRow("deception", 1, 4)]
+        [DataRow("history", 1, 5)]
+        [DataRow("insight", 1, 6)]
+        [DataRow("intimidation", 1, 7)]
+        [DataRow("investigation", 1, 8)]
+        [DataRow("medicine", 1, 9)]
+        [DataRow("nature", 1, 10)]
+        [DataRow("perception", 1, 11)]
+        [DataRow("preformance", 1, 12)]
+        [DataRow("perSUASion", 1, 13)]
+        [DataRow("religion", 1, 14)]
+        [DataRow("sleight of hand", 1, 15)]
+        [DataRow("stealth", 1, 16)]
+        [DataRow("survival", 1, 17)]
+        public void ValidInput_EditSkillProficiency_True(string name, int value, int expectedIndex)
+        {
+            Project20.Character character = new();
+
+            character.EditSkillProficiency(name, value);
+
+            Assert.AreEqual(value, character.proficiencies[expectedIndex]);
+        }
+        #endregion
     }
 }
