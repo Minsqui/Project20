@@ -9,7 +9,7 @@ namespace Project20
     /// <summary>
     /// Class with function of a die.
     /// </summary>
-    internal static class Die
+    public static class Die
     {
         /// <summary>
         /// Converts a die shorthand to actual dice throw, and returns the throw value.
@@ -18,25 +18,26 @@ namespace Project20
         /// <returns></returns>
         public static int Roll(string dieShorthand)
         {
+            ApplicationException invalidShorthand = new ApplicationException($"Invalid die shorthand: \"{dieShorthand}\"");
+            
             int result = 0;
             string[] shorthandSplit;
             Random rand = new Random();
-            int die;
-            
-            try
-            {
-                shorthandSplit = dieShorthand.Split("d");
-                die = Convert.ToInt32(shorthandSplit[1]);
 
-                for (int i = 0; i < Convert.ToInt32(shorthandSplit[0]); ++i)
-                {
-                    result += rand.Next(1, die+1);
-                }
-                
-            }
-            catch
+            int numberOfDices;
+            int dieValue;
+
+            if (dieShorthand is null) throw invalidShorthand;                
+
+            shorthandSplit = dieShorthand.Split("d");
+
+            if (shorthandSplit.Length < 2) throw invalidShorthand;
+            if (!int.TryParse(shorthandSplit[0], out numberOfDices)) throw invalidShorthand;
+            if (!int.TryParse(shorthandSplit[1], out dieValue)) throw invalidShorthand;
+
+            for (int i = 0; i < numberOfDices; ++i)
             {
-                throw new Exception("Invalid die shorthand");
+                result += rand.Next(1, dieValue + 1);
             }
 
             return result;
