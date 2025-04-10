@@ -135,9 +135,9 @@ namespace Project20
         /// <param name="index">Index of edited ability.</param>
         /// <param name="score">New score of the ability.</param>
         /// <returns>Returns true if the ability edit was successful.</returns>
-        internal bool EditAbilityScore(int index, int score)
+        public bool EditAbilityScore(int index, int score)
         {
-            if (index < 0 || index >= numberOfAbilities)
+            if (index < 0 || index >= numberOfAbilities) return false;
 
             if (score < 0) return false;
 
@@ -151,7 +151,7 @@ namespace Project20
         /// <param name="abilityName">Name of the edited ability.</param>
         /// <param name="score">New score of the ability.</param>
         /// <returns>Returns true if the ability edit was successful.</returns>
-        internal bool EditAbilityScore(string abilityName, int score)
+        public bool EditAbilityScore(string abilityName, int score)
         {
             int index = GetAbilityIndex(abilityName);
 

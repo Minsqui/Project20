@@ -56,7 +56,7 @@
         }
 
         [TestMethod]
-        public void InvalidLength_AddAbilityScore_InvalidScore()
+        public void InvalidLength_AddAbilityScore_False()
         {
             int[] addition = [0, 0, 8];
             Project20.Character character = new();
@@ -65,7 +65,7 @@
         }
 
         [TestMethod]
-        public void Null_AddAbilityScore_InvalidScore()
+        public void Null_AddAbilityScore_False()
         {
             int[] addition = null;
             Project20.Character character = new();
@@ -73,7 +73,39 @@
             Assert.IsFalse(character.AddAbilityScore(addition));
         }
         #endregion
-    
-        
+
+        #region EditAbilityScore
+        [TestMethod]
+        public void InvalidName_EditAbilityScore_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditAbilityScore("not", 12));
+        }
+
+        [TestMethod]
+        public void InvalidIndex_EditAbilityScore_False()
+        {
+            Project20.Character character = new();
+
+            Assert.IsFalse(character.EditAbilityScore(6, 12));
+        }
+
+        [DataTestMethod]
+        [DataRow("STR", 15, 0)]
+        [DataRow("dex", 7, 1)]
+        [DataRow("Con", 8, 2)]
+        [DataRow("iNt", 12, 3)]
+        [DataRow("wiS", 18, 4)]
+        [DataRow("Cha", 14, 5)]
+        public void ValidInput_EditAbilityScore_True(string name, int value, int expectedIndex)
+        {
+            Project20.Character character = new();
+
+            character.EditAbilityScore(name, value);
+
+            Assert.AreEqual(value, character.abilityScore[expectedIndex]);
+        }
+        #endregion
     }
 }
