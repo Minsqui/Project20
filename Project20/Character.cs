@@ -16,7 +16,26 @@ namespace Project20
     public class Character
     {
         internal string filename;
-        public string name { get; set; }
+        
+        /// <summary>
+        /// Name of the character.
+        /// </summary>
+        public string Name 
+        {
+            get
+            {
+                if (_name == null || _name.Trim().Length == 0)
+                {
+                    return nameBaseValue;
+                }
+                return _name;
+            }
+            set
+            {
+                _name = value.Trim();
+            }
+        }
+        private string _name;
 
         /// <summary>
         /// Array of base ability score.
@@ -39,8 +58,8 @@ namespace Project20
         /// To know index of ability, use GetAbilityIndex().  
         /// </summary>
         public int[] saveThrows { get; set; } = new int[numberOfAbilities];
-        public string raceID { get; set; } = "";
-        public string classID { get; set; } = "";
+        public string RaceID { get; set; } = "";
+        public string ClassID { get; set; } = "";
         public int level { get; set; } = 1;
         public int currentHP { get; set; } = 0;
 
@@ -67,7 +86,7 @@ namespace Project20
         public Character()
         {
             filename = GetFilename();
-            name = string.Empty;
+            _name = string.Empty;
         }
 
         /// <summary>
@@ -80,30 +99,17 @@ namespace Project20
             string fileName;
 
             //Checking if character has name
-            if (GetName() == Character.nameBaseValue)
+            if (this.Name == Character.nameBaseValue)
             {
                 //Generating file name
                 fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
             }
             else
             {
-                fileName = GetName();
+                fileName = this.Name;
             }
 
             return fileName + ".json";
-        }
-
-        /// <summary>
-        /// Method that returns character's name.
-        /// </summary>
-        /// <returns>Character's name.</returns>
-        public string GetName()
-        {
-            if (name == null || name.Trim().Length == 0)
-            {
-                return nameBaseValue;
-            }
-            return name;
         }
 
         /// <summary>
@@ -152,15 +158,6 @@ namespace Project20
         }
 
         /// <summary>
-        /// Edits character's class.
-        /// </summary>
-        /// <param name="classID">ID of the new class.</param>
-        internal void EditClass(string classID)
-        {
-            this.classID = classID;
-        }
-
-        /// <summary>
         /// Edits character's current hitpoints.
         /// </summary>
         /// <param name="hp">New hitpoints.</param>
@@ -180,24 +177,6 @@ namespace Project20
 
             level = newLevel;
             return true;
-        }
-
-        /// <summary>
-        /// Edits character's name.
-        /// </summary>
-        /// <param name="newName"></param>
-        internal void EditName(string newName)
-        {
-            name = newName.Trim();
-        }
-
-        /// <summary>
-        /// Edits character's race.
-        /// </summary>
-        /// <param name="raceID">ID of the new race.</param>
-        internal void EditRace(string raceID)
-        {
-            this.raceID = raceID;
         }
 
         /// <summary>

@@ -152,7 +152,6 @@ namespace Project20.Menus
                 "'/show' - changes the main shown panel.\n" +
                 "   /show <panelType>\n" +
                 "       <panelType> = 'ability', 'allclasses', 'allraces', 'basicbio',\n" +
-                "       <panelType> = 'ability', 'allclasses', 'allraces', 'basicbio',\n" +
                 "           'class', 'race', 'skill', \n" +
                 "'/help' or '/h' - shows all commands and what they do.";
 
@@ -282,7 +281,7 @@ namespace Project20.Menus
                 return;
             }
 
-            character.EditClass(input[2]);
+            character.ClassID = input[2];
         }
 
         /// <summary>
@@ -355,7 +354,7 @@ namespace Project20.Menus
                 return;
             }
 
-            character.EditName(input[2]);
+            character.Name = input[2];
             return;
         }
 
@@ -379,7 +378,7 @@ namespace Project20.Menus
                 return;
             }
 
-            character.EditRace(input[2]);
+            character.RaceID = input[2];
         }
 
         /// <summary>
@@ -504,7 +503,7 @@ namespace Project20.Menus
         /// <returns>Menu name.</returns>
         internal override string GetName()
         {
-            return $"{name}: {character.name}";
+            return $"{name}: {character.Name}";
         }
 
         /// <summary>
@@ -614,10 +613,10 @@ namespace Project20.Menus
             GameClass? gameClass;
 
 
-            raceName = cm.GetGameRace(character.raceID)?.name ?? "raceNotFound";
+            raceName = cm.GetGameRace(character.RaceID)?.name ?? "raceNotFound";
             hitpoints = $"{character.currentHP}";
 
-            gameClass = cm.GetGameClass(character.classID);
+            gameClass = cm.GetGameClass(character.ClassID);
             if (gameClass == null)
             {
                 className = "classNotFound";
@@ -643,7 +642,7 @@ namespace Project20.Menus
         /// </summary>
         private void DrawClass()
         {
-            GameClass? gameClass = cm.GetGameClass(character.classID);
+            GameClass? gameClass = cm.GetGameClass(character.ClassID);
 
             if (gameClass == null)
             {
@@ -686,7 +685,7 @@ namespace Project20.Menus
         /// </summary>
         private void DrawRace()
         {
-            GameRace? gameRace = cm.GetGameRace(character.raceID);
+            GameRace? gameRace = cm.GetGameRace(character.RaceID);
 
             if (gameRace == null)
             {

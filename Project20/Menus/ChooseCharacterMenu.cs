@@ -50,7 +50,7 @@ namespace Project20
             {
                 for (; i < cm.characters.Count; ++i)
                 {
-                    Console.WriteLine(i + ": " + cm.characters[i].GetName());
+                    Console.WriteLine(i + ": " + cm.characters[i].Name);
                 }
             }
 

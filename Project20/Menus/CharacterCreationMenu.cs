@@ -124,7 +124,7 @@ namespace Project20.Menus
             {
                 //Choose name phase
                 case 0:
-                    newCharacter.EditName(input);
+                    newCharacter.Name = input;
                     ++phase;
                     return;
 
@@ -216,7 +216,7 @@ namespace Project20.Menus
                 return;
             }
 
-            newCharacter.raceID = chosenRace.id;
+            newCharacter.RaceID = chosenRace.id;
             newCharacter.AddAbilityScore(chosenRace.abilityScore);
             ++phase;
             return;
@@ -246,7 +246,7 @@ namespace Project20.Menus
                 return;
             }
 
-            newCharacter.classID = chosenClass.id;
+            newCharacter.ClassID = chosenClass.id;
             newCharacter.EditSaveThrow(chosenClass.saveThrows);
             ++phase;
             return;

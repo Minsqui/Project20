@@ -238,14 +238,14 @@ namespace Project20
             string jsonString = JsonSerializer.Serialize(character);
 
             //Checking if character has name
-            if (character.GetName() == Character.nameBaseValue)
+            if (character.Name == Character.nameBaseValue)
             {
                 //Generating file name
                 fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
             }
             else
             {
-                fileName = character.GetName();
+                fileName = character.Name;
             }
 
             character.filename = fileName+".json";
