@@ -116,14 +116,17 @@ namespace Project20
         /// Adds given bonuses to ability score.
         /// </summary>
         /// <param name="abilityBonus">Array with bonuses to ability</param>
-        internal void AddAbilityScore(int[] abilityBonus)
+        /// <returns>Returns true if the addition was successful.</returns>
+        public bool AddAbilityScore(int[] abilityBonus)
         {
-            if (abilityBonus == null || abilityBonus.Length != numberOfAbilities) return;
+            if (abilityBonus == null || abilityBonus.Length != numberOfAbilities) return false;
 
             for (int i = 0; i < numberOfAbilities; ++i)
             {
                 abilityScore[i] += abilityBonus[i];
             }
+
+            return true;
         }
 
         /// <summary>
@@ -131,7 +134,7 @@ namespace Project20
         /// </summary>
         /// <param name="index">Index of edited ability.</param>
         /// <param name="score">New score of the ability.</param>
-        /// <returns>If the ability edit was successful.</returns>
+        /// <returns>Returns true if the ability edit was successful.</returns>
         internal bool EditAbilityScore(int index, int score)
         {
             if (index < 0 || index >= numberOfAbilities)
@@ -147,7 +150,7 @@ namespace Project20
         /// </summary>
         /// <param name="abilityName">Name of the edited ability.</param>
         /// <param name="score">New score of the ability.</param>
-        /// <returns>If the ability edit was successful.</returns>
+        /// <returns>Returns true if the ability edit was successful.</returns>
         internal bool EditAbilityScore(string abilityName, int score)
         {
             int index = GetAbilityIndex(abilityName);
@@ -184,7 +187,7 @@ namespace Project20
         /// </summary>
         /// <param name="index">Index of the ability.</param>
         /// <param name="multiplier">New multiplier of save throw proficiency.</param>
-        /// <returns>If the save throw edit was successful.</returns>
+        /// <returns>Returns true if the save throw edit was successful.</returns>
         internal bool EditSaveThrow(int index, int multiplier)
         {
             if (index < 0 || index >= numberOfAbilities) return false;
@@ -200,7 +203,7 @@ namespace Project20
         /// </summary>
         /// <param name="abilityName">Name of the ability.</param>
         /// <param name="multiplier">New multiplier of save throw proficiency.</param>
-        /// <returns>If the save throw edit was successful.</returns>
+        /// <returns>Returns true if the save throw edit was successful.</returns>
         internal bool EditSaveThrow(string abilityName, int multiplier)
         {
             int index = GetAbilityIndex(abilityName);
@@ -226,7 +229,7 @@ namespace Project20
         /// </summary>
         /// <param name="index">Index of edited skill.</param>
         /// <param name="score">New score of the skill.</param>
-        /// <returns>If the skill edit was successful.</returns>
+        /// <returns>Returns true if the skill edit was successful.</returns>
         internal bool EditSkillProficiency(int index, int score)
         {
             if (index < 0 || index >= numberOfSkills) return false;
@@ -242,7 +245,7 @@ namespace Project20
         /// </summary>
         /// <param name="skillName">Name of the edited skill.</param>
         /// <param name="score">New score of the skill.</param>
-        /// <returns>If the skill edit was successful.</returns>
+        /// <returns>Returns true if the skill edit was successful.</returns>
         internal bool EditSkillProficiency(string skillName, int score)
         {
             int index = GetSkillIndex(skillName);
