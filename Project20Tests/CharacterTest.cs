@@ -429,6 +429,49 @@ namespace Project20Tests
         }
         #endregion
 
+        #region CheckSave
+        [TestMethod]
+        public void ValidName_CheckSave()
+        {
+            int numberOfTests = 5;
+            bool failed = false;
+            int abilityIndex = 0;
+            string abilityName = "sTr";
+            int abilityScore = 14;
+            int level = 1;
+            int proficiency = 1;
+            int expectedBonus = 4;
+
+            int minValue = 1 + expectedBonus;
+            int maxValue = 20 + expectedBonus;
+
+            Project20.Character character = new();
+            character.abilityScore[abilityIndex] = abilityScore;
+            character.saveThrows[abilityIndex] = proficiency;
+
+            for (int i = 0; i < numberOfTests; ++i)
+            {
+                int? checkValue = character.CheckSave(abilityName);
+                if (checkValue is null || checkValue < minValue || maxValue < checkValue)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(failed);
+        }
+
+        [TestMethod]
+        public void InvalidName_CheckSave_Null()
+        {
+            string name = "Cat";
+
+            Project20.Character character = new();
+
+            Assert.IsNull(character.CheckSave(name));
+        }
+        #endregion
+
         [DataTestMethod]
         [DataRow(11, 0)]
         [DataRow(9, -1)]
