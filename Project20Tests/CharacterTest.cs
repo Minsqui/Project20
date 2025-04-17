@@ -242,6 +242,95 @@ namespace Project20Tests
         }
         #endregion
 
+        #region GetAbilityModifier
+        [TestMethod]
+        public void ValidInput_GetAbilityModifier()
+        {
+            int index = 0;
+            int result;
+
+            int expected = 1;
+            int value = 12;
+
+            Project20.Character character = new();
+
+            character.abilityScore[index] = 12;
+
+            result = character.GetAbilityModifier(index);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void InvalidInput_GetAbilityModifier_ThrowException()
+        {
+            int index = -1;
+
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetAbilityModifier(index));
+        }
+        #endregion
+
+        #region GetSaveModifier
+        [TestMethod]
+        public void ValidInput_GetSaveModifier()
+        {
+            int index = 0;
+            int result;
+
+            int expected = 1;
+            int value = 12;
+
+            Project20.Character character = new();
+
+            character.abilityScore[index] = 12;
+
+            Assert.AreEqual(expected, character.GetSaveModifier(index));
+        }
+
+        [TestMethod]
+        public void InvalidInput_GetSaveModifier_ThrowException()
+        {
+            int index = -1;
+
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSaveModifier(index));
+        }
+        #endregion
+
+        #region
+        [TestMethod]
+        public void ValidAcrobatics_GetSkillModifier()
+        {
+            int index = 0;
+            int prof = 1;
+            int dex = 12;
+            int dexPos = 1;
+            int level = 1;
+
+            int expected = 3;
+
+            Project20.Character character = new();
+            character.proficiencies[index] = prof;
+            character.level = level;
+            character.abilityScore[dexPos] = dex;
+
+            Assert.AreEqual(expected, character.GetSkillModifier(index));
+        }
+
+        [TestMethod]
+        public void OutOfRangeInput_GetSkillModifier()
+        {
+            int index = -1;
+
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSkillModifier(index));
+        }
+        #endregion
+
         [DataTestMethod]
         [DataRow(11, 0)]
         [DataRow(9, -1)]
@@ -249,6 +338,22 @@ namespace Project20Tests
         public void ValidInput_CountModifier(int score, int expected)
         {
             Assert.AreEqual(expected, Project20.Character.CountModifier(score));
+        }
+
+        [DataTestMethod]
+        [DataRow("stR",0)]
+        [DataRow("dEx",1)]
+        public void ValidInput_GetAbilityIndex(string name, int expected)
+        {
+            Assert.AreEqual(expected, Project20.Character.GetAbilityIndex(name));
+        }
+
+        [DataTestMethod]
+        [DataRow("acroBatiCs", 0)]
+        [DataRow("arCANa", 2)]
+        public void ValidInput_GetSkillIndex(string name, int expected)
+        {
+            Assert.AreEqual(expected, Project20.Character.GetSkillIndex(name));
         }
     }
 }

@@ -285,21 +285,6 @@ namespace Project20
         }
 
         /// <summary>
-        /// Method that returns character's given skill modifier.
-        /// </summary>
-        /// <param name="skillName">Name of the skill.</param>
-        /// <returns>Given skill modifier.</returns>
-        public int GetSkillModifier(string skillName)
-        {
-            int index = GetSkillIndex(skillName);
-            if (index < 0)
-            {
-                return 0;
-            }
-            return GetSkillModifier(GetSkillIndex(skillName));
-        }
-
-        /// <summary>
         /// Method that calculates proficiency bonus from character's level.
         /// </summary>
         /// <returns>Proficiency bonus of the character.</returns>
@@ -376,7 +361,6 @@ namespace Project20
             return CheckSkill(index);
         }
 
-
         /// <summary>
         /// Counts modifier from given value.
         /// </summary>
@@ -406,6 +390,5 @@ namespace Project20
         {
             return skillNames.IndexOf(skillName.ToLower());
         }
-
     }
 }

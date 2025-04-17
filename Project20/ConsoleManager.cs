@@ -12,7 +12,7 @@ namespace Project20
 {
     /// <summary>
     /// Class that ensures communication between user and character class/database.
-    /// Works basically as finite state machine where menus are states.
+    /// Works basically as finite state machine where menus are the states.
     /// </summary>
     internal class ConsoleManager
     {
