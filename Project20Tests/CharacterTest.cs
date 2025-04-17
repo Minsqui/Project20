@@ -446,6 +446,7 @@ namespace Project20Tests
             int maxValue = 20 + expectedBonus;
 
             Project20.Character character = new();
+            character.level = level;
             character.abilityScore[abilityIndex] = abilityScore;
             character.saveThrows[abilityIndex] = proficiency;
 
@@ -469,6 +470,97 @@ namespace Project20Tests
             Project20.Character character = new();
 
             Assert.IsNull(character.CheckSave(name));
+        }
+        #endregion
+
+        #region CheckSkill
+        [TestMethod]
+        public void ValidIndexAcrobatics_CheckSkill()
+        {
+            int numberOfTests = 5;
+            bool failed = false;
+            int abilityIndex = 1;
+            int abilityScore = 14;
+            int level = 1;
+            int proficiency = 1;
+            int skillIndex = 0;
+
+            int expectedBonus = 4;
+
+            int minValue = 1 + expectedBonus;
+            int maxValue = 20 + expectedBonus;
+
+            Project20.Character character = new();
+            character.level = level;
+            character.abilityScore[abilityIndex] = abilityScore;
+            character.proficiencies[skillIndex] = proficiency;
+
+            for (int i = 0; i < numberOfTests; ++i)
+            {
+                int checkValue = character.CheckSkill(abilityIndex);
+                if (checkValue < minValue && maxValue < checkValue)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(failed);
+        }
+
+        [DataTestMethod]
+        [DataRow(-1)]
+        [DataRow(18)]
+        public void OutOfRangeIndex_CheckSkill(int index)
+        {
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(
+                () => character.CheckSkill(index)
+            );
+        }
+
+        [TestMethod]
+        public void ValidNameAcrobatics_CheckSkill()
+        {
+            int numberOfTests = 5;
+            bool failed = false;
+            int abilityIndex = 1;
+            int abilityScore = 14;
+            int level = 1;
+            int proficiency = 1;
+            int skillIndex = 0;
+            string skillName = "acRoBatIcs";
+
+            int expectedBonus = 4;
+
+            int minValue = 1 + expectedBonus;
+            int maxValue = 20 + expectedBonus;
+
+            Project20.Character character = new();
+            character.level = level;
+            character.abilityScore[abilityIndex] = abilityScore;
+            character.proficiencies[skillIndex] = proficiency;
+
+            for (int i = 0; i < numberOfTests; ++i)
+            {
+                int? checkValue = character.CheckSkill(skillName);
+                if (checkValue is null || checkValue < minValue || maxValue < checkValue)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(failed);
+        }
+
+        [TestMethod]
+        public void InvalidName_CheckSkill_Null()
+        {
+            string name = "Cat";
+
+            Project20.Character character = new();
+
+            Assert.IsNull(character.CheckSkill(name));
         }
         #endregion
 
