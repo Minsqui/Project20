@@ -300,6 +300,25 @@ namespace Project20Tests
         }
         #endregion
 
+        [DataTestMethod]
+        [DataRow(1, 2)]
+        [DataRow(4,2)]
+        [DataRow(5, 3)]
+        [DataRow(8, 3)]
+        [DataRow(9, 4)]
+        [DataRow(12, 4)]
+        [DataRow(13, 5)]
+        [DataRow(16, 5)]
+        [DataRow(17, 6)]
+        [DataRow(20, 6)]
+        public void GetProficiency(int level, int expected)
+        {
+            Project20.Character character = new();
+            character.level = level;
+
+            Assert.AreEqual(expected, character.GetProficiency());
+        }
+
         #region
         [TestMethod]
         public void ValidAcrobatics_GetSkillModifier()
