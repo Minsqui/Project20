@@ -261,11 +261,11 @@ namespace Project20Tests
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
-        public void InvalidInput_GetAbilityModifier_ThrowException()
+        [DataTestMethod]
+        [DataRow(-1)]
+        [DataRow(6)]
+        public void OutOfRangeIndex_GetAbilityModifier_ThrowException(int index)
         {
-            int index = -1;
-
             Project20.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetAbilityModifier(index));
@@ -289,14 +289,45 @@ namespace Project20Tests
             Assert.AreEqual(expected, character.GetSaveModifier(index));
         }
 
-        [TestMethod]
-        public void InvalidInput_GetSaveModifier_ThrowException()
+        [DataTestMethod]
+        [DataRow(-1)]
+        [DataRow(6)]
+        public void OutOfRangeIndex_GetSaveModifier_ThrowException(int index)
         {
-            int index = -1;
-
             Project20.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSaveModifier(index));
+        }
+        #endregion
+
+        #region GetSkillModifier
+        [TestMethod]
+        public void ValidAcrobatics_GetSkillModifier()
+        {
+            int index = 0;
+            int prof = 1;
+            int dex = 12;
+            int dexPos = 1;
+            int level = 1;
+
+            int expected = 3;
+
+            Project20.Character character = new();
+            character.proficiencies[index] = prof;
+            character.level = level;
+            character.abilityScore[dexPos] = dex;
+
+            Assert.AreEqual(expected, character.GetSkillModifier(index));
+        }
+
+        [DataTestMethod]
+        [DataRow(-1)]
+        [DataRow(18)]
+        public void OutOfRangeIndex_GetSkillModifier(int index)
+        {
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSkillModifier(index));
         }
         #endregion
 
@@ -319,34 +350,82 @@ namespace Project20Tests
             Assert.AreEqual(expected, character.GetProficiency());
         }
 
-        #region
+        #region CheckAbility
         [TestMethod]
-        public void ValidAcrobatics_GetSkillModifier()
+        public void ValidIndex_CheckAbility()
         {
-            int index = 0;
-            int prof = 1;
-            int dex = 12;
-            int dexPos = 1;
-            int level = 1;
+            int numberOfTests = 5;
+            bool failed = false;
+            int abilityIndex = 0;
+            int abilityScore = 14;
+            int expectedBonus = 2;
 
-            int expected = 3;
+            int minValue = 1 + expectedBonus;
+            int maxValue = 20 + expectedBonus;
 
             Project20.Character character = new();
-            character.proficiencies[index] = prof;
-            character.level = level;
-            character.abilityScore[dexPos] = dex;
+            character.abilityScore[abilityIndex] = abilityScore;
 
-            Assert.AreEqual(expected, character.GetSkillModifier(index));
+            for (int i = 0; i < numberOfTests; ++i)
+            {
+                int checkValue = character.CheckAbility(abilityIndex);
+                if (checkValue < minValue && maxValue < checkValue)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(failed);
+        }
+
+        [DataTestMethod]
+        [DataRow(-1)]
+        [DataRow(6)]
+        public void OutOfRangeIndex_CheckAbility(int index)
+        {
+            Project20.Character character = new();
+
+            Assert.ThrowsException<IndexOutOfRangeException>(
+                () => character.CheckAbility(index)
+            );
         }
 
         [TestMethod]
-        public void OutOfRangeInput_GetSkillModifier()
+        public void ValidName_CheckAbility()
         {
-            int index = -1;
+            int numberOfTests = 5;
+            bool failed = false;
+            int abilityIndex = 0;
+            string abilityName = "sTr";
+            int abilityScore = 14;
+            int expectedBonus = 2;
+
+            int minValue = 1 + expectedBonus;
+            int maxValue = 20 + expectedBonus;
+
+            Project20.Character character = new();
+            character.abilityScore[abilityIndex] = abilityScore;
+
+            for (int i = 0; i < numberOfTests; ++i)
+            {
+                int? checkValue = character.CheckAbility(abilityName);
+                if (checkValue is null || checkValue < minValue || maxValue < checkValue)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(failed);
+        }
+
+        [TestMethod]
+        public void InvalidName_CheckAbility_Null()
+        {
+            string name = "Cat";
 
             Project20.Character character = new();
 
-            Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSkillModifier(index));
+            Assert.IsNull(character.CheckAbility(name));
         }
         #endregion
 
