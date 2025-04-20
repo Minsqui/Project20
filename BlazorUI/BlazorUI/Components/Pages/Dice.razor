@@ -1,0 +1,34 @@
+﻿@page "/dice"
+@rendermode InteractiveServer
+
+<PageTitle>Dice</PageTitle>
+
+<h1>Dice</h1>
+
+<p role="status">Current roll: @rollResult</p>
+
+<input class="input-group-sm" @oninput="UpdateShorthand">
+<button class="btn btn-primary" @onclick="RollDice">Roll</button>
+
+@code {
+	private string rollResult = "0";
+	private string diceShorthand = "1d20";
+
+	private void RollDice()
+	{
+		try
+		{
+			rollResult = Project20.Die.Roll(diceShorthand).ToString();
+		}
+		catch
+		{
+			rollResult = "Invalid shorthand";
+		}
+
+	}
+
+	private void UpdateShorthand(ChangeEventArgs e)
+	{
+		diceShorthand = e.Value.ToString();
+	}
+}
