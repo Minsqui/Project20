@@ -43,5 +43,14 @@ namespace BlazorUI
         {
             characters = CharactersListToDict(JSONManager.LoadCharacters(CHARACTERPATH));
         }
+
+        /// <summary>
+        /// Saves character into JSON.
+        /// </summary>
+        /// <param name="character">Saved character.</param>
+        public void SaveCharacter(Character character)
+        {
+            JSONManager.SaveCharacter(character, CHARACTERPATH);
+        }
     }
 }
