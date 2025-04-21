@@ -1,0 +1,10 @@
+﻿.abilityScore {
+	border: solid 2px #000000;
+	aspect-ratio: 1/1;
+}
+
+.abilityScoreTable {
+	display: grid;
+	grid-template-columns: 1fr;
+	width: 12vh;
+}

@@ -64,8 +64,8 @@ namespace Project20
         public int currentHP { get; set; } = 0;
 
         static public string nameBaseValue = "Unnamed character";
-        private static int numberOfAbilities = 6;
-        private static int numberOfSkills = 18;
+        public static int numberOfAbilities = 6;
+        public static int numberOfSkills = 18;
         /// <summary>
         /// Names of the abilities. Also used to get index for abilities arrays
         /// </summary>

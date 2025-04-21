@@ -4,13 +4,29 @@
 @inject NavigationManager Navigation
 
 <PageTitle>@characterID</PageTitle>
+<head>
+	<link rel="stylesheet" href="@Assets["characterMenu.css"]" />
+</head>
 
 <h1>@characterID</h1>
+
+<div class="abilityScoreTable" style="grid-template-rows: repeat(@Project20.Character.numberOfAbilities, 1fr);">
+	@foreach (int i in Enumerable.Range(0, Project20.Character.numberOfAbilities - 1))
+	{
+		<div class="abilityScore">
+			@Project20.Character.abilityNames[i]: @abilityModifiers[i]
+			<input @bind-value="abilityScore[i]" @bind-value:after="() => ChangeAbilityScore(i)">
+		</div>
+	}
+</div>
 
 @code {
 	[Parameter]
 	public string characterID { get; set; }
 	private Project20.Character character;
+
+	private string[] abilityScore = new string[Project20.Character.numberOfAbilities];
+	private string[] abilityModifiers = new string[Project20.Character.numberOfAbilities];
 
 	protected override void OnInitialized()
 	{
@@ -20,5 +36,16 @@
 		{
 			Navigation.NavigateTo("/characterNotFound");
 		}
+	}
+
+	private void ChangeAbilityScore(int index)
+	{
+		if(!int.TryParse(abilityScore[index], out int abilityValue))
+		{
+			abilityModifiers[index] = "X";
+			return;
+		}
+
+		abilityModifiers[index] = Project20.Character.CountModifier(abilityValue).ToString();
 	}
 }
