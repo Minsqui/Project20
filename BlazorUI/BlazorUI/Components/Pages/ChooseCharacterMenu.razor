@@ -4,7 +4,7 @@
 
 <PageTitle>Choose Character</PageTitle>
 
-<h1>Choose Character</h1>
+<h1>Choose Character Menu</h1>
 
 <table>
     <thead>
@@ -16,7 +16,7 @@
         @foreach (var character in DataAccess.characters)
         {
             <tr>
-                <td>@character.Value.Name</td>
+                <td><a href="/character/@character.Value.Name">@character.Value.Name</a></td>
             </tr>
         }
     </tbody>
