@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Project20
 {
-    internal class JSONManager
+    public class JSONManager
     {
         /// <summary>
         /// Deletes character's JSON.

@@ -1,0 +1,26 @@
+﻿@page "/character/{characterID}"
+@rendermode InteractiveServer
+@inject DataAccess DataAccess
+
+<PageTitle>@characterID</PageTitle>
+
+<h1>@characterID</h1>
+<h2>@errorMessage</h2>
+
+@code {
+	[Parameter]
+	public string characterID { get; set; }
+	private Project20.Character character;
+
+	private string errorMessage = "";
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		if(!DataAccess.characters.TryGetValue(characterID, out character))
+		{
+			errorMessage = "Character not found";
+		}
+	}
+}

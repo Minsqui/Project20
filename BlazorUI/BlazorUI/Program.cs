@@ -1,3 +1,4 @@
+using BlazorUI;
 using BlazorUI.Client.Pages;
 using BlazorUI.Components;
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddSingleton<DataAccess>();
 
 var app = builder.Build();
 

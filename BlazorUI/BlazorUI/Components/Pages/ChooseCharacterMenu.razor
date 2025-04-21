@@ -1,0 +1,39 @@
+﻿@page "/chooseCharacterMenu"
+@rendermode InteractiveServer
+@inject DataAccess DataAccess
+
+<PageTitle>Choose Character</PageTitle>
+
+<h1>Choose Character</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var character in DataAccess.characters)
+        {
+            <tr>
+                <td>@character.Value.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button class="btn btn-primary" @onclick="NewCharacter">New Character</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // To have the newest characters, reloading characters data.
+        DataAccess.LoadCharacters();
+    }
+
+    private void NewCharacter()
+    {
+        throw new NotImplementedException();
+    }
+}
