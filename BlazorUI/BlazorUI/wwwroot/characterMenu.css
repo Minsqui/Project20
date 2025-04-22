@@ -1,10 +1,30 @@
-﻿.abilityScore {
+﻿.abilityScoreTable {
+	display: grid;
+	grid-template-columns: 1fr;
+	row-gap: 1vh;
+
+	text-align: center;
+
+	width: 12vh;
+}
+
+.abilityScore {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 3fr 1fr;
 	border: solid 2px #000000;
 	aspect-ratio: 1/1;
 }
 
-.abilityScoreTable {
-	display: grid;
-	grid-template-columns: 1fr;
-	width: 12vh;
+.abilityScoreName {
+	border-bottom: solid 1px #000000;
+}
+
+.abilityScoreInput {
+	position: relative;
+	width: 60%;
+	bottom: 0px;
+
+	text-align: center;
+	place-self: center;
 }
