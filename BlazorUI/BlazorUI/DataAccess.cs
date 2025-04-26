@@ -1,4 +1,4 @@
-﻿using Project20;
+﻿using Core;
 
 namespace BlazorUI
 {

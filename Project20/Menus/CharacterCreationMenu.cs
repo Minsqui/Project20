@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 
-namespace Project20.Menus
+namespace ConsoleUI.Menus
 {
     /// <summary>
     /// Menu where user creates a new character.

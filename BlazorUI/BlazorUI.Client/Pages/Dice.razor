@@ -1,5 +1,5 @@
 ﻿@page "/dice"
-@rendermode InteractiveServer
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Dice</PageTitle>
 
@@ -7,18 +7,19 @@
 
 <p role="status">Current roll: @rollResult</p>
 
-<input class="input-group-sm" @oninput="UpdateShorthand">
+<input class="input-group-sm" placeholder="@BASICSHORTHAND" @oninput="UpdateShorthand">
 <button class="btn btn-primary" @onclick="RollDice">Roll</button>
 
 @code {
 	private string rollResult = "0";
-	private string diceShorthand = "1d20";
+	private const string BASICSHORTHAND = "1d20";
+	private string diceShorthand = BASICSHORTHAND;
 
 	private void RollDice()
 	{
 		try
 		{
-			rollResult = Project20.Die.Roll(diceShorthand).ToString();
+			rollResult = Core.Die.Roll(diceShorthand).ToString();
 		}
 		catch
 		{

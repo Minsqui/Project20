@@ -1,11 +1,10 @@
-﻿using Project20.Menus;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project20
+namespace ConsoleUI.Menus
 {
     /// <summary>
     /// Menu where users chooses character and can choose to create new one.

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace Project20
+namespace Core
 {
     /// <summary>
     /// Class that represents character from DnD 5e 2014 ruleset. 

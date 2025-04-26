@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project20
+namespace ConsoleUI.Menus
 {
     /// <summary>
     /// Root menu. Has no parent menu.

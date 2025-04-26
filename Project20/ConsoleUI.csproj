@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Project20Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="data\classes\Barbarian.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

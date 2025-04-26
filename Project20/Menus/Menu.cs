@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Project20
+namespace ConsoleUI.Menus
 {
     /// <summary>
     /// Basic node for the ConsoleManager. Basically a state in finite state machine.

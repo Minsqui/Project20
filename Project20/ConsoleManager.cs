@@ -7,8 +7,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ConsoleUI.Menus;
+using Core;
 
-namespace Project20
+namespace ConsoleUI
 {
     /// <summary>
     /// Class that ensures communication between user and character class/database.

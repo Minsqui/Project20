@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project20", "Project20.csproj", "{D3F7BB6F-926A-403A-92F7-4323CC2DAEC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI.csproj", "{D3F7BB6F-926A-403A-92F7-4323CC2DAEC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project20Tests", "..\Project20Tests\Project20Tests.csproj", "{6A1A7D0C-2E68-48DB-A96C-039E0C53DA89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI", "..\BlazorUI\BlazorUI\BlazorUI.csproj", "{DCAE8F24-21DD-48D9-8717-B8DDD86E5935}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUI.Client", "..\BlazorUI\BlazorUI.Client\BlazorUI.Client.csproj", "{B592AE6E-21B3-4C73-AAF2-E4B2F4F8883B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Project20Core\Core.csproj", "{FCF8EEAC-BFEA-4050-BBDE-742D45AA89A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B592AE6E-21B3-4C73-AAF2-E4B2F4F8883B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B592AE6E-21B3-4C73-AAF2-E4B2F4F8883B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B592AE6E-21B3-4C73-AAF2-E4B2F4F8883B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCF8EEAC-BFEA-4050-BBDE-742D45AA89A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCF8EEAC-BFEA-4050-BBDE-742D45AA89A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCF8EEAC-BFEA-4050-BBDE-742D45AA89A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCF8EEAC-BFEA-4050-BBDE-742D45AA89A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

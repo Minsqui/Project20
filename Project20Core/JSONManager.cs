@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Project20
+namespace Core
 {
     public class JSONManager
     {

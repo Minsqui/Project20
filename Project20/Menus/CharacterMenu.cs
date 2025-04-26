@@ -7,8 +7,9 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 
-namespace Project20.Menus
+namespace ConsoleUI.Menus
 {
     /// <summary>
     /// Menu where user can see all informations about the character and edit them.

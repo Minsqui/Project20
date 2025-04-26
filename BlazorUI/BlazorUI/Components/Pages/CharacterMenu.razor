@@ -1,6 +1,6 @@
 ﻿@page "/character/{characterID}"
 @rendermode InteractiveServer
-@inject DataAccess DataAccess
+@inject DataAccess dataAccess
 @inject NavigationManager Navigation
 
 <PageTitle>@characterID</PageTitle>
@@ -10,11 +10,11 @@
 
 <h1>@characterID</h1>
 
-<div class="abilityScoreTable" style="grid-template-rows: repeat(@Project20.Character.numberOfAbilities, 1fr);">
-	@foreach (int i in Enumerable.Range(0, Project20.Character.numberOfAbilities - 1))
+<div class="abilityScoreTable" style="grid-template-rows: repeat(@Core.Character.numberOfAbilities, 1fr);">
+	@foreach (int i in Enumerable.Range(0, Core.Character.numberOfAbilities - 1))
 	{
 		<div class="abilityScore">
-			<div class="abilityScoreName">@Project20.Character.abilityNames[i]</div>
+			<div class="abilityScoreName">@Core.Character.abilityNames[i]</div>
 			<div>@abilityModifiers[i]</div>
 			<input class="abilityScoreInput" @bind-value="abilityScore[i]" @bind-value:after="UpdateAbilityScore">
 		</div>
@@ -26,9 +26,9 @@
 @code {
 	[Parameter]
 	public string characterID { get; set; }
-	private Project20.Character character;
+	private Core.Character character;
 
-	private string[] abilityScore = new string[Project20.Character.numberOfAbilities];
+	private string[] abilityScore = new string[Core.Character.numberOfAbilities];
 
 	private string[] abilityModifiers
 	{
@@ -39,12 +39,12 @@
 	{
 		base.OnInitialized();
 
-		if(!DataAccess.characters.TryGetValue(characterID, out character))
+		if(!dataAccess.characters.TryGetValue(characterID, out character))
 		{
 			Navigation.NavigateTo("/characterNotFound");
 		}
 
-		for (int i = 0; i < Project20.Character.numberOfAbilities; ++i)
+		for (int i = 0; i < Core.Character.numberOfAbilities; ++i)
 		{
 			abilityScore[i] = character.abilityScore[i].ToString();
 			abilityModifiers[i] = GetModifier(character.abilityScore[i]);
@@ -58,7 +58,7 @@
 
 	private string GetModifier(int scoreValue)
 	{
-		return Project20.Character.CountModifier(scoreValue).ToString();
+		return Core.Character.CountModifier(scoreValue).ToString();
 	}
 
 	private string GetModifier(string scoreValue)
@@ -68,11 +68,11 @@
 			return "X";
 		}
 
-		return Project20.Character.CountModifier(abilityValue).ToString();
+		return Core.Character.CountModifier(abilityValue).ToString();
 	}
 
 	private void SaveCharacter()
 	{
-		DataAccess.SaveCharacter(character);
+		dataAccess.SaveCharacter(character);
 	}
 }

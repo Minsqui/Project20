@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project20
+namespace Core
 {
     /// <summary>
     /// Class with function of a die.
