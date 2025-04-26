@@ -41,6 +41,8 @@ namespace ConsoleUI.Menus
         {
             int i = 0;
 
+            Core.Character[] chArr = cm.characters.Select(x => x.Value).ToArray();
+
             if (cm.characters == null || cm.characters.Count == 0)
             {
                 Console.WriteLine("No characters found.");
@@ -49,7 +51,7 @@ namespace ConsoleUI.Menus
             {
                 for (; i < cm.characters.Count; ++i)
                 {
-                    Console.WriteLine(i + ": " + cm.characters[i].Name);
+                    Console.WriteLine(i + ": " + chArr[i].Name);
                 }
             }
 
@@ -68,6 +70,8 @@ namespace ConsoleUI.Menus
         internal override void React(string input)
         {
             int index;
+
+            Core.Character[] chArr = cm.characters.Select(x => x.Value).ToArray();
 
             //Checking if input is number + converting input to number
             if (int.TryParse(input, out index) == false)
@@ -103,7 +107,7 @@ namespace ConsoleUI.Menus
             //Choose character option
             else
             {
-                cm.activeMenu = new CharacterMenu(cm, this, cm.characters[index]);
+                cm.activeMenu = new CharacterMenu(cm, this, chArr[index]);
             }
             return;
 

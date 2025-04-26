@@ -16,7 +16,7 @@
         @foreach (var character in dataAccess.GetCharacterDictionary())
         {
             <tr>
-                <td><a href="/character/@character.Value.Name">@character.Value.Name</a></td>
+                <td><a href="/character/@character.Key">@character.Value.Name</a></td>
             </tr>
         }
     </tbody>
@@ -34,6 +34,6 @@
 
     private void NewCharacter()
     {
-        throw new NotImplementedException();
+        dataAccess.NewCharacter();
     }
 }

@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddSingleton<IDataAccess, DataAccessJSON>();
 
 var app = builder.Build();
 

@@ -19,7 +19,10 @@ namespace ConsoleUI
     internal class ConsoleManager
     {
         internal Menu activeMenu;
-        internal List<Character> characters;
+
+        private JSONManager _dataManager;
+
+        internal Dictionary<string, Character> characters;
         internal Dictionary<string, GameClass> classes { get; private set; }
         internal Dictionary<string, GameRace> races { get; private set; } 
         private string charactersPath = ".\\data\\characters";
@@ -30,7 +33,7 @@ namespace ConsoleUI
         {
             Menu mainMenu = new MainMenu(this);
             this.activeMenu = mainMenu;
-            this.characters = new List<Character>();
+            this.characters = new();
         }
 
         /// <summary>
@@ -38,7 +41,8 @@ namespace ConsoleUI
         /// </summary>
         private void OnStart()
         {
-            characters = JSONManager.LoadCharacters(charactersPath);
+            _dataManager = new JSONManager();
+            characters = _dataManager.LoadCharacters(charactersPath);
             classes = JSONManager.LoadClasses(classesPath);
             races = JSONManager.LoadRaces(racesPath);
         }
@@ -94,8 +98,6 @@ namespace ConsoleUI
         /// <param name="character">Character that is to be added to the ConsoleManager database.</param>
         internal void AddCharacter(Character character)
         {
-            characters.Add(character);
-
             SaveCharacter(character);
         }
 
@@ -105,8 +107,7 @@ namespace ConsoleUI
         /// <param name="character">Character that is to be removed.</param>
         internal void DeleteCharacter(Character character)
         {
-            characters.Remove(character);
-            JSONManager.DeleteCharacter(character, charactersPath);
+            _dataManager.DeleteCharacter(character, charactersPath);
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace ConsoleUI
         /// <param name="character">Character that is to be saved.</param>
         internal void SaveCharacter(Character character)
         {
-            JSONManager.SaveCharacter(character, charactersPath);
+            _dataManager.SaveCharacter(character, charactersPath);
         }
 
         /// <summary>

@@ -4,41 +4,51 @@ namespace BlazorUI
 {
     public class DataAccessJSON : IDataAccess
     {
-        public Dictionary<string, Character> characters;
-        public Dictionary<string, GameClass> classes;
-        public Dictionary<string, GameRace> races;
+        private JSONManager _dataManager;
+
+        private Dictionary<string, Character> _characters;
+        private Dictionary<string, GameClass> _classes;
+        private Dictionary<string, GameRace> _races;
 
         private const string CHARACTERPATH = ".\\data\\characters";
         private const string CLASSESPATH = ".\\data\\classes";
         private const string RACESPATH = ".\\data\\races";
         public DataAccessJSON()
         {
+            _dataManager = new();
             LoadCharacters();
-            classes = JSONManager.LoadClasses(CLASSESPATH);
-            races = JSONManager.LoadRaces(RACESPATH);
+            _classes = JSONManager.LoadClasses(CLASSESPATH);
+            _races = JSONManager.LoadRaces(RACESPATH);
 
         }
 
         /// <summary>
-        /// Converts list of characters to dictionary of characters, where the character's name is the key.
+        /// Deletes character and it's JSON.
         /// </summary>
-        /// <param name="characters">The list of characters to be converted.</param>
-        /// <returns>Dictionary of characters, where character's name is the key.</returns>
-        private Dictionary<string, Character> CharactersListToDict(List<Character> characters)
+        /// <param name="character"></param>
+        public void DeleteCharacter(Character character)
         {
-            Dictionary<string, Character> result = new();
-
-            foreach (var character in characters)
-            {
-                result[character.Name] = character;
-            }
-
-            return result;
+            _dataManager.DeleteCharacter(character, CHARACTERPATH);
         }
 
+        /// <summary>
+        /// Returns dictionary of characters, where keys are their filenames.
+        /// </summary>
+        /// <returns>Dictionary of characters, where keys are their filenames.</returns>
         public Dictionary<string, Character> GetCharacterDictionary()
         {
-            return characters;
+            return _characters;
+        }
+
+        /// <summary>
+        /// Creates new character, adds it to inner dictionary, and saves them in JSON.
+        /// </summary>
+        public Character NewCharacter()
+        {
+            Character newCharacter = new();
+            _characters[newCharacter.Name] = newCharacter;
+            SaveCharacter(newCharacter);
+            return newCharacter;
         }
 
         /// <summary>
@@ -46,7 +56,7 @@ namespace BlazorUI
         /// </summary>
         public void LoadCharacters()
         {
-            characters = CharactersListToDict(JSONManager.LoadCharacters(CHARACTERPATH));
+            _characters = _dataManager.LoadCharacters(CHARACTERPATH);
         }
 
         /// <summary>
@@ -55,7 +65,7 @@ namespace BlazorUI
         /// <param name="character">Saved character.</param>
         public void SaveCharacter(Character character)
         {
-            JSONManager.SaveCharacter(character, CHARACTERPATH);
+            _dataManager.SaveCharacter(character, CHARACTERPATH);
         }
     }
 }

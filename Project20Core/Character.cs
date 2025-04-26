@@ -15,8 +15,6 @@ namespace Core
     /// </summary>
     public class Character
     {
-        internal string filename;
-        
         /// <summary>
         /// Name of the character.
         /// </summary>
@@ -85,31 +83,7 @@ namespace Core
 
         public Character()
         {
-            filename = GetFilename();
             _name = string.Empty;
-        }
-
-        /// <summary>
-        /// Returns JSON filename for the character.
-        /// Filename bases on characters name. If character name does not have name, datetime is used instead.
-        /// </summary>
-        /// <returns>JSON filename.</returns>
-        public string GetFilename()
-        {
-            string fileName;
-
-            //Checking if character has name
-            if (this.Name == Character.nameBaseValue)
-            {
-                //Generating file name
-                fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
-            }
-            else
-            {
-                fileName = this.Name;
-            }
-
-            return fileName + ".json";
         }
 
         /// <summary>

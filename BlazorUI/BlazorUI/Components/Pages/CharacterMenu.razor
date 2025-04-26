@@ -22,6 +22,7 @@
 </div>
 
 <button @onclick="SaveCharacter">Save Character</button>
+<button @onclick="DeleteCharacter">Delete Character</button>
 
 @code {
 	[Parameter]
@@ -54,6 +55,12 @@
 	private void UpdateAbilityScore()
 	{
 		character.abilityScore = abilityScore.Select(x => int.TryParse(x, out int parseX) ? parseX : 10).ToArray();
+	}
+
+	private void DeleteCharacter()
+	{
+		dataAccess.DeleteCharacter(character);
+		Navigation.NavigateTo("/chooseCharacterMenu");
 	}
 
 	private string GetModifier(int scoreValue)
