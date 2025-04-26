@@ -2,7 +2,7 @@
 
 namespace BlazorUI
 {
-    public class DataAccess
+    public class DataAccessJSON : IDataAccess
     {
         public Dictionary<string, Character> characters;
         public Dictionary<string, GameClass> classes;
@@ -11,7 +11,7 @@ namespace BlazorUI
         private const string CHARACTERPATH = ".\\data\\characters";
         private const string CLASSESPATH = ".\\data\\classes";
         private const string RACESPATH = ".\\data\\races";
-        public DataAccess()
+        public DataAccessJSON()
         {
             LoadCharacters();
             classes = JSONManager.LoadClasses(CLASSESPATH);
@@ -34,6 +34,11 @@ namespace BlazorUI
             }
 
             return result;
+        }
+
+        public Dictionary<string, Character> GetCharacterDictionary()
+        {
+            return characters;
         }
 
         /// <summary>

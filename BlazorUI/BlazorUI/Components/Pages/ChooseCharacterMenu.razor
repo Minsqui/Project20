@@ -1,6 +1,6 @@
 ﻿@page "/chooseCharacterMenu"
 @rendermode InteractiveServer
-@inject DataAccess DataAccess
+@inject IDataAccess dataAccess
 
 <PageTitle>Choose Character</PageTitle>
 
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var character in DataAccess.characters)
+        @foreach (var character in dataAccess.GetCharacterDictionary())
         {
             <tr>
                 <td><a href="/character/@character.Value.Name">@character.Value.Name</a></td>
@@ -29,7 +29,7 @@
         base.OnInitialized();
 
         // To have the newest characters, reloading characters data.
-        DataAccess.LoadCharacters();
+        dataAccess.LoadCharacters();
     }
 
     private void NewCharacter()

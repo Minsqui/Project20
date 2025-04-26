@@ -1,6 +1,6 @@
 ﻿@page "/character/{characterID}"
 @rendermode InteractiveServer
-@inject DataAccess dataAccess
+@inject IDataAccess dataAccess
 @inject NavigationManager Navigation
 
 <PageTitle>@characterID</PageTitle>
@@ -39,7 +39,7 @@
 	{
 		base.OnInitialized();
 
-		if(!dataAccess.characters.TryGetValue(characterID, out character))
+		if(!dataAccess.GetCharacterDictionary().TryGetValue(characterID, out character))
 		{
 			Navigation.NavigateTo("/characterNotFound");
 		}
