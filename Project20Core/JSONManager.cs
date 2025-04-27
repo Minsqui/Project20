@@ -11,6 +11,8 @@ namespace Core
     {
         private Dictionary<string, Character> _characters = new();
 
+        private const string BASICNAME = "character";
+
         private const string EXTENSION = ".json";
         private static string GetFilename(string id)
         {
@@ -274,6 +276,23 @@ namespace Core
         }
         */
 
+        public Character NewCharacter(string path)
+        {
+            Character newCharacter = new();
+            string id = BASICNAME;
+            string originalID = id;
+
+            for (int i = 1; _characters.ContainsKey(id); ++i)
+            {
+                id = $"{originalID}{i}";
+            }
+
+            _characters[id] = newCharacter;
+
+            SaveCharacter(newCharacter, path);
+            return newCharacter;
+        }
+
         /// <summary>
         /// Saves character to JSON to given path.
         /// </summary>
@@ -304,8 +323,7 @@ namespace Core
             }
             else
             {
-                fileName = character.Name;
-                _characters[fileName] = character;
+                throw new ApplicationException("Character with not registered ID.");
             }
 
             fileName = GetFilename(fileName);

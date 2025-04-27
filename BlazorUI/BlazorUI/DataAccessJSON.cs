@@ -45,9 +45,7 @@ namespace BlazorUI
         /// </summary>
         public Character NewCharacter()
         {
-            Character newCharacter = new();
-            _characters[newCharacter.Name] = newCharacter;
-            SaveCharacter(newCharacter);
+            Character newCharacter = _dataManager.NewCharacter(CHARACTERPATH);
             return newCharacter;
         }
 
