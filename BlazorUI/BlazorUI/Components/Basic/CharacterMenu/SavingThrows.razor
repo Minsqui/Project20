@@ -1,0 +1,11 @@
+﻿<div class="savingThrows">
+	@foreach (int i in Enumerable.Range(0, Core.Character.numberOfAbilities))
+	{
+		<BlazorUI.Components.Basic.CharacterMenu.SavingThrowLine Character="@Character" SavingThrowIndex="i" />
+	}
+</div>
+
+@code {
+	[Parameter]
+	public Core.Character Character { get; set; }
+}

@@ -1,4 +1,35 @@
-﻿.abilityScoreTable {
+﻿.mainGrid {
+	position: relative;
+	top: 0px;
+	height: 95vh;
+	display: grid;
+	grid-template-rows: 1fr 8fr 1fr;
+}
+
+.headerGrid {
+	position: relative;
+	height: 100%;
+}
+
+.bodyGrid {
+	position: relative;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+}
+
+.characterNameInput {
+	border: solid 0px;
+	height: 100%;
+	font-size: 2em;
+}
+
+.footerGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.abilityScoreTable {
 	position: relative;
 	height: 100%;
 	width: 11vh;
@@ -38,32 +69,12 @@
 	place-self: center;
 }
 
-.characterNameInput {
-	border: solid 0px;
-	height: 100%;
-	font-size: 2em;
+.savingThrows {
+	border: solid 2px #000000;
 }
 
-.mainGrid {
-	position: relative;
-	top: 0px;
-	height: 95vh;
-
-	display: grid;
-	grid-template-rows: 1fr 8fr 1fr;
-}
-
-.headerGrid {
-	position: relative;
-	height: 100%;
-}
-
-.bodyGrid {
-	position: relative;
-	height: 100%;
-}
-
-.footerGrid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+.savingThrowText {
+	font-size: 0.8em;
+	margin-top: 0;
+	margin-bottom: 0;
 }

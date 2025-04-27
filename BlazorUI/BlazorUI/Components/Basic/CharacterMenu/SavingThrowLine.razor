@@ -1,0 +1,8 @@
+﻿<p class="savingThrowText">@Core.Character.abilityNames[SavingThrowIndex]: @Character.GetSaveModifier(SavingThrowIndex)</p>
+
+@code {
+	[Parameter]
+	public int SavingThrowIndex { get; set; }
+	[Parameter]
+	public Core.Character Character { get; set; }
+}

@@ -4,17 +4,17 @@
 		<div class="abilityScore">
 			<div class="abilityScoreName">@Core.Character.abilityNames[i]</div>
 			<div class="abilityModifier">@abilityModifiers[i]</div>
-			<input class="abilityScoreInput" @bind-value="character.abilityScore[i]">
+			<input class="abilityScoreInput" @bind-value="Character.abilityScore[i]">
 		</div>
 	}
 </div>
 
 @code {
 	[Parameter]
-	public Core.Character character { get; set; }
+	public Core.Character Character { get; set; }
 
 	private string[] abilityModifiers
 	{
-		get { return character.abilityScore.Select(x => Core.Character.CountModifier(x).ToString()).ToArray(); }
+		get { return Character.abilityScore.Select(x => Core.Character.CountModifier(x).ToString()).ToArray(); }
 	}
 }
