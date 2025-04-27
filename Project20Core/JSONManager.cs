@@ -58,6 +58,8 @@ namespace Core
         {
             if (!TryGetCharacterID(character, out string id)) return;
 
+            if (id is null) throw new ApplicationException();
+
             _characters.Remove(id);
 
             if (!Directory.Exists(path))

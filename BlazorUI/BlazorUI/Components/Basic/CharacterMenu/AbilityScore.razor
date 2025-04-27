@@ -1,0 +1,24 @@
+﻿<head>
+	<link rel="stylesheet" href="@Assets["characterMenu.css"]" />
+</head>
+
+<div class="abilityScoreTable" style="grid-template-rows: repeat(@Core.Character.numberOfAbilities, 1fr);">
+	@foreach (int i in Enumerable.Range(0, Core.Character.numberOfAbilities - 1))
+	{
+		<div class="abilityScore">
+			<div class="abilityScoreName">@Core.Character.abilityNames[i]</div>
+			<div>@abilityModifiers[i]</div>
+			<input class="abilityScoreInput" @bind-value="character.abilityScore[i]">
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public Core.Character character { get; set; }
+
+	private string[] abilityModifiers
+	{
+		get { return character.abilityScore.Select(x => Core.Character.CountModifier(x).ToString()).ToArray(); }
+	}
+}

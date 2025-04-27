@@ -4,22 +4,10 @@
 @inject NavigationManager Navigation
 
 <PageTitle>@characterID</PageTitle>
-<head>
-	<link rel="stylesheet" href="@Assets["characterMenu.css"]" />
-</head>
 
-<h1>@characterID</h1>
+<BlazorUI.Components.Basic.CharacterMenu.CharacterName character="@character"/>
 
-<div class="abilityScoreTable" style="grid-template-rows: repeat(@Core.Character.numberOfAbilities, 1fr);">
-	@foreach (int i in Enumerable.Range(0, Core.Character.numberOfAbilities - 1))
-	{
-		<div class="abilityScore">
-			<div class="abilityScoreName">@Core.Character.abilityNames[i]</div>
-			<div>@abilityModifiers[i]</div>
-			<input class="abilityScoreInput" @bind-value="abilityScore[i]" @bind-value:after="UpdateAbilityScore">
-		</div>
-	}
-</div>
+<BlazorUI.Components.Basic.CharacterMenu.AbilityScore character="@character"/>
 
 <button @onclick="SaveCharacter">Save Character</button>
 <button @onclick="DeleteCharacter">Delete Character</button>
@@ -29,13 +17,6 @@
 	public string characterID { get; set; }
 	private Core.Character character;
 
-	private string[] abilityScore = new string[Core.Character.numberOfAbilities];
-
-	private string[] abilityModifiers
-	{
-		get { return character.abilityScore.Select(x => GetModifier(x)).ToArray(); }
-	}
-
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
@@ -44,38 +25,12 @@
 		{
 			Navigation.NavigateTo("/characterNotFound");
 		}
-
-		for (int i = 0; i < Core.Character.numberOfAbilities; ++i)
-		{
-			abilityScore[i] = character.abilityScore[i].ToString();
-			abilityModifiers[i] = GetModifier(character.abilityScore[i]);
-		}
-	}
-
-	private void UpdateAbilityScore()
-	{
-		character.abilityScore = abilityScore.Select(x => int.TryParse(x, out int parseX) ? parseX : 10).ToArray();
 	}
 
 	private void DeleteCharacter()
 	{
 		dataAccess.DeleteCharacter(character);
 		Navigation.NavigateTo("/chooseCharacterMenu");
-	}
-
-	private string GetModifier(int scoreValue)
-	{
-		return Core.Character.CountModifier(scoreValue).ToString();
-	}
-
-	private string GetModifier(string scoreValue)
-	{
-		if (!int.TryParse(scoreValue, out int abilityValue))
-		{
-			return "X";
-		}
-
-		return Core.Character.CountModifier(abilityValue).ToString();
 	}
 
 	private void SaveCharacter()
