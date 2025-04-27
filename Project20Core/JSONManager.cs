@@ -34,23 +34,6 @@ namespace Core
             }
         }
 
-        /*
-        /// <summary>
-        /// Deletes character's JSON.
-        /// </summary>
-        /// <param name="character">Character that is to be removed.</param>
-        /// <param name="path">Path to the character folder.</param>
-        public static void DeleteCharacter(Character character, string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                return;
-            }
-            string filePath = Path.Combine(path, character.Filename);
-            File.Delete(filePath);
-        }
-        */
-
         /// <summary>
         /// Deletes character's JSON.
         /// </summary>
@@ -115,48 +98,6 @@ namespace Core
 
             return _characters;
         }
-
-        /*
-        /// <summary>
-        /// Loads all character JSONs from given path.
-        /// <param name="path">Path to the character folder.</param>
-        /// </summary>
-        static public List<Character> LoadCharacters(string path)
-        {
-            List<Character> characters = new();
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            string[] filePaths = Directory.GetFiles(path);
-
-            foreach (var filePath in filePaths)
-            {
-                try
-                {
-                    using (StreamReader r = new StreamReader(filePath))
-                    {
-                        string json = r.ReadToEnd();
-
-                        Character? newCharacter = JsonSerializer.Deserialize<Character>(json);
-
-                        if (newCharacter == null) continue;
-
-                        characters.Add(newCharacter);
-                        newCharacter.Filename = Path.GetFileName(filePath);
-                    }
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-
-            return characters;
-        }
-        */
 
         /// <summary>
         /// Loads all classes JSONs from given path.
@@ -236,46 +177,11 @@ namespace Core
             return races;
         }
 
-        /*
         /// <summary>
-        /// Saves character to JSON to given path.
+        /// Creates new character, generates it's id and saves it.
         /// </summary>
-        /// <param name="character">Character that is to be saved.</param>
-        /// <param name="path">Path to the character folder.</param>>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void SaveCharacter(Character character, string path)
-        {
-            string fileName;
-
-            if (character == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            string jsonString = JsonSerializer.Serialize(character);
-
-            //Checking if character has name
-            if (character.Name == Character.nameBaseValue)
-            {
-                //Generating file name
-                fileName = Character.nameBaseValue + $@"{DateTime.Now.Ticks}";
-            }
-            else
-            {
-                fileName = character.Name;
-            }
-
-            character.Filename = fileName + ".json";
-            string filePath = Path.Combine(path, character.Filename);
-            File.WriteAllText(filePath, jsonString);
-        }
-        */
-
+        /// <param name="path">Path to the character folder.</param>
+        /// <returns>New character.</returns>
         public Character NewCharacter(string path)
         {
             Character newCharacter = new();
