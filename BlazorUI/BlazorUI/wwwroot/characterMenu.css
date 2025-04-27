@@ -1,30 +1,69 @@
 ﻿.abilityScoreTable {
+	position: relative;
+	height: 100%;
+	width: 11vh;
+
 	display: grid;
-	grid-template-columns: 1fr;
 	row-gap: 1vh;
-
 	text-align: center;
-
-	width: 12vh;
 }
 
 .abilityScore {
+	position: relative;
+	height: 11vh;
+
 	display: grid;
-	grid-template-columns: 1fr;
 	grid-template-rows: 1fr 3fr 1fr;
 	border: solid 2px #000000;
-	aspect-ratio: 1/1;
 }
 
 .abilityScoreName {
+	position: relative;
+	height: 100%;
+
 	border-bottom: solid 1px #000000;
+}
+
+.abilityModifier {
+	position: relative;
+	height: 100%;
 }
 
 .abilityScoreInput {
 	position: relative;
+	height: 100%;
 	width: 60%;
-	bottom: 0px;
 
 	text-align: center;
 	place-self: center;
+}
+
+.characterNameInput {
+	border: solid 0px;
+	height: 100%;
+	font-size: 2em;
+}
+
+.mainGrid {
+	position: relative;
+	top: 0px;
+	height: 95vh;
+
+	display: grid;
+	grid-template-rows: 1fr 8fr 1fr;
+}
+
+.headerGrid {
+	position: relative;
+	height: 100%;
+}
+
+.bodyGrid {
+	position: relative;
+	height: 100%;
+}
+
+.footerGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 }

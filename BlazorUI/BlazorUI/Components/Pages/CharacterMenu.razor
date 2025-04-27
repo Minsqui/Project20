@@ -5,12 +5,22 @@
 
 <PageTitle>@characterID</PageTitle>
 
-<BlazorUI.Components.Basic.CharacterMenu.CharacterName character="@character"/>
+<head>
+	<link rel="stylesheet" href="@Assets["characterMenu.css"]" />
+</head>
 
-<BlazorUI.Components.Basic.CharacterMenu.AbilityScore character="@character"/>
-
-<button @onclick="SaveCharacter">Save Character</button>
-<button @onclick="DeleteCharacter">Delete Character</button>
+<div class="mainGrid">
+	<div class="headerGrid">
+		<BlazorUI.Components.Basic.CharacterMenu.CharacterName character="@character"/>
+	</div>
+	<div class="bodyGrid">
+		<BlazorUI.Components.Basic.CharacterMenu.AbilityScore character="@character"/>
+	</div>
+	<div class="footerGrid">
+		<button @onclick="SaveCharacter">Save Character</button>
+		<button @onclick="DeleteCharacter">Delete Character</button>
+	</div>
+</div>
 
 @code {
 	[Parameter]
