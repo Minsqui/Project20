@@ -1,0 +1,27 @@
+﻿<div>
+	<input type="checkbox" @bind="_proficiency" @bind:after="UpdateProficiency" />
+	<label class="skillScoreText">@Core.Character.skillNames[SkillIndex]: @Character.GetSkillModifier(SkillIndex)</label>
+</div>
+
+@code {
+	[Parameter]
+	public int SkillIndex { get; set; }
+	[Parameter]
+	public Core.Character Character { get; set; }
+
+	private bool _proficiency;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		if (Character.proficiencies[SkillIndex] >= 1) _proficiency = true;
+		else _proficiency = false;
+	}
+
+	private void UpdateProficiency()
+	{
+		if (_proficiency == true) Character.EditSkillProficiency(SkillIndex, 1);
+		else Character.EditSkillProficiency(SkillIndex, 0);
+	}
+}
