@@ -1,8 +1,27 @@
-﻿<p class="savingThrowText">@Core.Character.abilityNames[SavingThrowIndex]: @Character.GetSaveModifier(SavingThrowIndex)</p>
+﻿<div>
+	<input type="checkbox" @bind="_proficiency" @bind:after="UpdateProficiency" />
+	<label class="savingThrowText">@Core.Character.abilityNames[SavingThrowIndex]: @Character.GetSaveModifier(SavingThrowIndex)</label>
+</div>
 
 @code {
 	[Parameter]
 	public int SavingThrowIndex { get; set; }
 	[Parameter]
 	public Core.Character Character { get; set; }
+
+	private bool _proficiency;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		if (Character.saveThrows[SavingThrowIndex] >= 1) _proficiency = true;
+		else _proficiency = false;
+	}
+
+	private void UpdateProficiency()
+	{
+		if (_proficiency == true) Character.EditSaveThrow(SavingThrowIndex, 1);
+		else Character.EditSaveThrow(SavingThrowIndex, 0);
+	}
 }
