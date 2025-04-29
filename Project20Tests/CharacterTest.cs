@@ -11,14 +11,14 @@ namespace Project20Tests
         [TestMethod]
         public void NoName_Name_UnnamedCharacter()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
             Assert.AreEqual(UNNAMED_CHARACTER_NAME, character.Name);
         }
 
         [TestMethod]
         public void WhiteSpaceName_Name_UnnamedCharacter()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
             character.Name = "\n \t";
             Assert.AreEqual(UNNAMED_CHARACTER_NAME, character.Name);
         }
@@ -27,7 +27,7 @@ namespace Project20Tests
         public void ValidName_Name_NamedCharacter()
         {
             string expected = "Unit von Test";
-            Project20.Character character = new();
+            Core.Character character = new();
             character.Name = expected;
             Assert.AreEqual(expected, character.Name);
         }
@@ -41,7 +41,7 @@ namespace Project20Tests
             int[] expected = [12, 7, 10, 10, 10, 11];
             bool failed = false;
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             failed = !character.AddAbilityScore(addition);
 
@@ -61,7 +61,7 @@ namespace Project20Tests
         public void InvalidLength_AddAbilityScore_False()
         {
             int[] addition = [0, 0, 8];
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.AddAbilityScore(addition));
         }
@@ -70,7 +70,7 @@ namespace Project20Tests
         public void Null_AddAbilityScore_False()
         {
             int[] addition = null;
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.AddAbilityScore(addition));
         }
@@ -80,7 +80,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidName_EditAbilityScore_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditAbilityScore("not", 12));
         }
@@ -88,7 +88,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidIndex_EditAbilityScore_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditAbilityScore(6, 12));
         }
@@ -102,7 +102,7 @@ namespace Project20Tests
         [DataRow("Cha", 14, 5)]
         public void ValidInput_EditAbilityScore_True(string name, int value, int expectedIndex)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             character.EditAbilityScore(name, value);
 
@@ -117,7 +117,7 @@ namespace Project20Tests
         [DataRow(21)]
         public void InvalidLevel_EditLevel_False(int level)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditLevel(level));
         }
@@ -127,7 +127,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidName_EditSaveThrow_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSaveThrow("not", 1));
         }
@@ -135,7 +135,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidIndex_EditSaveThrow_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSaveThrow(6, 1));
         }
@@ -149,7 +149,7 @@ namespace Project20Tests
         [DataRow("Cha", 1, 5)]
         public void ValidInput_EditSaveThrow_True(string name, int value, int expectedIndex)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             character.EditSaveThrow(name, value);
 
@@ -160,7 +160,7 @@ namespace Project20Tests
         public void InvalidArrayLength_EditSaveThrow_False()
         {
             int[] saveThrows = [0, 0, 0];
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSaveThrow(saveThrows));
         }
@@ -169,7 +169,7 @@ namespace Project20Tests
         public void NullArray_EditSaveThrow_False()
         {
             int[] saveThrows = null;
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSaveThrow(saveThrows));
         }
@@ -178,7 +178,7 @@ namespace Project20Tests
         public void ValidArray_EditSaveThrow_True()
         {
             int[] saveThrows = [0, 1, 0, 2, 1, 0];
-            Project20.Character character = new();
+            Core.Character character = new();
             bool failed = false;
 
             failed = !character.EditSaveThrow(saveThrows);
@@ -200,7 +200,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidName_EditSkillProficiency_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSkillProficiency("programming", 2));
         }
@@ -208,7 +208,7 @@ namespace Project20Tests
         [TestMethod]
         public void InvalidIndex_EditSkillProficiency_False()
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsFalse(character.EditSkillProficiency(42, 1));
         }
@@ -234,7 +234,7 @@ namespace Project20Tests
         [DataRow("survival", 1, 17)]
         public void ValidInput_EditSkillProficiency_True(string name, int value, int expectedIndex)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             character.EditSkillProficiency(name, value);
 
@@ -252,7 +252,7 @@ namespace Project20Tests
             int expected = 1;
             int value = 12;
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             character.abilityScore[index] = 12;
 
@@ -266,7 +266,7 @@ namespace Project20Tests
         [DataRow(6)]
         public void OutOfRangeIndex_GetAbilityModifier_ThrowException(int index)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetAbilityModifier(index));
         }
@@ -282,7 +282,7 @@ namespace Project20Tests
             int expected = 1;
             int value = 12;
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             character.abilityScore[index] = 12;
 
@@ -294,7 +294,7 @@ namespace Project20Tests
         [DataRow(6)]
         public void OutOfRangeIndex_GetSaveModifier_ThrowException(int index)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSaveModifier(index));
         }
@@ -312,7 +312,7 @@ namespace Project20Tests
 
             int expected = 3;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.proficiencies[index] = prof;
             character.level = level;
             character.abilityScore[dexPos] = dex;
@@ -325,7 +325,7 @@ namespace Project20Tests
         [DataRow(18)]
         public void OutOfRangeIndex_GetSkillModifier(int index)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(() => character.GetSkillModifier(index));
         }
@@ -344,7 +344,7 @@ namespace Project20Tests
         [DataRow(20, 6)]
         public void GetProficiency(int level, int expected)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
             character.level = level;
 
             Assert.AreEqual(expected, character.GetProficiency());
@@ -363,7 +363,7 @@ namespace Project20Tests
             int minValue = 1 + expectedBonus;
             int maxValue = 20 + expectedBonus;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.abilityScore[abilityIndex] = abilityScore;
 
             for (int i = 0; i < numberOfTests; ++i)
@@ -383,7 +383,7 @@ namespace Project20Tests
         [DataRow(6)]
         public void OutOfRangeIndex_CheckAbility(int index)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(
                 () => character.CheckAbility(index)
@@ -403,7 +403,7 @@ namespace Project20Tests
             int minValue = 1 + expectedBonus;
             int maxValue = 20 + expectedBonus;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.abilityScore[abilityIndex] = abilityScore;
 
             for (int i = 0; i < numberOfTests; ++i)
@@ -423,7 +423,7 @@ namespace Project20Tests
         {
             string name = "Cat";
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsNull(character.CheckAbility(name));
         }
@@ -445,7 +445,7 @@ namespace Project20Tests
             int minValue = 1 + expectedBonus;
             int maxValue = 20 + expectedBonus;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.level = level;
             character.abilityScore[abilityIndex] = abilityScore;
             character.saveThrows[abilityIndex] = proficiency;
@@ -467,7 +467,7 @@ namespace Project20Tests
         {
             string name = "Cat";
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsNull(character.CheckSave(name));
         }
@@ -490,7 +490,7 @@ namespace Project20Tests
             int minValue = 1 + expectedBonus;
             int maxValue = 20 + expectedBonus;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.level = level;
             character.abilityScore[abilityIndex] = abilityScore;
             character.proficiencies[skillIndex] = proficiency;
@@ -512,7 +512,7 @@ namespace Project20Tests
         [DataRow(18)]
         public void OutOfRangeIndex_CheckSkill(int index)
         {
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.ThrowsException<IndexOutOfRangeException>(
                 () => character.CheckSkill(index)
@@ -536,7 +536,7 @@ namespace Project20Tests
             int minValue = 1 + expectedBonus;
             int maxValue = 20 + expectedBonus;
 
-            Project20.Character character = new();
+            Core.Character character = new();
             character.level = level;
             character.abilityScore[abilityIndex] = abilityScore;
             character.proficiencies[skillIndex] = proficiency;
@@ -558,7 +558,7 @@ namespace Project20Tests
         {
             string name = "Cat";
 
-            Project20.Character character = new();
+            Core.Character character = new();
 
             Assert.IsNull(character.CheckSkill(name));
         }
@@ -570,7 +570,7 @@ namespace Project20Tests
         [DataRow(12, 1)]
         public void ValidInput_CountModifier(int score, int expected)
         {
-            Assert.AreEqual(expected, Project20.Character.CountModifier(score));
+            Assert.AreEqual(expected, Core.Character.CountModifier(score));
         }
 
         [DataTestMethod]
@@ -578,7 +578,7 @@ namespace Project20Tests
         [DataRow("dEx",1)]
         public void ValidInput_GetAbilityIndex(string name, int expected)
         {
-            Assert.AreEqual(expected, Project20.Character.GetAbilityIndex(name));
+            Assert.AreEqual(expected, Core.Character.GetAbilityIndex(name));
         }
 
         [DataTestMethod]
@@ -586,7 +586,7 @@ namespace Project20Tests
         [DataRow("arCANa", 2)]
         public void ValidInput_GetSkillIndex(string name, int expected)
         {
-            Assert.AreEqual(expected, Project20.Character.GetSkillIndex(name));
+            Assert.AreEqual(expected, Core.Character.GetSkillIndex(name));
         }
     }
 }

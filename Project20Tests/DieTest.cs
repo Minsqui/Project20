@@ -16,7 +16,7 @@ namespace Project20Tests
 
             for (int i = 0; i < numberOfTests; ++i)
             {
-                int rollValue = Project20.Die.Roll(shorthand);
+                int rollValue = Core.Die.Roll(shorthand);
                 if (rollValue < minValue || maxValue < rollValue)
                 {
                     failed = true;
@@ -30,7 +30,7 @@ namespace Project20Tests
         public void NullInput_Roll_ValidOutput()
         {
             Assert.ThrowsException<ApplicationException>(
-                () => Project20.Die.Roll(null)
+                () => Core.Die.Roll(null)
             );
         }
 
@@ -42,7 +42,7 @@ namespace Project20Tests
         public void InvalidInput_Roll_InvalidOutput(string shorthand)
         {
             Assert.ThrowsException<ApplicationException>(
-                () => Project20.Die.Roll(shorthand)
+                () => Core.Die.Roll(shorthand)
             );
         }
     }
