@@ -1,6 +1,6 @@
 ﻿<div>
 	<input type="checkbox" @bind="_proficiency" @bind:after="UpdateProficiency" />
-	<label class="skillScoreText">@Core.Character.skillNames[SkillIndex]: @Character.GetSkillModifier(SkillIndex)</label>
+	<label class="skillScoreText">@Core.Character.skillNames[SkillIndex] (@Core.Character.abilityNames[Core.Character.skillAbility[SkillIndex]]): @Character.GetSkillModifier(SkillIndex)</label>
 </div>
 
 @code {
