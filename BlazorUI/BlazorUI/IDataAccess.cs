@@ -31,5 +31,34 @@ namespace BlazorUI
         /// </summary>
         /// <returns>Dictionary of all loaded characters, where their name is the key.</returns>
         public Dictionary<string, Character> GetCharacterDictionary();
+
+        /// <summary>
+        /// Returns character's class.
+        /// </summary>
+        /// <param name="character">Given character.</param>
+        /// <returns></returns>
+        public GameClass? GetCharacterGameClass(Character character);
+
+        /// <summary>
+        /// Returns class with given id.
+        /// </summary>
+        /// <param name="id">ID of the class</param>
+        /// <returns>Class with given id. Returns null if no race found.</returns>
+        public GameClass? GetGameClass(string id);
+
+
+        /// <summary>
+        /// Returns character's race.
+        /// </summary>
+        /// <param name="character">Given character.</param>>
+        /// <returns>Character's race. Returns null if no race found.</returns>
+        public GameRace? GetCharacterGameRace(Character character);
+
+        /// <summary>
+        /// Returns race with given id.
+        /// </summary>
+        /// <param name="id">ID of the race.</param>
+        /// <returns>Race with given id. Returns null if no race found.</returns>
+        public GameRace? GetGameRace(string id);
     }
 }

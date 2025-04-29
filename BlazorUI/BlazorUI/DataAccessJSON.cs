@@ -65,5 +65,51 @@ namespace BlazorUI
         {
             _dataManager.SaveCharacter(character, CHARACTERPATH);
         }
+
+        /// <summary>
+        /// Returns character's class.
+        /// </summary>
+        /// <param name="character">Given character.</param>
+        /// <returns></returns>
+        public GameClass? GetCharacterGameClass(Character character)
+        {
+            if (character.ClassID is null) return null;
+
+            return GetGameClass(character.ClassID);
+        }
+
+        /// <summary>
+        /// Returns class with given id.
+        /// </summary>
+        /// <param name="id">ID of the class</param>
+        /// <returns>Class with given id. Returns null if no race found.</returns>
+        public GameClass? GetGameClass(string id)
+        {
+            if (_classes.ContainsKey(id)) return _classes[id];
+            else return null;
+        }
+
+        /// <summary>
+        /// Returns character's race.
+        /// </summary>
+        /// <param name="character">Given character.</param>>
+        /// <returns>Character's race. Returns null if no race found.</returns>
+        public GameRace? GetCharacterGameRace(Character character)
+        {
+            if (character.RaceID is null) return null;
+
+            return GetGameRace(character.RaceID);
+        }
+
+        /// <summary>
+        /// Returns race with given id.
+        /// </summary>
+        /// <param name="id">ID of the race.</param>
+        /// <returns>Race with given id. Returns null if no race found.</returns>
+        public GameRace? GetGameRace(string id)
+        {
+            if (_classes.ContainsKey(id)) return _races[id];
+            else return null;
+        }
     }
 }

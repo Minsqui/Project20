@@ -15,9 +15,12 @@
 	</div>
 	<div class="bodyGrid">
 		<BlazorUI.Components.Basic.CharacterMenu.AbilityScore Character="@character"/>
-		<div>
+		<div class="proficiencies">
 			<BlazorUI.Components.Basic.CharacterMenu.SavingThrows Character="@character"/>
 			<BlazorUI.Components.Basic.CharacterMenu.SkillScore Character="@character"/>
+		</div>
+		<div class="featuresAndTraits">
+			<BlazorUI.Components.Basic.CharacterMenu.GameRaceBox Race=@dataAccess.GetCharacterGameRace(character)/>
 		</div>
 	</div>
 	<div class="footerGrid">
