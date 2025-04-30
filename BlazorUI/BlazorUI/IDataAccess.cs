@@ -33,6 +33,12 @@ namespace BlazorUI
         public Dictionary<string, Character> GetCharacterDictionary();
 
         /// <summary>
+        /// Returns all loaded game classes.
+        /// </summary>
+        /// <returns>All loaded game classes.</returns>
+        public GameClass[] GetAllGameClasses();
+
+        /// <summary>
         /// Returns character's class.
         /// </summary>
         /// <param name="character">Given character.</param>
@@ -46,6 +52,11 @@ namespace BlazorUI
         /// <returns>Class with given id. Returns null if no race found.</returns>
         public GameClass? GetGameClass(string id);
 
+        /// <summary>
+        /// Returns all loaded game races.
+        /// </summary>
+        /// <returns>All loaded game races.</returns>
+        public GameRace[] GetAllGameRaces();
 
         /// <summary>
         /// Returns character's race.

@@ -1,20 +1,36 @@
-﻿<div>
-	@if (Race is null)
+﻿@inject IDataAccess dataAccess
+
+
+<div class="gameRaceBox">
+	<label>Race:</label>
+	<select @bind="Character.RaceID">
+		@foreach (Core.GameRace race in dataAccess.GetAllGameRaces())
+		{
+			<option value="@race.id">@race.name</option>
+		}
+	</select>
+	@if (_race is null)
 	{
 		<h3>Character's race not found</h3>
 	}
 	else
 	{
-		<h3>Race: @Race.name</h3>
+		<h3>Race: @_race.name</h3>
 		<h4>Traits</h4>
-		@foreach (var trait in Race.traits)
-		{
-			<p>@trait.name: @trait.description</p>
-		}
+		<div class="gameRaceList">
+			@foreach (var trait in _race.traits)
+			{
+				<p>@trait.name: @trait.description</p>
+			}
+		</div>
 	}
 </div>
 
 @code {
 	[Parameter]
-	public Core.GameRace Race { get; set; }
+	public Core.Character Character{ get; set; }
+	private Core.GameRace _race
+	{
+		get { return dataAccess.GetCharacterGameRace(Character); }
+	}
 }

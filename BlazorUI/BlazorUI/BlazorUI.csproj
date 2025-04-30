@@ -7,6 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="data\classes\Barbarian.json" />
+    <Content Remove="data\classes\Fighter.json" />
+    <Content Remove="data\races\human.json" />
+    <Content Remove="data\races\woodelf.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="data\classes\Barbarian.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="data\classes\Fighter.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="data\races\human.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="data\races\woodelf.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Project20Core\Core.csproj" />
     <ProjectReference Include="..\BlazorUI.Client\BlazorUI.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.4" />

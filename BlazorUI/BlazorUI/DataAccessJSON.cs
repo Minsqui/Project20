@@ -1,4 +1,5 @@
 ﻿using Core;
+using System.Xml.Schema;
 
 namespace BlazorUI
 {
@@ -67,6 +68,15 @@ namespace BlazorUI
         }
 
         /// <summary>
+        /// Returns all loaded game classes.
+        /// </summary>
+        /// <returns>All loaded game classes.</returns>
+        public GameClass[] GetAllGameClasses()
+        {
+            return _classes.Select(x => x.Value).ToArray();
+        }
+
+        /// <summary>
         /// Returns character's class.
         /// </summary>
         /// <param name="character">Given character.</param>
@@ -90,6 +100,15 @@ namespace BlazorUI
         }
 
         /// <summary>
+        /// Returns all loaded game races.
+        /// </summary>
+        /// <returns>All loaded game races.</returns>
+        public GameRace[] GetAllGameRaces()
+        {
+            return _races.Select(x => x.Value).ToArray();
+        }
+
+        /// <summary>
         /// Returns character's race.
         /// </summary>
         /// <param name="character">Given character.</param>>
@@ -108,7 +127,7 @@ namespace BlazorUI
         /// <returns>Race with given id. Returns null if no race found.</returns>
         public GameRace? GetGameRace(string id)
         {
-            if (_classes.ContainsKey(id)) return _races[id];
+            if (_races.ContainsKey(id)) return _races[id];
             else return null;
         }
     }

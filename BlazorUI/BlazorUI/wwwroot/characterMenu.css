@@ -16,6 +16,7 @@
 	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr 2fr 2fr;
+	grid-auto-rows: 100%;
 }
 
 .characterNameInput {
@@ -77,4 +78,22 @@
 	font-size: 0.8em;
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+.featuresAndTraits {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+}
+
+.gameRaceBox {
+	position: relative;
+	border: solid 2px #000000;
+}
+
+.gameRaceList {
+	position: absolute;
+	height: 65%;
+
+	overflow-x: visible;
+	overflow-y: auto;
 }
