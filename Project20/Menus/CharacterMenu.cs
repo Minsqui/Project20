@@ -625,7 +625,7 @@ namespace ConsoleUI.Menus
             else
             {
                 className = gameClass.name;
-                hitpoints += $"/{gameClass.hitDice * character.level}";
+                hitpoints += $"/{gameClass.hitDice * (character.level + character.GetAbilityModifier(2))}";
             }
             
 

@@ -1,0 +1,19 @@
+﻿@inject IDataAccess dataAccess
+
+<div>
+	<input @bind="Character.currentHP"><label>/@_totalHP</label>
+</div>
+
+@code {
+	[Parameter]
+	public Core.Character Character { get; set; }
+	private int _totalHP
+	{
+		get
+		{
+			int classHP = dataAccess.GetCharacterGameClass(Character)?.hitDice??0;
+			int conHP = Character.GetAbilityModifier(2);
+			return Character.level * (classHP + conHP);
+		}
+	}
+}
