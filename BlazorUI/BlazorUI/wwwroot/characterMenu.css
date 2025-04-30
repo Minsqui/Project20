@@ -97,3 +97,15 @@
 	overflow-x: visible;
 	overflow-y: auto;
 }
+
+.gameClassBox {
+	position: relative;
+	border: solid 2px #000000;
+}
+
+.gameClassList {
+	position: absolute;
+	height: 65%;
+	overflow-x: visible;
+	overflow-y: auto;
+}

@@ -1,0 +1,35 @@
+﻿@inject IDataAccess dataAccess
+
+<div class="gameClassBox">
+	<label>Class:</label>
+	<select @bind="Character.ClassID">
+		@foreach (Core.GameClass gameClass in dataAccess.GetAllGameClasses())
+		{
+			<option value="@gameClass.id">@gameClass.name</option>
+		}
+	</select>
+	@if (_class is null)
+	{
+		<h3>Character's class not found</h3>
+	}
+	else
+	{
+		<h3>Class: @_class.name</h3>
+		<h4>Features</h4>
+		<div class="gameClassList">
+			@foreach (var feature in _class.features)
+			{
+				<p>@feature.text</p>
+			}
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public Core.Character Character { get; set; }
+	private Core.GameClass _class
+	{
+		get { return dataAccess.GetCharacterGameClass(Character); }
+	}
+}
