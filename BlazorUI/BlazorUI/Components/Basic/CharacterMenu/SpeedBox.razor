@@ -1,0 +1,10 @@
+﻿@inject IDataAccess dataAccess
+
+<div>
+	<label>Speed: @dataAccess.GetCharacterGameRace(Character).speed</label>
+</div>
+
+@code {
+	[Parameter]
+	public Core.Character Character { get; set; }
+}
