@@ -1,7 +1,7 @@
 ﻿@inject IDataAccess dataAccess
 
-<div>
-	<label>HP: </label><input @bind="Character.currentHP"><label>/@_totalHP</label>
+<div class="hpBox">
+	<label>HP: </label><input class="hpInput" size="4" @bind="Character.currentHP"><label>/@_totalHP</label>
 </div>
 
 @code {

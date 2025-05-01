@@ -14,18 +14,60 @@
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
+.characterNameBox {
+	width: 100%;
+}
+
+.characterNameInput {
+	border: solid 0px;
+	height: 100%;
+	width: 100%;
+	font-size: 2em;
+}
+
+.characterNameInput:focus {
+	outline: solid 0px;
+}
+
+.levelBox {
+	display: flex;
+	align-items: center;
+}
+
+.levelInput {
+	border: solid 0px;
+	width: 2em;
+}
+
+.levelInput:focus {
+	outline: solid 0px;
+}
+
+.hpBox {
+	display: flex;
+	align-items: center;
+}
+
+.hpInput {
+	border: solid 0px;
+	width: 2em;
+}
+
+.hpInput:focus {
+	outline: solid 0px;
+}
+
+.speedBox {
+	display: flex;
+	align-items: center;
+}
+
 .bodyGrid {
 	position: relative;
 	height: 100%;
 	display: grid;
 	grid-template-columns: 1fr 2fr 2fr;
 	grid-auto-rows: 100%;
-}
-
-.characterNameInput {
-	border: solid 0px;
-	height: 100%;
-	font-size: 2em;
 }
 
 .footerGrid {
