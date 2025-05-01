@@ -117,12 +117,18 @@
 
 .savingThrows {
 	border: solid 2px #000000;
+	padding: 5px;
 }
 
 .savingThrowText {
 	font-size: 0.8em;
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+.skillBox {
+	border: solid 2px #000000;
+	padding: 5px;
 }
 
 .featuresAndTraits {
@@ -133,6 +139,7 @@
 .gameRaceBox {
 	position: relative;
 	border: solid 2px #000000;
+	padding: 5px;
 }
 
 .gameRaceList {
@@ -146,6 +153,7 @@
 .gameClassBox {
 	position: relative;
 	border: solid 2px #000000;
+	padding: 5px;
 }
 
 .gameClassList {
