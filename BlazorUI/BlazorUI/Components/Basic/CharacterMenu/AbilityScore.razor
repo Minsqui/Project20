@@ -1,10 +1,10 @@
 ﻿<div class="abilityScoreTable" style="grid-template-rows: repeat(@Core.Character.numberOfAbilities, 1fr);">
 	@foreach (int i in Enumerable.Range(0, Core.Character.numberOfAbilities))
 	{
-		<div class="abilityScore">
+		<div class="abilityScore box">
 			<div class="abilityScoreName">@Core.Character.abilityNames[i]</div>
 			<div class="abilityModifier">@abilityModifiers[i]</div>
-			<input class="abilityScoreInput" @bind-value="Character.abilityScore[i]">
+			<input class="abilityScoreInput box" @bind-value="Character.abilityScore[i]">
 		</div>
 	}
 </div>

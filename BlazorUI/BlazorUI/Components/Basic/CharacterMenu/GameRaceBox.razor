@@ -1,7 +1,7 @@
 ﻿@inject IDataAccess dataAccess
 
 
-<div class="gameRaceBox">
+<div class="gameRaceBox box">
 	<label>Race:</label>
 	<select @bind="Character.RaceID">
 		@foreach (Core.GameRace race in dataAccess.GetAllGameRaces())
@@ -16,7 +16,8 @@
 	else
 	{
 		<h3>Race: @_race.name</h3>
-		<h4>Traits</h4>
+		<hr>
+		<h4>Traits:</h4>
 		<div class="gameRaceList">
 			@foreach (var trait in _race.traits)
 			{

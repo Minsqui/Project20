@@ -1,6 +1,6 @@
 ﻿@inject IDataAccess dataAccess
 
-<div class="gameClassBox">
+<div class="gameClassBox box">
 	<label>Class:</label>
 	<select @bind="Character.ClassID">
 		@foreach (Core.GameClass gameClass in dataAccess.GetAllGameClasses())
@@ -15,7 +15,8 @@
 	else
 	{
 		<h3>Class: @_class.name</h3>
-		<h4>Features</h4>
+		<hr>
+		<h4>Features:</h4>
 		<div class="gameClassList">
 			@foreach (var feature in _class.features)
 			{
