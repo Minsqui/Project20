@@ -1,7 +1,7 @@
 ﻿@inject IDataAccess dataAccess
 
 <div class="speedBox">
-	<label>Speed: @dataAccess.GetCharacterGameRace(Character).speed</label>
+	<label>Speed: @dataAccess.GetCharacterGameRace(Character)?.speed</label>
 </div>
 
 @code {
