@@ -184,7 +184,6 @@
 }
 
 .footerGridButton:hover {
-
 	background: var(--secondary);
 	color: white;
 }
