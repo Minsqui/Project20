@@ -29,8 +29,8 @@
 
 @code {
 	[Parameter]
-	public Core.Character Character{ get; set; }
-	private Core.GameRace _race
+	required public Core.Character Character{ get; set; }
+	private Core.GameRace? _race
 	{
 		get { return dataAccess.GetCharacterGameRace(Character); }
 	}

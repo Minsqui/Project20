@@ -7,9 +7,9 @@ namespace BlazorUI
     {
         private JSONManager _dataManager;
 
-        private Dictionary<string, Character> _characters;
-        private Dictionary<string, GameClass> _classes;
-        private Dictionary<string, GameRace> _races;
+        private Dictionary<string, Character> _characters = new();
+        private Dictionary<string, GameClass> _classes = new();
+        private Dictionary<string, GameRace> _races = new();
 
         private const string CHARACTERPATH = ".\\data\\characters";
         private const string CLASSESPATH = ".\\data\\classes";

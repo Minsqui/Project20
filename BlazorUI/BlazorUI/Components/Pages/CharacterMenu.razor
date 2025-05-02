@@ -35,8 +35,8 @@
 
 @code {
 	[Parameter]
-	public string characterID { get; set; }
-	private Core.Character character;
+	required public string characterID { get; set; }
+	private Core.Character? character;
 
 	protected override void OnInitialized()
 	{
@@ -50,12 +50,16 @@
 
 	private void DeleteCharacter()
 	{
+		if (character == null) throw new ApplicationException("Trying to delete null character.");
+
 		dataAccess.DeleteCharacter(character);
 		Navigation.NavigateTo("/chooseCharacterMenu");
 	}
 
 	private void SaveCharacter()
 	{
+		if (character == null) throw new ApplicationException("Trying to save null character.");
+
 		dataAccess.SaveCharacter(character);
 	}
 }

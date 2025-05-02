@@ -28,8 +28,8 @@
 
 @code {
 	[Parameter]
-	public Core.Character Character { get; set; }
-	private Core.GameClass _class
+	required public Core.Character Character { get; set; }
+	private Core.GameClass? _class
 	{
 		get { return dataAccess.GetCharacterGameClass(Character); }
 	}
