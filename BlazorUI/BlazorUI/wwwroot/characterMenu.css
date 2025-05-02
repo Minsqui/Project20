@@ -173,4 +173,23 @@
 .footerGrid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	column-gap: 5px;
 }
+
+.footerGridButton {
+	border: solid 3px var(--secondary);
+	border-radius: 5px;
+
+	background: white;
+}
+
+.footerGridButton:hover {
+
+	background: var(--secondary);
+	color: white;
+}
+
+.footerGridButton:active {
+	border-style: inset;
+}
+
