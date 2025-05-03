@@ -42,7 +42,9 @@
 	{
 		base.OnInitialized();
 
-		if(!dataAccess.GetCharacterDictionary().TryGetValue(characterID, out character))
+		character = dataAccess.GetCharacter(characterID);
+
+		if (character is null)
 		{
 			Navigation.NavigateTo("/characterNotFound");
 		}

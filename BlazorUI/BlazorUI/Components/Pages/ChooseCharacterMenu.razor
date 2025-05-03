@@ -13,11 +13,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var character in dataAccess.GetCharacterDictionary())
+        @foreach (var characterID in dataAccess.GetAllCharactersIDs())
         {
-            <tr>
-                <td><a href="/character/@character.Key">@character.Value.Name</a></td>
-            </tr>
+            var character = dataAccess.GetCharacter(characterID);
+            if (character is null) continue;
+            else
+            {
+                <tr>
+                    <td><a href="/character/@characterID">@character.Name</a></td>
+                </tr>
+            }
         }
     </tbody>
 </table>

@@ -17,9 +17,10 @@ namespace ConsoleUI.Menus
             {
                 int sum = 3; //3 for exit, go back and new character options
 
-                if (cm.characters != null)
+                string[] characterIDs = cm.GetChraracterIDs();
+                if (characterIDs != null)
                 {
-                    sum += cm.characters.Count;
+                    sum += characterIDs.Length;
                 }
 
                 return sum;
@@ -41,17 +42,17 @@ namespace ConsoleUI.Menus
         {
             int i = 0;
 
-            Core.Character[] chArr = cm.characters.Select(x => x.Value).ToArray();
+            Core.Character[] characters = cm.GetAllCharacters();
 
-            if (cm.characters == null || cm.characters.Count == 0)
+            if (characters.Length == 0)
             {
                 Console.WriteLine("No characters found.");
             }
             else
             {
-                for (; i < cm.characters.Count; ++i)
+                for (; i < characters.Length; ++i)
                 {
-                    Console.WriteLine(i + ": " + chArr[i].Name);
+                    Console.WriteLine(i + ": " + characters[i].Name);
                 }
             }
 
@@ -71,7 +72,7 @@ namespace ConsoleUI.Menus
         {
             int index;
 
-            Core.Character[] chArr = cm.characters.Select(x => x.Value).ToArray();
+            Core.Character[] characters = cm.GetAllCharacters();
 
             //Checking if input is number + converting input to number
             if (int.TryParse(input, out index) == false)
@@ -107,7 +108,7 @@ namespace ConsoleUI.Menus
             //Choose character option
             else
             {
-                cm.activeMenu = new CharacterMenu(cm, this, chArr[index]);
+                cm.activeMenu = new CharacterMenu(cm, this, characters[index]);
             }
             return;
 

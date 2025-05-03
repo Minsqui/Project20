@@ -10,6 +10,8 @@ namespace Core
     public class JSONManager
     {
         private Dictionary<string, Character> _characters = new();
+        private Dictionary<string, GameClass> _classes = new();
+        private Dictionary<string, GameRace> _races = new();
 
         private const string BASICNAME = "character";
 
@@ -19,7 +21,12 @@ namespace Core
             return $"{id}{EXTENSION}";
         }
 
-        // TODO - Needs checking, also use it as minumum as possible
+        /// <summary>
+        /// Tries to find characters ID. Returns true if finding was successful.
+        /// </summary>
+        /// <param name="character">Character whose ID is being searched for.</param>
+        /// <param name="id">ID that was found.</param>
+        /// <returns>True if finding was successful.</returns>
         private bool TryGetCharacterID(Character character, out string? id)
         {
             if (_characters.ContainsValue(character))
@@ -54,6 +61,96 @@ namespace Core
 
             string filePath = Path.Combine(path, GetFilename(id));
             File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// Returns array of all character ids.
+        /// </summary>
+        /// <returns>Array of all character ids.</returns>
+        public string[] GetCharacterIDs()
+        {
+            return _characters.Select(x => x.Key).ToArray();
+        }
+
+        /// <summary>
+        /// Returns array of all class ids.
+        /// </summary>
+        /// <returns>Array of all class ids.</returns>
+        public string[] GetClassIDs()
+        {
+            return _classes.Select(x => x.Key).ToArray();
+        }
+
+        /// <summary>
+        /// Returns array of all race ids.
+        /// </summary>
+        /// <returns>Array of all race ids.</returns>
+        public string[] GetRaceIDs()
+        {
+            return _races.Select(x => x.Key).ToArray();
+        }
+
+        /// <summary>
+        /// Returns character with given ID.
+        /// </summary>
+        /// <param name="id">ID of the character.</param>
+        /// <returns>Character with given ID. Null if there is no character with given ID.</returns>
+        public Character? GetCharacter(string id)
+        {
+            if (!_characters.ContainsKey(id)) return null;
+
+            return _characters[id];
+        }
+
+        /// <summary>
+        /// Returns array of all loaded characters.
+        /// </summary>
+        /// <returns>Array of all loaded characters.</returns>
+        public Character[] GetAllCharacters()
+        {
+            return _characters.Values.ToArray();
+        }
+
+        /// <summary>
+        /// Returns class with given ID.
+        /// </summary>
+        /// <param name="id">ID of the class.</param>
+        /// <returns>Class with given ID. Null if there is no class with given ID.</returns>
+        public GameClass? GetClass(string id)
+        {
+            if (!_classes.ContainsKey(id)) return null;
+
+            return _classes[id];
+        }
+
+        /// <summary>
+        /// Returns array of all loaded classes.
+        /// </summary>
+        /// <returns>Array of all loaded classes.</returns>
+        public GameClass[] GetAllClasses()
+        {
+            return _classes.Values.ToArray();
+        }
+
+        /// <summary>
+        /// Returns race with given ID.
+        /// </summary>
+        /// <param name="id">ID of the race.</param>
+        /// <returns>Race with given ID. Null if there is no race with given ID.</returns>
+        public GameRace? GetRace(string id)
+        {
+            if (!_races.ContainsKey(id)) return null;
+
+            return _races[id];
+        }
+
+        /// <summary>
+        /// Returns array of all loaded races.
+        /// </summary>
+        /// <returns>Array of all loaded races.</returns>
+        public GameRace[] GetAllRaces()
+        {
+            return _races.Values.ToArray();
         }
 
         /// <summary>
@@ -103,9 +200,9 @@ namespace Core
         /// Loads all classes JSONs from given path.
         /// <param name="path">Path to the class folder.</param>>
         /// </summary>
-        public static Dictionary<string, GameClass> LoadClasses(string path)
+        public Dictionary<string, GameClass> LoadClasses(string path)
         {
-            Dictionary<string, GameClass> classes = new();
+            _classes = new();
 
             if (!Directory.Exists(path))
             {
@@ -126,7 +223,7 @@ namespace Core
 
                         if (newClass == null) continue;
 
-                        classes.Add(newClass.id, newClass);
+                        _classes.Add(newClass.id, newClass);
                     }
                 }
                 catch
@@ -135,16 +232,16 @@ namespace Core
                 }
             }
 
-            return classes;
+            return _classes;
         }
 
         /// <summary>
         /// Loads all races JSONs from given path.
         /// <param name="path">Path to the race folder.</param>
         /// </summary>
-        public static Dictionary<string, GameRace> LoadRaces(string path)
+        public Dictionary<string, GameRace> LoadRaces(string path)
         {
-            Dictionary<string, GameRace> races = new();
+            _races = new();
 
             if (!Directory.Exists(path))
             {
@@ -165,7 +262,7 @@ namespace Core
 
                         if (newRace == null) continue;
 
-                        races.Add(newRace.id, newRace);
+                        _races.Add(newRace.id, newRace);
                     }
                 }
                 catch
@@ -174,7 +271,7 @@ namespace Core
                 }
             }
 
-            return races;
+            return _races;
         }
 
         /// <summary>

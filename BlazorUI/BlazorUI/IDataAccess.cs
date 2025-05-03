@@ -27,10 +27,17 @@ namespace BlazorUI
         public void SaveCharacter(Character character);
 
         /// <summary>
-        /// Returns dictionary of all loaded characters, where their filename is the key.
+        /// Returns array of all loaded character IDs.
         /// </summary>
-        /// <returns>Dictionary of all loaded characters, where their name is the key.</returns>
-        public Dictionary<string, Character> GetCharacterDictionary();
+        /// <returns>Array of all loaded character IDs.</returns>
+        public string[] GetAllCharactersIDs();
+
+        /// <summary>
+        /// Returns character with given ID.
+        /// </summary>
+        /// <param name="characterID">ID of the character.</param>
+        /// <returns>Character with given ID. Null if no character with given ID was found.</returns>
+        public Character? GetCharacter(string characterID);
 
         /// <summary>
         /// Returns all loaded game classes.

@@ -22,18 +22,16 @@ namespace ConsoleUI
 
         private JSONManager _dataManager;
 
-        internal Dictionary<string, Character> characters;
-        internal Dictionary<string, GameClass> classes { get; private set; }
-        internal Dictionary<string, GameRace> races { get; private set; } 
-        private string charactersPath = ".\\data\\characters";
-        private string classesPath = ".\\data\\classes";
-        private string racesPath = ".\\data\\races";
+        const string CHARACTERSPATH = ".\\data\\characters";
+        const string CLASSESPATH = ".\\data\\classes";
+        const string RACESPATH = ".\\data\\races";
 
         public ConsoleManager()
         {
             Menu mainMenu = new MainMenu(this);
             this.activeMenu = mainMenu;
-            this.characters = new();
+
+            _dataManager = new JSONManager();
         }
 
         /// <summary>
@@ -41,10 +39,9 @@ namespace ConsoleUI
         /// </summary>
         private void OnStart()
         {
-            _dataManager = new JSONManager();
-            characters = _dataManager.LoadCharacters(charactersPath);
-            classes = JSONManager.LoadClasses(classesPath);
-            races = JSONManager.LoadRaces(racesPath);
+            _dataManager.LoadCharacters(CHARACTERSPATH);
+            _dataManager.LoadClasses(CLASSESPATH);
+            _dataManager.LoadRaces(RACESPATH);
         }
 
         /// <summary>
@@ -93,12 +90,12 @@ namespace ConsoleUI
         }
 
         /// <summary>
-        /// Adds given character to ConsoleManager database, also saves it as JSON.
+        /// Creates a new character and registers them to database and saves them.
         /// </summary>
-        /// <param name="character">Character that is to be added to the ConsoleManager database.</param>
-        internal void AddCharacter(Character character)
+        /// <returns>A new registered character.</returns>
+        internal Character NewCharacter()
         {
-            SaveCharacter(character);
+            return _dataManager.NewCharacter(CHARACTERSPATH);
         }
 
         /// <summary>
@@ -107,7 +104,7 @@ namespace ConsoleUI
         /// <param name="character">Character that is to be removed.</param>
         internal void DeleteCharacter(Character character)
         {
-            _dataManager.DeleteCharacter(character, charactersPath);
+            _dataManager.DeleteCharacter(character, CHARACTERSPATH);
         }
 
         /// <summary>
@@ -116,7 +113,26 @@ namespace ConsoleUI
         /// <param name="character">Character that is to be saved.</param>
         internal void SaveCharacter(Character character)
         {
-            _dataManager.SaveCharacter(character, charactersPath);
+            _dataManager.SaveCharacter(character, CHARACTERSPATH);
+        }
+
+        /// <summary>
+        /// Returns Character with corresponding given id.
+        /// </summary>
+        /// <param name="characterID">ID of the character.</param>
+        /// <returns>Character with corresponding id, null if Character does not exist.</returns>
+        public Character? GetCharacter(string characterID)
+        {
+            return _dataManager.GetCharacter(characterID);
+        }
+
+        /// <summary>
+        /// Returns array of all loaded characters.
+        /// </summary>
+        /// <returns>Array of all loaded characters.</returns>
+        public Character[] GetAllCharacters()
+        {
+            return _dataManager.GetAllCharacters();
         }
 
         /// <summary>
@@ -126,14 +142,7 @@ namespace ConsoleUI
         /// <returns>GameClass with corresponding id, null if GameClass does not exist.</returns>
         public GameClass? GetGameClass(string classID)
         {
-            if (classID == null) return null;
-
-            if (!classes.TryGetValue(classID, out var chosenClass))
-            {
-                return null;
-            }
-
-            return chosenClass;
+            return _dataManager.GetClass(classID);
         }
 
         /// <summary>
@@ -143,14 +152,35 @@ namespace ConsoleUI
         /// <returns>GameRace with corresponding id, null if GameRace does not exist.</returns>
         public GameRace? GetGameRace(string raceID)
         {
-            if (raceID == null) return null;
+            return _dataManager.GetRace(raceID);
+        }
 
-            if (!races.TryGetValue(raceID, out var chosenRace))
-            {
-                return null;
-            }
+        /// <summary>
+        /// Returns array of all character ids.
+        /// </summary>
+        /// <returns>Array of all character ids.</returns>
+        public string[] GetChraracterIDs()
+        {
+            return _dataManager.GetCharacterIDs();
+        }
 
-            return chosenRace;
+        /// <summary>
+        /// Returns array of all class ids.
+        /// </summary>
+        /// <returns>Array of all class ids.</returns>
+        public string[] GetClassIDs()
+        {
+            return _dataManager.GetClassIDs();
+        }
+
+        /// <summary>
+        /// Returns array of all race ids.
+        /// </summary>
+        /// <returns>Array of all race ids.</returns>
+        public string[] GetRaceIDs()
+        {
+            return _dataManager.GetRaceIDs();
         }
     }
+
 }

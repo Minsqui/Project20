@@ -7,20 +7,13 @@ namespace BlazorUI
     {
         private JSONManager _dataManager;
 
-        private Dictionary<string, Character> _characters = new();
-        private Dictionary<string, GameClass> _classes = new();
-        private Dictionary<string, GameRace> _races = new();
-
         private const string CHARACTERPATH = ".\\data\\characters";
         private const string CLASSESPATH = ".\\data\\classes";
         private const string RACESPATH = ".\\data\\races";
         public DataAccessJSON()
         {
             _dataManager = new();
-            LoadCharacters();
-            _classes = JSONManager.LoadClasses(CLASSESPATH);
-            _races = JSONManager.LoadRaces(RACESPATH);
-
+            LoadAll();
         }
 
         /// <summary>
@@ -33,12 +26,22 @@ namespace BlazorUI
         }
 
         /// <summary>
-        /// Returns dictionary of characters, where keys are their filenames.
+        /// Returns array of all loaded character IDs.
         /// </summary>
-        /// <returns>Dictionary of characters, where keys are their filenames.</returns>
-        public Dictionary<string, Character> GetCharacterDictionary()
+        /// <returns>Array of all loaded character IDs.</returns>
+        public string[] GetAllCharactersIDs()
         {
-            return _characters;
+            return _dataManager.GetCharacterIDs();
+        }
+
+        /// <summary>
+        /// Returns character with given ID.
+        /// </summary>
+        /// <param name="characterID">ID of the character.</param>
+        /// <returns>Character with given ID. Null if no character with given ID was found.</returns>
+        public Character? GetCharacter(string characterID)
+        {
+            return _dataManager.GetCharacter(characterID);
         }
 
         /// <summary>
@@ -51,11 +54,21 @@ namespace BlazorUI
         }
 
         /// <summary>
-        /// Loads character JSONs into DataAccess.
+        /// Loads characters, classes and races.
+        /// </summary>
+        public void LoadAll()
+        {
+            _dataManager.LoadCharacters(CHARACTERPATH);
+            _dataManager.LoadClasses(CLASSESPATH);
+            _dataManager.LoadRaces(RACESPATH);
+        }
+
+        /// <summary>
+        /// Loads characters.
         /// </summary>
         public void LoadCharacters()
         {
-            _characters = _dataManager.LoadCharacters(CHARACTERPATH);
+            _dataManager.LoadCharacters(CHARACTERPATH);
         }
 
         /// <summary>
@@ -73,7 +86,8 @@ namespace BlazorUI
         /// <returns>All loaded game classes.</returns>
         public GameClass[] GetAllGameClasses()
         {
-            return _classes.Select(x => x.Value).ToArray();
+            //return _classes.Select(x => x.Value).ToArray();
+            return _dataManager.GetAllClasses(); 
         }
 
         /// <summary>
@@ -95,8 +109,7 @@ namespace BlazorUI
         /// <returns>Class with given id. Returns null if no race found.</returns>
         public GameClass? GetGameClass(string id)
         {
-            if (_classes.ContainsKey(id)) return _classes[id];
-            else return null;
+            return _dataManager.GetClass(id);
         }
 
         /// <summary>
@@ -105,7 +118,7 @@ namespace BlazorUI
         /// <returns>All loaded game races.</returns>
         public GameRace[] GetAllGameRaces()
         {
-            return _races.Select(x => x.Value).ToArray();
+            return _dataManager.GetAllRaces();
         }
 
         /// <summary>
@@ -127,8 +140,7 @@ namespace BlazorUI
         /// <returns>Race with given id. Returns null if no race found.</returns>
         public GameRace? GetGameRace(string id)
         {
-            if (_races.ContainsKey(id)) return _races[id];
-            else return null;
+            return _dataManager.GetRace(id);
         }
     }
 }

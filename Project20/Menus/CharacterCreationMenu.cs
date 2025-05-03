@@ -26,7 +26,7 @@ namespace ConsoleUI.Menus
             this.cm = cm;
             this.parentMenu = parent;
             this.phase = 0;
-            this.newCharacter = new Character();
+            this.newCharacter = cm.NewCharacter();
             this.showInvalidInput = false;
         }
 
@@ -162,7 +162,7 @@ namespace ConsoleUI.Menus
         /// <exception cref="NullReferenceException"></exception>
         private void End()
         {
-            cm.AddCharacter(newCharacter);
+            cm.SaveCharacter(newCharacter);
 
             if (parentMenu == null)
             {
@@ -202,7 +202,7 @@ namespace ConsoleUI.Menus
             GameRace? chosenRace;
 
             //No races found in database
-            if (cm.races.Count <= 0)
+            if (cm.GetRaceIDs().Length <= 0)
             {
                 ++phase;
                 return;
@@ -232,7 +232,7 @@ namespace ConsoleUI.Menus
             GameClass? chosenClass;
 
             //No class in database
-            if (cm.classes.Count <= 0)
+            if (cm.GetClassIDs().Length <= 0)
             {
                 ++phase;
                 return;
@@ -258,7 +258,7 @@ namespace ConsoleUI.Menus
         /// </summary>
         private void ShowRaces()
         {
-            if (cm.races.Count <= 0)
+            if (cm.GetRaceIDs().Length <= 0)
             {
                 Console.WriteLine(
                     "No race found in database.\n" +
@@ -273,9 +273,11 @@ namespace ConsoleUI.Menus
                 "Race name (race id)"
                 );
 
-            foreach (var gameRace in cm.races)
+            foreach (var raceID in cm.GetRaceIDs())
             {
-                Console.WriteLine($"{gameRace.Value.name} ({gameRace.Key})");
+                GameRace? gameRace = cm.GetGameRace(raceID);
+                if (gameRace is null) continue;
+                Console.WriteLine($"{gameRace.name} ({raceID})");
             }
         }
 
@@ -284,7 +286,7 @@ namespace ConsoleUI.Menus
         /// </summary>
         private void ShowClasses()
         {
-            if (cm.classes.Count <= 0)
+            if (cm.GetClassIDs().Length <= 0)
             {
                 Console.WriteLine(
                     "No class found in database.\n" +
@@ -299,9 +301,11 @@ namespace ConsoleUI.Menus
                 "Class name (class id)"
                 );
 
-            foreach (var gameClass in cm.classes)
+            foreach (var classID in cm.GetClassIDs())
             {
-                Console.WriteLine($"{gameClass.Value.name} ({gameClass.Key})");
+                GameClass? gameClass = cm.GetGameClass(classID);
+                if (gameClass is null) continue;
+                Console.WriteLine($"{gameClass.name} ({classID})");
             }
         }
     }

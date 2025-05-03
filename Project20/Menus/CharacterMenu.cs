@@ -227,7 +227,6 @@ namespace ConsoleUI.Menus
         private void DeleteCommand()
         {
             cm.DeleteCharacter(character);
-            character = null;
             BackCommand();
         }
 
@@ -570,7 +569,7 @@ namespace ConsoleUI.Menus
         /// </summary>
         private void DrawAllClasses()
         {
-            if (cm.classes.Count <= 0)
+            if (cm.GetClassIDs().Length <= 0)
             {
                 Console.WriteLine("No class found in database.\n");
                 return;
@@ -578,9 +577,11 @@ namespace ConsoleUI.Menus
 
             Console.WriteLine("Class name (class id)");
 
-            foreach (var gameClass in cm.classes)
+            foreach (var classID in cm.GetClassIDs())
             {
-                Console.WriteLine($"{gameClass.Value.name} ({gameClass.Key})");
+                GameClass? gameClass = cm.GetGameClass(classID);
+                if (gameClass is null) continue;
+                Console.WriteLine($"{gameClass.name} ({classID})");
             }
         }
 
@@ -589,7 +590,7 @@ namespace ConsoleUI.Menus
         /// </summary>
         private void DrawAllRaces()
         {
-            if (cm.races.Count <= 0)
+            if (cm.GetRaceIDs().Length <= 0)
             {
                 Console.WriteLine("No race found in database.\n");
                 return;
@@ -597,9 +598,11 @@ namespace ConsoleUI.Menus
 
             Console.WriteLine("Race name (race id)");
 
-            foreach (var gameRace in cm.races)
+            foreach (var raceID in cm.GetRaceIDs())
             {
-                Console.WriteLine($"{gameRace.Value.name} ({gameRace.Key})");
+                GameRace? gameRace = cm.GetGameRace(raceID);
+                if (gameRace is null) continue;
+                Console.WriteLine($"{gameRace.name} ({raceID})");
             }
         }
 
