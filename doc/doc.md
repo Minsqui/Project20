@@ -26,8 +26,6 @@ Not all rules are implemented. The main reason for this is that the app should a
 
 Later on, when different games and their rulesets are implemented, it makes sense to split this part even further and generalise it more.
 
-At this point, the information is stored locally in JSONs.
-
 Parts of Core are:
 * Character
 * GameClass
