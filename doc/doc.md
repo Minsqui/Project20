@@ -54,7 +54,7 @@ Method that implements dice. Used to convert shorthand like '1d20' into actual d
 ## ConsoleUI
 User interface built as a command line interface.
 
-The main part is the ConsoleManager, which manages data for the who application and works with Menus. The architecture of this interface is similar to a finite state machine, where Menus would be the states and the React methods can be used as state transition functions. In this architecture, the ConsoleManager runs an infinite loop in which the Show and React methods of the active Menu are called.
+The main part is the ConsoleManager, which manages data for the application and works with Menus. The architecture of this interface is similar to a finite state machine, where Menus would be the states and the React methods can be used as state transition functions. In this architecture, the ConsoleManager runs an infinite loop in which the Show and React methods of the active Menu are called.
 The Show method is basically a series of console writes that create the graphical structure of a Menu. The React function handles what should happen based on the user's input.
 
 Most Menus are made up of a series of options, each of which is given a number and the user enters the number to select that option. This style is fairly easy to understand and follow, but is impractical or impossible to use for more complex input. For this reason, Menus like the CharacterMenu use a set of commands to which they respond.
@@ -63,4 +63,4 @@ Most Menus are made up of a series of options, each of which is given a number a
 Using the .NET Blazor technology, BlazorUI is a user interface created as a web application. It uses both client and server parts of Blazor. The client part is used to maximise the speed of the application and the server part exists mainly for the future possibility of using this manager to manage a whole campaign with multiple users on the same database.
 
 ## Project20Tests
-Unit tests for the application. At this point, the tests are for the Core classes Character and Die.
+Unit tests for the application. At this point, the only tests are for the Core classes Character and Die.
