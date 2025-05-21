@@ -1,3 +1,15 @@
+# Running the App
+The app has to two UIs: one in the console and one in Blazor (web app). To run the app, simply navigate to either the ConsoleUI or the BlazorUI folder (not the BlazorUI.Client folder) and enter the **dotnet run** command.
+
+The Visual Studio solution for the whole project should be located in the ConsoleUI folder.
+
+# Data saving
+The current version only uses JSON files.  These files are saved in the **data** folder, relative to the executable file. The data folder contains three subfolders:
+* characters - a folder where all the created characters should be located
+* classes - a folder containing all the possible classes (no editor has been created yet).
+* races - a folder containing all the possible races (no editor has been created yet).
+JSON files were chosen primarily because they can be easily edited without the need for an editor.
+
 # Structure
 The whole Project20 is separated into 4 parts:
 * Core
